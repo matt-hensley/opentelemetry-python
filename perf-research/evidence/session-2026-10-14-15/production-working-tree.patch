@@ -1,0 +1,501 @@
+diff --git a/opentelemetry-api/src/opentelemetry/attributes/__init__.py b/opentelemetry-api/src/opentelemetry/attributes/__init__.py
+index b9474933..a2bc6cb5 100644
+--- a/opentelemetry-api/src/opentelemetry/attributes/__init__.py
++++ b/opentelemetry-api/src/opentelemetry/attributes/__init__.py
+@@ -15,6 +15,7 @@ from typing_extensions import assert_never, deprecated
+ from opentelemetry.util import types
+ 
+ _logger = logging.getLogger(__name__)
++_SCALAR_TYPES = (NoneType, bool, int, float, bytes)
+ 
+ 
+ # Calling str(x) will use an object's `__str__` method if it exists, otherwise it will use it's `__repr__` method.
+@@ -52,7 +53,7 @@ def _clean_attribute_value(
+     Returns:
+         The recursively cleaned AnyValue.
+     """
+-    if isinstance(value, (NoneType, bool, int, float, bytes)):
++    if isinstance(value, _SCALAR_TYPES):
+         return value
+     if isinstance(value, str):
+         if max_string_value_length is not None and len(value) > max_string_value_length:
+@@ -199,6 +200,16 @@ class BoundedAttributes(MutableMapping[str, types.AnyValue]):
+         cleaned_attributes: Mapping[str, types.AnyValue] = _clean_attribute_value(attributes, self.max_value_len)
+         with self._lock:
+             self.dropped += len(attributes) - len(cleaned_attributes)
++            # Keep subclass hooks and delete/reinsert ordering on the fallback path.
++            if (
++                type(self) is BoundedAttributes  # pylint: disable=unidiomatic-typecheck
++                and not self._dict
++                and isinstance(cleaned_attributes, dict)
++                and (self.maxlen is None or len(cleaned_attributes) <= self.maxlen)
++            ):
++                self._dict = cleaned_attributes
++                return
++
+             for key, value in cleaned_attributes.items():
+                 self._setitem_locked(key, value)
+ 
+diff --git a/opentelemetry-api/src/opentelemetry/trace/propagation/__init__.py b/opentelemetry-api/src/opentelemetry/trace/propagation/__init__.py
+index 93a09160..8d15cca1 100644
+--- a/opentelemetry-api/src/opentelemetry/trace/propagation/__init__.py
++++ b/opentelemetry-api/src/opentelemetry/trace/propagation/__init__.py
+@@ -1,9 +1,11 @@
+ # Copyright The OpenTelemetry Authors
+ # SPDX-License-Identifier: Apache-2.0
+ 
+-from opentelemetry.context import create_key, get_value, set_value
++from opentelemetry.context import create_key, set_value
++from opentelemetry.context import get_current as _get_current
+ from opentelemetry.context.context import Context
+ from opentelemetry.trace.span import INVALID_SPAN, Span
++from opentelemetry.trace.span import NonRecordingSpan as _NonRecordingSpan
+ 
+ SPAN_KEY = "current-span"
+ _SPAN_KEY = create_key("current-span")
+@@ -31,7 +33,8 @@ def get_current_span(context: Context | None = None) -> Span:
+     Returns:
+         The Span set in the context if it exists. INVALID_SPAN otherwise.
+     """
+-    span = get_value(_SPAN_KEY, context=context)
+-    if span is None or not isinstance(span, Span):
++    span = (_get_current() if context is None else context).get(_SPAN_KEY)
++    # Exact non-recording spans need no abstract base class instance check.
++    if span is None or (type(span) is not _NonRecordingSpan and not isinstance(span, Span)):  # pylint: disable=unidiomatic-typecheck
+         return INVALID_SPAN
+     return span
+diff --git a/opentelemetry-api/tests/attributes/test_attributes.py b/opentelemetry-api/tests/attributes/test_attributes.py
+index 8820b3d4..60f1dea7 100644
+--- a/opentelemetry-api/tests/attributes/test_attributes.py
++++ b/opentelemetry-api/tests/attributes/test_attributes.py
+@@ -20,6 +20,22 @@ class _NoStrNoReprObject:
+         pass
+ 
+ 
++class TestCleanAttributeValue(unittest.TestCase):
++    def test_clean_scalar_values_preserves_instances(self):
++        class CustomInt(int):
++            pass
++
++        class CustomFloat(float):
++            pass
++
++        class CustomBytes(bytes):
++            pass
++
++        for value in (None, True, 42, 3.14, b"hello", CustomInt(42), CustomFloat(3.14), CustomBytes(b"hello")):
++            with self.subTest(value=value):
++                self.assertIs(_clean_attribute_value(value, 0), value)
++
++
+ class TestBoundedAttributes(unittest.TestCase):
+     # pylint: disable=consider-using-dict-items
+     base = {
+@@ -160,6 +176,89 @@ class TestBoundedAttributes(unittest.TestCase):
+         # test that iter yields the correct number of elements
+         self.assertEqual(len(tuple(bdict)), dic_len)
+ 
++    def test_constructor_cleans_nested_attributes_without_aliasing(self):
++        source = {"outer": {"items": [1, 2]}}
++        attributes = BoundedAttributes(maxlen=1, attributes=source, immutable=False)
++
++        source["outer"]["items"].append(3)
++        source["new"] = "value"
++
++        self.assertEqual(attributes["outer"], {"items": (1, 2)})
++        self.assertEqual(tuple(attributes), ("outer",))
++        self.assertEqual(attributes.dropped, 0)
++
++    def test_set_items_into_empty_attributes_preserves_unlimited_and_zero_limits(self):
++        unlimited = BoundedAttributes(maxlen=None, immutable=False)
++        unlimited._set_items({"first": 1, "second": 2})  # pylint: disable=protected-access
++        self.assertEqual(tuple(unlimited), ("first", "second"))
++        self.assertEqual(unlimited.dropped, 0)
++
++        zero_limit = BoundedAttributes(maxlen=0, attributes={"first": 1, "second": 2}, immutable=False)
++        self.assertEqual(len(zero_limit), 0)
++        self.assertEqual(zero_limit.dropped, 2)
++
++    def test_constructor_preserves_invalid_and_coerced_key_drop_counts(self):
++        attributes = {
++            "": "empty key",
++            _NoStrNoReprObject(): "unusable key",
++            1: "integer key",
++            "1": "string key",
++        }
++
++        with self.assertLogs("opentelemetry.attributes", level="WARNING"):
++            bounded = BoundedAttributes(maxlen=2, attributes=attributes, immutable=False)
++
++        self.assertEqual(tuple(bounded), ("1",))
++        self.assertEqual(bounded["1"], "string key")
++        self.assertEqual(bounded.dropped, 3)
++
++    def test_set_items_preserves_overlap_order_and_overflow(self):
++        with self.assertLogs("opentelemetry.attributes", level="WARNING"):
++            constructor_overflow = BoundedAttributes(
++                maxlen=2,
++                attributes={"first": 1, "second": 2, "third": 3},
++                immutable=False,
++            )
++        self.assertEqual(tuple(constructor_overflow), ("second", "third"))
++        self.assertEqual(constructor_overflow.dropped, 1)
++
++        bounded = BoundedAttributes(
++            maxlen=3,
++            attributes={"first": 1, "second": 2},
++            immutable=False,
++        )
++
++        bounded._set_items({"first": 20, "third": 3})  # pylint: disable=protected-access
++        self.assertEqual(tuple(bounded), ("second", "first", "third"))
++        self.assertEqual(bounded["first"], 20)
++        self.assertEqual(bounded.dropped, 0)
++
++        with self.assertLogs("opentelemetry.attributes", level="WARNING") as logs:
++            bounded._set_items({"fourth": 4})  # pylint: disable=protected-access
++
++        self.assertTrue(any("Attributes dict is full" in message for message in logs.output))
++        self.assertEqual(tuple(bounded), ("first", "third", "fourth"))
++        self.assertEqual(bounded.dropped, 1)
++
++    def test_subclass_setitem_locked_is_used_for_initial_attributes(self):
++        class TrackingBoundedAttributes(BoundedAttributes):
++            def __init__(self, *args, **kwargs):
++                self.setitem_calls = 0
++                super().__init__(*args, **kwargs)
++
++            def _setitem_locked(self, key, value):
++                self.setitem_calls += 1
++                super()._setitem_locked(key, value)
++
++        bounded = TrackingBoundedAttributes(
++            maxlen=2,
++            attributes={"first": 1, "second": 2},
++            immutable=False,
++        )
++
++        self.assertEqual(bounded.setitem_calls, 2)
++        self.assertEqual(tuple(bounded), ("first", "second"))
++
+     def test_basic_insertion_update_iteration_and_deletion(self):
+         # create empty dict
+         dic_len = len(self.base)
+diff --git a/opentelemetry-api/tests/trace/test_globals.py b/opentelemetry-api/tests/trace/test_globals.py
+index 1035607a..bbb43b63 100644
+--- a/opentelemetry-api/tests/trace/test_globals.py
++++ b/opentelemetry-api/tests/trace/test_globals.py
+@@ -2,11 +2,14 @@
+ # SPDX-License-Identifier: Apache-2.0
+ 
+ import unittest
++from typing import cast
+ from unittest.mock import Mock, patch
+ 
+ from opentelemetry import context, trace
++from opentelemetry.context.context import Context
+ from opentelemetry.test.concurrency_test import ConcurrencyTestBase, MockFunc
+ from opentelemetry.test.globals_test import TraceGlobalsTest
++from opentelemetry.trace.propagation import _SPAN_KEY
+ from opentelemetry.trace.status import Status, StatusCode
+ 
+ 
+@@ -97,6 +100,42 @@ class TestTracer(unittest.TestCase):
+             context.detach(token)
+         self.assertEqual(trace.get_current_span(), trace.INVALID_SPAN)
+ 
++    def test_get_current_span_returns_span_implementations(self):
++        custom_span = cast(trace.Span, Mock(spec=trace.Span))
++        spans = (
++            trace.NonRecordingSpan(trace.INVALID_SPAN_CONTEXT),
++            SpanTest(trace.INVALID_SPAN_CONTEXT),
++            custom_span,
++        )
++
++        for span in spans:
++            with self.subTest(span=type(span).__name__):
++                span_context = trace.set_span_in_context(span, Context())
++                self.assertIs(trace.get_current_span(span_context), span)
++
++    def test_get_current_span_returns_invalid_for_non_span_context_value(self):
++        ctx = context.set_value(_SPAN_KEY, "not a span", Context())
++
++        self.assertIs(trace.get_current_span(ctx), trace.INVALID_SPAN)
++
++    def test_get_current_span_explicit_empty_context_overrides_current(self):
++        span = trace.NonRecordingSpan(trace.INVALID_SPAN_CONTEXT)
++        token = context.attach(trace.set_span_in_context(span))
++        try:
++            self.assertIs(trace.get_current_span(), span)
++            self.assertIs(trace.get_current_span(Context()), trace.INVALID_SPAN)
++        finally:
++            context.detach(token)
++
++    def test_get_current_span_uses_installed_runtime_context(self):
++        span = trace.NonRecordingSpan(trace.INVALID_SPAN_CONTEXT)
++        runtime_context = trace.set_span_in_context(span, Context())
++        runtime = Mock()
++        runtime.get_current.return_value = runtime_context
++
++        with patch("opentelemetry.context._RUNTIME_CONTEXT", runtime):
++            self.assertIs(trace.get_current_span(), span)
++
+ 
+ class TestUseTracer(unittest.TestCase):
+     def test_use_span(self):
+diff --git a/opentelemetry-sdk/src/opentelemetry/sdk/trace/__init__.py b/opentelemetry-sdk/src/opentelemetry/sdk/trace/__init__.py
+index 6f47f213..31dc4ee7 100644
+--- a/opentelemetry-sdk/src/opentelemetry/sdk/trace/__init__.py
++++ b/opentelemetry-sdk/src/opentelemetry/sdk/trace/__init__.py
+@@ -502,11 +502,11 @@ class ReadableSpan:
+ 
+     @property
+     def events(self) -> Sequence[Event]:
+-        return tuple(self._events)
++        return tuple(self._events or ())
+ 
+     @property
+     def links(self) -> Sequence[trace_api.Link]:
+-        return tuple(self._links)
++        return tuple(self._links or ())
+ 
+     @property
+     def resource(self) -> Resource:
+@@ -549,8 +549,8 @@ class ReadableSpan:
+             "end_time": end_time,
+             "status": status,
+             "attributes": self._format_attributes(self._attributes),
+-            "events": self._format_events(self._events),
+-            "links": self._format_links(self._links),
++            "events": self._format_events(self._events or ()),
++            "links": self._format_links(self._links or ()),
+             "resource": json.loads(self.resource.to_json()),
+         }
+ 
+@@ -830,8 +830,9 @@ class Span(trace_api.Span, ReadableSpan):
+             immutable=False,
+             max_value_len=self._limits.max_span_attribute_length,
+         )
+-        self._events = self._new_events()
++        self._events = None
+         if events:
++            self._events = self._new_events()
+             for event in events:
+                 # Immutable set to true so attributes cannot be added or removed after creation.
+                 event._attributes = BoundedAttributes(
+@@ -842,17 +843,17 @@ class Span(trace_api.Span, ReadableSpan):
+                 )
+                 self._events.append(event)
+ 
+-        self._links = self._new_links(links)
++        self._links = self._new_links(links) if links else None
+ 
+         self._record_end_metrics = record_end_metrics
+ 
+     def __repr__(self):
+         return f'{type(self).__name__}(name="{self._name}", context={self._context})'
+ 
+-    def _new_events(self):
++    def _new_events(self) -> BoundedList:
+         return BoundedList(self._limits.max_events)
+ 
+-    def _new_links(self, links: Sequence[trace_api.Link]):
++    def _new_links(self, links: Sequence[trace_api.Link]) -> BoundedList:
+         if not links:
+             return BoundedList(self._limits.max_links)
+ 
+@@ -892,6 +893,8 @@ class Span(trace_api.Span, ReadableSpan):
+ 
+     @_check_span_ended
+     def _add_event(self, event: EventBase) -> None:
++        if self._events is None:
++            self._events = self._new_events()
+         self._events.append(event)
+ 
+     def add_event(
+@@ -917,6 +920,8 @@ class Span(trace_api.Span, ReadableSpan):
+ 
+     @_check_span_ended
+     def _add_link(self, link: trace_api.Link) -> None:
++        if self._links is None:
++            self._links = self._new_links(())
+         self._links.append(link)
+ 
+     def add_link(
+@@ -947,8 +952,8 @@ class Span(trace_api.Span, ReadableSpan):
+             parent=self._parent,
+             resource=self._resource,
+             attributes=self._attributes,
+-            events=self._events,
+-            links=self._links,
++            events=self._events if self._events is not None else (),
++            links=self._links if self._links is not None else (),
+             kind=self.kind,
+             status=self._status,
+             start_time=self._start_time,
+diff --git a/opentelemetry-sdk/src/opentelemetry/sdk/trace/sampling.py b/opentelemetry-sdk/src/opentelemetry/sdk/trace/sampling.py
+index 1ba48e01..51d2eb4e 100644
+--- a/opentelemetry-sdk/src/opentelemetry/sdk/trace/sampling.py
++++ b/opentelemetry-sdk/src/opentelemetry/sdk/trace/sampling.py
+@@ -154,7 +154,7 @@ class Decision(enum.Enum):
+     RECORD_AND_SAMPLE = 2
+ 
+     def is_recording(self):
+-        return self in (Decision.RECORD_ONLY, Decision.RECORD_AND_SAMPLE)
++        return self is not Decision.DROP
+ 
+     def is_sampled(self):
+         return self is Decision.RECORD_AND_SAMPLE
+diff --git a/opentelemetry-sdk/tests/trace/test_trace.py b/opentelemetry-sdk/tests/trace/test_trace.py
+index f5eb7128..d28bef21 100644
+--- a/opentelemetry-sdk/tests/trace/test_trace.py
++++ b/opentelemetry-sdk/tests/trace/test_trace.py
+@@ -11,7 +11,9 @@ import os
+ import shutil
+ import subprocess
+ import sys
++import threading
+ import unittest
++from concurrent.futures import ThreadPoolExecutor
+ from importlib import reload
+ from logging import ERROR, WARNING
+ from pathlib import Path
+@@ -1044,6 +1046,138 @@ class TestSpan(unittest.TestCase):
+             mutable_list = ["new_contents"]
+             self.assertEqual(root.events[3].attributes, {"name": ("original_contents",)})
+ 
++    def test_empty_event_and_link_snapshots_are_immutable(self):
++        span = self.tracer.start_span("root")
++        empty_events = span.events
++        empty_links = span.links
++        self.assertEqual(empty_events, ())
++        self.assertEqual(empty_links, ())
++
++        first_link_context = trace_api.SpanContext(1, 1, is_remote=False)
++        span.add_event("event0")
++        span.add_link(first_link_context)
++        first_events = span.events
++        first_links = span.links
++
++        span.add_event("event1")
++        span.add_link(trace_api.SpanContext(1, 2, is_remote=False))
++
++        self.assertEqual(empty_events, ())
++        self.assertEqual(empty_links, ())
++        self.assertEqual([event.name for event in first_events], ["event0"])
++        self.assertEqual([link.context for link in first_links], [first_link_context])
++        self.assertEqual([event.name for event in span.events], ["event0", "event1"])
++        span.end()
++
++    def test_lazy_event_and_link_storage_respects_limits(self):
++        tracer_provider = trace.TracerProvider(
++            span_limits=trace.SpanLimits(max_events=1, max_links=1),
++            shutdown_on_exit=False,
++        )
++        self.addCleanup(tracer_provider.shutdown)
++        span = tracer_provider.get_tracer(__name__).start_span("bounded")
++        span.add_event("dropped")
++        span.add_event("kept")
++        span.add_link(trace_api.SpanContext(1, 1, is_remote=False))
++        span.add_link(trace_api.SpanContext(1, 2, is_remote=False))
++
++        self.assertEqual([event.name for event in span.events], ["kept"])
++        self.assertEqual([link.context.span_id for link in span.links], [2])
++        self.assertEqual(span.dropped_events, 1)
++        self.assertEqual(span.dropped_links, 1)
++        span.end()
++
++    def test_lazy_event_and_link_storage_respects_zero_limits(self):
++        class CapturingSpanProcessor(trace.SpanProcessor):
++            def __init__(self):
++                self.ended_spans = []
++
++            def on_end(self, span):
++                self.ended_spans.append(span)
++
++        tracer_provider = trace.TracerProvider(
++            span_limits=trace.SpanLimits(max_events=0, max_links=0),
++            shutdown_on_exit=False,
++        )
++        self.addCleanup(tracer_provider.shutdown)
++        processor = CapturingSpanProcessor()
++        tracer_provider.add_span_processor(processor)
++        span = tracer_provider.get_tracer(__name__).start_span("zero-bounds")
++        span.add_event("dropped0")
++        span.add_event("dropped1")
++        span.add_link(trace_api.SpanContext(1, 1, is_remote=False))
++        span.add_link(trace_api.INVALID_SPAN_CONTEXT)
++
++        self.assertEqual(span.events, ())
++        self.assertEqual(span.links, ())
++        self.assertEqual(span.dropped_events, 2)
++        self.assertEqual(span.dropped_links, 1)
++        span.end()
++        exported_span = processor.ended_spans[0]
++        self.assertEqual(exported_span.events, ())
++        self.assertEqual(exported_span.links, ())
++        self.assertEqual(exported_span.dropped_events, 2)
++        self.assertEqual(exported_span.dropped_links, 1)
++
++    def test_lazy_event_and_link_storage_supports_span_callbacks(self):
++        class AddTelemetrySpanProcessor(trace.SpanProcessor):
++            def on_start(self, span, parent_context=None):
++                span.add_event("on_start")
++                span.add_link(trace_api.SpanContext(1, 1, is_remote=False))
++
++            def _on_ending(self, span):
++                span.add_event("on_ending")
++                span.add_link(trace_api.SpanContext(1, 2, is_remote=False))
++
++        tracer_provider = trace.TracerProvider(shutdown_on_exit=False)
++        self.addCleanup(tracer_provider.shutdown)
++        tracer_provider.add_span_processor(AddTelemetrySpanProcessor())
++        span = tracer_provider.get_tracer(__name__).start_span("callbacks")
++
++        self.assertEqual([event.name for event in span.events], ["on_start"])
++        self.assertEqual([link.context.span_id for link in span.links], [1])
++        span.end()
++        self.assertEqual([event.name for event in span.events], ["on_start", "on_ending"])
++        self.assertEqual([link.context.span_id for link in span.links], [1, 2])
++
++    def test_lazy_event_and_link_storage_supports_ending_only_callback(self):
++        class AddTelemetryOnEndingProcessor(trace.SpanProcessor):
++            def _on_ending(self, span):
++                span.add_event("on_ending")
++                span.add_link(trace_api.SpanContext(1, 2, is_remote=False))
++
++        tracer_provider = trace.TracerProvider(shutdown_on_exit=False)
++        self.addCleanup(tracer_provider.shutdown)
++        tracer_provider.add_span_processor(AddTelemetryOnEndingProcessor())
++        span = tracer_provider.get_tracer(__name__).start_span("ending-only-callback")
++        self.assertEqual(span.events, ())
++        self.assertEqual(span.links, ())
++
++        span.end()
++
++        self.assertEqual([event.name for event in span.events], ["on_ending"])
++        self.assertEqual([link.context.span_id for link in span.links], [2])
++
++    def test_concurrent_first_event_and_link_additions(self):
++        worker_count = 8
++        barrier = threading.Barrier(worker_count)
++        span = self.tracer.start_span("concurrent")
++
++        def add_telemetry(index):
++            barrier.wait()
++            span.add_event(f"event{index}")
++            span.add_link(trace_api.SpanContext(1, index + 1, is_remote=False))
++
++        with ThreadPoolExecutor(max_workers=worker_count) as executor:
++            list(executor.map(add_telemetry, range(worker_count)))
++
++        self.assertEqual({event.name for event in span.events}, {f"event{index}" for index in range(worker_count)})
++        self.assertEqual(
++            {link.context.span_id for link in span.links},
++            {index + 1 for index in range(worker_count)},
++        )
++        span.end()
++
+     def test_events_are_immutable(self):
+         event_properties = [prop for prop in dir(trace.EventBase) if not prop.startswith("_")]
+ 

@@ -1,0 +1,2113 @@
+{
+  "metadata": {
+    "python_version": "3.13.14 (tags/v3.13.14:fd17997, Jun 10 2026, 13:03:48) [MSC v.1944 64 bit (AMD64)]",
+    "affinity": {
+      "psutil_available": true,
+      "affinity_before": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11
+      ],
+      "affinity_pinned": [
+        0
+      ]
+    },
+    "harness_sha256": "5bdb9cad0bded4d9ecefba88e86ecf0fc0cb42d50d87bc02c25b34388a3ebedd",
+    "baseline_sha256": {
+      "attributes": "50cf6809af69fb56b1cdc8457e27e81d647fafd274cc431728e0a82d9d9810d5",
+      "trace": "f80f52b808e1d7fb74a4ba8ae5a60bb1e77aa158c47a6b89d549d241ef49d64e",
+      "util": "21aa495f7062e352debbf19cbd04df3fd491474805d1881d62f26f6e0714e3e8"
+    },
+    "candidate_sha256": {
+      "attributes": "429b347acac243dd63b595372a76c4b3f094adaf659730ce149548ea9e000d28",
+      "trace": "3de799f888fa8c1d0747e06a83232d644ab33dcb58f405a57c8516e3346a05ce",
+      "util": "21aa495f7062e352debbf19cbd04df3fd491474805d1881d62f26f6e0714e3e8"
+    }
+  },
+  "results": [
+    {
+      "kind": "attributes",
+      "lifecycle": "start-span",
+      "attribute_mode": "constructor",
+      "attribute_count": 4,
+      "extra": "empty",
+      "loops_per_batch": 66728,
+      "samples": [
+        {
+          "pair": 0,
+          "order": [
+            "baseline",
+            "attributes-only",
+            "lazy-only",
+            "combined"
+          ],
+          "batches": [
+            {
+              "mode": "baseline",
+              "loops": 66728,
+              "cpu_seconds": 0.703125,
+              "wall_seconds": 0.7030513999925461,
+              "cpu_ns_per_op": 10537.180793669824,
+              "wall_ns_per_op": 10536.077808304552
+            },
+            {
+              "mode": "attributes-only",
+              "loops": 66728,
+              "cpu_seconds": 0.65625,
+              "wall_seconds": 0.6580265999946278,
+              "cpu_ns_per_op": 9834.702074091836,
+              "wall_ns_per_op": 9861.326579466308
+            },
+            {
+              "mode": "lazy-only",
+              "loops": 66728,
+              "cpu_seconds": 0.640625,
+              "wall_seconds": 0.6405674999987241,
+              "cpu_ns_per_op": 9600.542500899173,
+              "wall_ns_per_op": 9599.680793650703
+            },
+            {
+              "mode": "combined",
+              "loops": 66728,
+              "cpu_seconds": 0.5625,
+              "wall_seconds": 0.5902957000071183,
+              "cpu_ns_per_op": 8429.74463493586,
+              "wall_ns_per_op": 8846.296906952377
+            }
+          ]
+        },
+        {
+          "pair": 1,
+          "order": [
+            "combined",
+            "lazy-only",
+            "attributes-only",
+            "baseline"
+          ],
+          "batches": [
+            {
+              "mode": "combined",
+              "loops": 66728,
+              "cpu_seconds": 0.609375,
+              "wall_seconds": 0.6126043000112986,
+              "cpu_ns_per_op": 9132.223354513848,
+              "wall_ns_per_op": 9180.61833130468
+            },
+            {
+              "mode": "lazy-only",
+              "loops": 66728,
+              "cpu_seconds": 0.671875,
+              "wall_seconds": 0.6756177000061143,
+              "cpu_ns_per_op": 10068.861647284499,
+              "wall_ns_per_op": 10124.950545589772
+            },
+            {
+              "mode": "attributes-only",
+              "loops": 66728,
+              "cpu_seconds": 0.671875,
+              "wall_seconds": 0.6894492999999784,
+              "cpu_ns_per_op": 10068.861647284499,
+              "wall_ns_per_op": 10332.233844862403
+            },
+            {
+              "mode": "baseline",
+              "loops": 66728,
+              "cpu_seconds": 0.734375,
+              "wall_seconds": 0.734475699995528,
+              "cpu_ns_per_op": 11005.49994005515,
+              "wall_ns_per_op": 11007.009051605442
+            }
+          ]
+        },
+        {
+          "pair": 2,
+          "order": [
+            "baseline",
+            "attributes-only",
+            "lazy-only",
+            "combined"
+          ],
+          "batches": [
+            {
+              "mode": "baseline",
+              "loops": 66728,
+              "cpu_seconds": 0.75,
+              "wall_seconds": 0.7401772999874083,
+              "cpu_ns_per_op": 11239.659513247812,
+              "wall_ns_per_op": 11092.454441724738
+            },
+            {
+              "mode": "attributes-only",
+              "loops": 66728,
+              "cpu_seconds": 0.671875,
+              "wall_seconds": 0.7266881999967154,
+              "cpu_ns_per_op": 10068.861647284499,
+              "wall_ns_per_op": 10890.303920344015
+            },
+            {
+              "mode": "lazy-only",
+              "loops": 66728,
+              "cpu_seconds": 0.65625,
+              "wall_seconds": 0.6532940000033705,
+              "cpu_ns_per_op": 9834.702074091836,
+              "wall_ns_per_op": 9790.402829447465
+            },
+            {
+              "mode": "combined",
+              "loops": 66728,
+              "cpu_seconds": 0.609375,
+              "wall_seconds": 0.6312185999995563,
+              "cpu_ns_per_op": 9132.223354513848,
+              "wall_ns_per_op": 9459.576189898638
+            }
+          ]
+        },
+        {
+          "pair": 3,
+          "order": [
+            "combined",
+            "lazy-only",
+            "attributes-only",
+            "baseline"
+          ],
+          "batches": [
+            {
+              "mode": "combined",
+              "loops": 66728,
+              "cpu_seconds": 0.625,
+              "wall_seconds": 0.612683700004709,
+              "cpu_ns_per_op": 9366.38292770651,
+              "wall_ns_per_op": 9181.808236493061
+            },
+            {
+              "mode": "lazy-only",
+              "loops": 66728,
+              "cpu_seconds": 0.703125,
+              "wall_seconds": 0.70220889999473,
+              "cpu_ns_per_op": 10537.180793669824,
+              "wall_ns_per_op": 10523.451924150731
+            },
+            {
+              "mode": "attributes-only",
+              "loops": 66728,
+              "cpu_seconds": 0.796875,
+              "wall_seconds": 0.8131305999995675,
+              "cpu_ns_per_op": 11942.1382328258,
+              "wall_ns_per_op": 12185.74811173072
+            },
+            {
+              "mode": "baseline",
+              "loops": 66728,
+              "cpu_seconds": 0.84375,
+              "wall_seconds": 0.8619313999952283,
+              "cpu_ns_per_op": 12644.616952403789,
+              "wall_ns_per_op": 12917.087279631163
+            }
+          ]
+        },
+        {
+          "pair": 4,
+          "order": [
+            "baseline",
+            "attributes-only",
+            "lazy-only",
+            "combined"
+          ],
+          "batches": [
+            {
+              "mode": "baseline",
+              "loops": 66728,
+              "cpu_seconds": 0.78125,
+              "wall_seconds": 0.7793980999995256,
+              "cpu_ns_per_op": 11707.978659633138,
+              "wall_ns_per_op": 11680.225692355916
+            },
+            {
+              "mode": "attributes-only",
+              "loops": 66728,
+              "cpu_seconds": 0.6875,
+              "wall_seconds": 0.7026691000064602,
+              "cpu_ns_per_op": 10303.021220477161,
+              "wall_ns_per_op": 10530.348579403852
+            },
+            {
+              "mode": "lazy-only",
+              "loops": 66728,
+              "cpu_seconds": 0.671875,
+              "wall_seconds": 0.6617955999972764,
+              "cpu_ns_per_op": 10068.861647284499,
+              "wall_ns_per_op": 9917.809615113241
+            },
+            {
+              "mode": "combined",
+              "loops": 66728,
+              "cpu_seconds": 0.625,
+              "wall_seconds": 0.6337987000006251,
+              "cpu_ns_per_op": 9366.38292770651,
+              "wall_ns_per_op": 9498.242117261496
+            }
+          ]
+        },
+        {
+          "pair": 5,
+          "order": [
+            "combined",
+            "lazy-only",
+            "attributes-only",
+            "baseline"
+          ],
+          "batches": [
+            {
+              "mode": "combined",
+              "loops": 66728,
+              "cpu_seconds": 0.625,
+              "wall_seconds": 0.6209085000009509,
+              "cpu_ns_per_op": 9366.38292770651,
+              "wall_ns_per_op": 9305.066838522824
+            },
+            {
+              "mode": "lazy-only",
+              "loops": 66728,
+              "cpu_seconds": 0.65625,
+              "wall_seconds": 0.6577774999896064,
+              "cpu_ns_per_op": 9834.702074091836,
+              "wall_ns_per_op": 9857.59351381139
+            },
+            {
+              "mode": "attributes-only",
+              "loops": 66728,
+              "cpu_seconds": 0.703125,
+              "wall_seconds": 0.6961069000099087,
+              "cpu_ns_per_op": 10537.180793669824,
+              "wall_ns_per_op": 10432.006054578418
+            },
+            {
+              "mode": "baseline",
+              "loops": 66728,
+              "cpu_seconds": 0.71875,
+              "wall_seconds": 0.7279206999955932,
+              "cpu_ns_per_op": 10771.340366862487,
+              "wall_ns_per_op": 10908.774427460634
+            }
+          ]
+        },
+        {
+          "pair": 6,
+          "order": [
+            "baseline",
+            "attributes-only",
+            "lazy-only",
+            "combined"
+          ],
+          "batches": [
+            {
+              "mode": "baseline",
+              "loops": 66728,
+              "cpu_seconds": 0.71875,
+              "wall_seconds": 0.7406710000068415,
+              "cpu_ns_per_op": 10771.340366862487,
+              "wall_ns_per_op": 11099.853135218222
+            },
+            {
+              "mode": "attributes-only",
+              "loops": 66728,
+              "cpu_seconds": 0.6875,
+              "wall_seconds": 0.697349199996097,
+              "cpu_ns_per_op": 10303.021220477161,
+              "wall_ns_per_op": 10450.623426389177
+            },
+            {
+              "mode": "lazy-only",
+              "loops": 66728,
+              "cpu_seconds": 0.671875,
+              "wall_seconds": 0.6880270999972709,
+              "cpu_ns_per_op": 10068.861647284499,
+              "wall_ns_per_op": 10310.920453142171
+            },
+            {
+              "mode": "combined",
+              "loops": 66728,
+              "cpu_seconds": 0.609375,
+              "wall_seconds": 0.6170206000097096,
+              "cpu_ns_per_op": 9132.223354513848,
+              "wall_ns_per_op": 9246.801942358674
+            }
+          ]
+        },
+        {
+          "pair": 7,
+          "order": [
+            "combined",
+            "lazy-only",
+            "attributes-only",
+            "baseline"
+          ],
+          "batches": [
+            {
+              "mode": "combined",
+              "loops": 66728,
+              "cpu_seconds": 0.625,
+              "wall_seconds": 0.636854599986691,
+              "cpu_ns_per_op": 9366.38292770651,
+              "wall_ns_per_op": 9544.038484394721
+            },
+            {
+              "mode": "lazy-only",
+              "loops": 66728,
+              "cpu_seconds": 0.71875,
+              "wall_seconds": 0.7222624999994878,
+              "cpu_ns_per_op": 10771.340366862487,
+              "wall_ns_per_op": 10823.97943890852
+            },
+            {
+              "mode": "attributes-only",
+              "loops": 66728,
+              "cpu_seconds": 0.6875,
+              "wall_seconds": 0.6902070000069216,
+              "cpu_ns_per_op": 10303.021220477161,
+              "wall_ns_per_op": 10343.588898317372
+            },
+            {
+              "mode": "baseline",
+              "loops": 66728,
+              "cpu_seconds": 0.765625,
+              "wall_seconds": 0.7562037000025157,
+              "cpu_ns_per_op": 11473.819086440475,
+              "wall_ns_per_op": 11332.629480915293
+            }
+          ]
+        },
+        {
+          "pair": 8,
+          "order": [
+            "baseline",
+            "attributes-only",
+            "lazy-only",
+            "combined"
+          ],
+          "batches": [
+            {
+              "mode": "baseline",
+              "loops": 66728,
+              "cpu_seconds": 0.75,
+              "wall_seconds": 0.7419201000011526,
+              "cpu_ns_per_op": 11239.659513247812,
+              "wall_ns_per_op": 11118.572413396965
+            },
+            {
+              "mode": "attributes-only",
+              "loops": 66728,
+              "cpu_seconds": 0.734375,
+              "wall_seconds": 0.7390326000022469,
+              "cpu_ns_per_op": 11005.49994005515,
+              "wall_ns_per_op": 11075.299724287359
+            },
+            {
+              "mode": "lazy-only",
+              "loops": 66728,
+              "cpu_seconds": 0.9375,
+              "wall_seconds": 0.957137600009446,
+              "cpu_ns_per_op": 14049.574391559765,
+              "wall_ns_per_op": 14343.867641911133
+            },
+            {
+              "mode": "combined",
+              "loops": 66728,
+              "cpu_seconds": 0.625,
+              "wall_seconds": 0.619470600009663,
+              "cpu_ns_per_op": 9366.38292770651,
+              "wall_ns_per_op": 9283.518163434584
+            }
+          ]
+        }
+      ],
+      "summary": {
+        "baseline": {
+          "cpu_ns_per_op_pooled": 11265.677243602553,
+          "wall_ns_per_op_median": 11099.853135218222
+        },
+        "attributes-only": {
+          "cpu_ns_per_op_pooled": 10485.145332960343,
+          "wall_ns_per_op_median": 10450.623426389177
+        },
+        "lazy-only": {
+          "cpu_ns_per_op_pooled": 10537.180793669824,
+          "wall_ns_per_op_median": 10124.950545589772
+        },
+        "combined": {
+          "cpu_ns_per_op_pooled": 9184.258815223327,
+          "wall_ns_per_op_median": 9283.518163434584
+        }
+      }
+    },
+    {
+      "kind": "attributes",
+      "lifecycle": "start-span",
+      "attribute_mode": "constructor",
+      "attribute_count": 10,
+      "extra": "empty",
+      "loops_per_batch": 54359,
+      "samples": [
+        {
+          "pair": 0,
+          "order": [
+            "baseline",
+            "attributes-only",
+            "lazy-only",
+            "combined"
+          ],
+          "batches": [
+            {
+              "mode": "baseline",
+              "loops": 54359,
+              "cpu_seconds": 0.734375,
+              "wall_seconds": 0.7396622000087518,
+              "cpu_ns_per_op": 13509.72240107434,
+              "wall_ns_per_op": 13606.986883657755
+            },
+            {
+              "mode": "attributes-only",
+              "loops": 54359,
+              "cpu_seconds": 0.65625,
+              "wall_seconds": 0.6738504999957513,
+              "cpu_ns_per_op": 12072.51789032175,
+              "wall_ns_per_op": 12396.300520534802
+            },
+            {
+              "mode": "lazy-only",
+              "loops": 54359,
+              "cpu_seconds": 0.6875,
+              "wall_seconds": 0.687201400010963,
+              "cpu_ns_per_op": 12647.399694622785,
+              "wall_ns_per_op": 12641.906584208005
+            },
+            {
+              "mode": "combined",
+              "loops": 54359,
+              "cpu_seconds": 0.609375,
+              "wall_seconds": 0.6042528999969363,
+              "cpu_ns_per_op": 11210.195183870197,
+              "wall_ns_per_op": 11115.967916939906
+            }
+          ]
+        },
+        {
+          "pair": 1,
+          "order": [
+            "combined",
+            "lazy-only",
+            "attributes-only",
+            "baseline"
+          ],
+          "batches": [
+            {
+              "mode": "combined",
+              "loops": 54359,
+              "cpu_seconds": 0.578125,
+              "wall_seconds": 0.5820000999956392,
+              "cpu_ns_per_op": 10635.313379569161,
+              "wall_ns_per_op": 10706.60056284404
+            },
+            {
+              "mode": "lazy-only",
+              "loops": 54359,
+              "cpu_seconds": 0.734375,
+              "wall_seconds": 0.7514507000014419,
+              "cpu_ns_per_op": 13509.72240107434,
+              "wall_ns_per_op": 13823.850696323365
+            },
+            {
+              "mode": "attributes-only",
+              "loops": 54359,
+              "cpu_seconds": 0.78125,
+              "wall_seconds": 0.7806041000003461,
+              "cpu_ns_per_op": 14372.045107525893,
+              "wall_ns_per_op": 14360.162990495523
+            },
+            {
+              "mode": "baseline",
+              "loops": 54359,
+              "cpu_seconds": 0.78125,
+              "wall_seconds": 0.8062541000108467,
+              "cpu_ns_per_op": 14372.045107525893,
+              "wall_ns_per_op": 14832.025975658984
+            }
+          ]
+        },
+        {
+          "pair": 2,
+          "order": [
+            "baseline",
+            "attributes-only",
+            "lazy-only",
+            "combined"
+          ],
+          "batches": [
+            {
+              "mode": "baseline",
+              "loops": 54359,
+              "cpu_seconds": 0.734375,
+              "wall_seconds": 0.7303135999973165,
+              "cpu_ns_per_op": 13509.72240107434,
+              "wall_ns_per_op": 13435.008002305349
+            },
+            {
+              "mode": "attributes-only",
+              "loops": 54359,
+              "cpu_seconds": 0.640625,
+              "wall_seconds": 0.6544614000013098,
+              "cpu_ns_per_op": 11785.076988171231,
+              "wall_ns_per_op": 12039.614415300315
+            },
+            {
+              "mode": "lazy-only",
+              "loops": 54359,
+              "cpu_seconds": 0.65625,
+              "wall_seconds": 0.66862470000342,
+              "cpu_ns_per_op": 12072.51789032175,
+              "wall_ns_per_op": 12300.165566022553
+            },
+            {
+              "mode": "combined",
+              "loops": 54359,
+              "cpu_seconds": 0.59375,
+              "wall_seconds": 0.5936262000032002,
+              "cpu_ns_per_op": 10922.754281719679,
+              "wall_ns_per_op": 10920.47683002263
+            }
+          ]
+        },
+        {
+          "pair": 3,
+          "order": [
+            "combined",
+            "lazy-only",
+            "attributes-only",
+            "baseline"
+          ],
+          "batches": [
+            {
+              "mode": "combined",
+              "loops": 54359,
+              "cpu_seconds": 0.578125,
+              "wall_seconds": 0.5816724000032991,
+              "cpu_ns_per_op": 10635.313379569161,
+              "wall_ns_per_op": 10700.572122432332
+            },
+            {
+              "mode": "lazy-only",
+              "loops": 54359,
+              "cpu_seconds": 0.703125,
+              "wall_seconds": 0.720937199992477,
+              "cpu_ns_per_op": 12934.840596773303,
+              "wall_ns_per_op": 13262.517706221177
+            },
+            {
+              "mode": "attributes-only",
+              "loops": 54359,
+              "cpu_seconds": 0.765625,
+              "wall_seconds": 0.7647788999893237,
+              "cpu_ns_per_op": 14084.604205375375,
+              "wall_ns_per_op": 14069.03916535116
+            },
+            {
+              "mode": "baseline",
+              "loops": 54359,
+              "cpu_seconds": 0.734375,
+              "wall_seconds": 0.7519676999945659,
+              "cpu_ns_per_op": 13509.72240107434,
+              "wall_ns_per_op": 13833.361540767231
+            }
+          ]
+        },
+        {
+          "pair": 4,
+          "order": [
+            "baseline",
+            "attributes-only",
+            "lazy-only",
+            "combined"
+          ],
+          "batches": [
+            {
+              "mode": "baseline",
+              "loops": 54359,
+              "cpu_seconds": 0.734375,
+              "wall_seconds": 0.728319100002409,
+              "cpu_ns_per_op": 13509.72240107434,
+              "wall_ns_per_op": 13398.316746121323
+            },
+            {
+              "mode": "attributes-only",
+              "loops": 54359,
+              "cpu_seconds": 0.71875,
+              "wall_seconds": 0.7131010999873979,
+              "cpu_ns_per_op": 13222.281498923821,
+              "wall_ns_per_op": 13118.363104313874
+            },
+            {
+              "mode": "lazy-only",
+              "loops": 54359,
+              "cpu_seconds": 0.671875,
+              "wall_seconds": 0.6799711999919964,
+              "cpu_ns_per_op": 12359.958792472267,
+              "wall_ns_per_op": 12508.898250372456
+            },
+            {
+              "mode": "combined",
+              "loops": 54359,
+              "cpu_seconds": 0.578125,
+              "wall_seconds": 0.5817348999989918,
+              "cpu_ns_per_op": 10635.313379569161,
+              "wall_ns_per_op": 10701.721885961693
+            }
+          ]
+        },
+        {
+          "pair": 5,
+          "order": [
+            "combined",
+            "lazy-only",
+            "attributes-only",
+            "baseline"
+          ],
+          "batches": [
+            {
+              "mode": "combined",
+              "loops": 54359,
+              "cpu_seconds": 0.71875,
+              "wall_seconds": 0.7091370999987703,
+              "cpu_ns_per_op": 13222.281498923821,
+              "wall_ns_per_op": 13045.440497411104
+            },
+            {
+              "mode": "lazy-only",
+              "loops": 54359,
+              "cpu_seconds": 0.8125,
+              "wall_seconds": 0.8377349000074901,
+              "cpu_ns_per_op": 14946.926911826928,
+              "wall_ns_per_op": 15411.153626952115
+            },
+            {
+              "mode": "attributes-only",
+              "loops": 54359,
+              "cpu_seconds": 0.671875,
+              "wall_seconds": 0.6703274000028614,
+              "cpu_ns_per_op": 12359.958792472267,
+              "wall_ns_per_op": 12331.488805954144
+            },
+            {
+              "mode": "baseline",
+              "loops": 54359,
+              "cpu_seconds": 0.703125,
+              "wall_seconds": 0.7203489000094123,
+              "cpu_ns_per_op": 12934.840596773303,
+              "wall_ns_per_op": 13251.695211637674
+            }
+          ]
+        },
+        {
+          "pair": 6,
+          "order": [
+            "baseline",
+            "attributes-only",
+            "lazy-only",
+            "combined"
+          ],
+          "batches": [
+            {
+              "mode": "baseline",
+              "loops": 54359,
+              "cpu_seconds": 0.703125,
+              "wall_seconds": 0.7282318999932613,
+              "cpu_ns_per_op": 12934.840596773303,
+              "wall_ns_per_op": 13396.71259576632
+            },
+            {
+              "mode": "attributes-only",
+              "loops": 54359,
+              "cpu_seconds": 0.640625,
+              "wall_seconds": 0.6423906999989413,
+              "cpu_ns_per_op": 11785.076988171231,
+              "wall_ns_per_op": 11817.559189811094
+            },
+            {
+              "mode": "lazy-only",
+              "loops": 54359,
+              "cpu_seconds": 0.671875,
+              "wall_seconds": 0.6782345000101486,
+              "cpu_ns_per_op": 12359.958792472267,
+              "wall_ns_per_op": 12476.949539361442
+            },
+            {
+              "mode": "combined",
+              "loops": 54359,
+              "cpu_seconds": 0.59375,
+              "wall_seconds": 0.5869991999934427,
+              "cpu_ns_per_op": 10922.754281719679,
+              "wall_ns_per_op": 10798.565094895837
+            }
+          ]
+        },
+        {
+          "pair": 7,
+          "order": [
+            "combined",
+            "lazy-only",
+            "attributes-only",
+            "baseline"
+          ],
+          "batches": [
+            {
+              "mode": "combined",
+              "loops": 54359,
+              "cpu_seconds": 0.578125,
+              "wall_seconds": 0.5856532999896444,
+              "cpu_ns_per_op": 10635.313379569161,
+              "wall_ns_per_op": 10773.805625372881
+            },
+            {
+              "mode": "lazy-only",
+              "loops": 54359,
+              "cpu_seconds": 0.671875,
+              "wall_seconds": 0.67199509999773,
+              "cpu_ns_per_op": 12359.958792472267,
+              "wall_ns_per_op": 12362.168178180798
+            },
+            {
+              "mode": "attributes-only",
+              "loops": 54359,
+              "cpu_seconds": 0.65625,
+              "wall_seconds": 0.6472129000030691,
+              "cpu_ns_per_op": 12072.51789032175,
+              "wall_ns_per_op": 11906.269431061444
+            },
+            {
+              "mode": "baseline",
+              "loops": 54359,
+              "cpu_seconds": 0.71875,
+              "wall_seconds": 0.7216697999974713,
+              "cpu_ns_per_op": 13222.281498923821,
+              "wall_ns_per_op": 13275.994775427645
+            }
+          ]
+        },
+        {
+          "pair": 8,
+          "order": [
+            "baseline",
+            "attributes-only",
+            "lazy-only",
+            "combined"
+          ],
+          "batches": [
+            {
+              "mode": "baseline",
+              "loops": 54359,
+              "cpu_seconds": 0.71875,
+              "wall_seconds": 0.7187059999996563,
+              "cpu_ns_per_op": 13222.281498923821,
+              "wall_ns_per_op": 13221.472065337042
+            },
+            {
+              "mode": "attributes-only",
+              "loops": 54359,
+              "cpu_seconds": 0.65625,
+              "wall_seconds": 0.6545112000021618,
+              "cpu_ns_per_op": 12072.51789032175,
+              "wall_ns_per_op": 12040.53054695932
+            },
+            {
+              "mode": "lazy-only",
+              "loops": 54359,
+              "cpu_seconds": 0.65625,
+              "wall_seconds": 0.6756183999968925,
+              "cpu_ns_per_op": 12072.51789032175,
+              "wall_ns_per_op": 12428.823193894159
+            },
+            {
+              "mode": "combined",
+              "loops": 54359,
+              "cpu_seconds": 0.59375,
+              "wall_seconds": 0.5838452999887522,
+              "cpu_ns_per_op": 10922.754281719679,
+              "wall_ns_per_op": 10740.545263686827
+            }
+          ]
+        }
+      ],
+      "summary": {
+        "baseline": {
+          "cpu_ns_per_op_pooled": 13413.908767024166,
+          "wall_ns_per_op_median": 13398.316746121323
+        },
+        "attributes-only": {
+          "cpu_ns_per_op_pooled": 12647.399694622785,
+          "wall_ns_per_op_median": 12331.488805954144
+        },
+        "lazy-only": {
+          "cpu_ns_per_op_pooled": 12807.089084706407,
+          "wall_ns_per_op_median": 12508.898250372456
+        },
+        "combined": {
+          "cpu_ns_per_op_pooled": 11082.4436718033,
+          "wall_ns_per_op_median": 10773.805625372881
+        }
+      }
+    },
+    {
+      "kind": "attributes",
+      "lifecycle": "start-span",
+      "attribute_mode": "set-attribute",
+      "attribute_count": 4,
+      "extra": "empty",
+      "loops_per_batch": 57581,
+      "samples": [
+        {
+          "pair": 0,
+          "order": [
+            "baseline",
+            "attributes-only",
+            "lazy-only",
+            "combined"
+          ],
+          "batches": [
+            {
+              "mode": "baseline",
+              "loops": 57581,
+              "cpu_seconds": 0.625,
+              "wall_seconds": 0.6280140000017127,
+              "cpu_ns_per_op": 10854.27484760598,
+              "wall_ns_per_op": 10906.61850266082
+            },
+            {
+              "mode": "attributes-only",
+              "loops": 57581,
+              "cpu_seconds": 0.625,
+              "wall_seconds": 0.637326199997915,
+              "cpu_ns_per_op": 10854.27484760598,
+              "wall_ns_per_op": 11068.341987772266
+            },
+            {
+              "mode": "lazy-only",
+              "loops": 57581,
+              "cpu_seconds": 0.59375,
+              "wall_seconds": 0.5955201999895507,
+              "cpu_ns_per_op": 10311.561105225683,
+              "wall_ns_per_op": 10342.303884780582
+            },
+            {
+              "mode": "combined",
+              "loops": 57581,
+              "cpu_seconds": 0.640625,
+              "wall_seconds": 0.6333292000053916,
+              "cpu_ns_per_op": 11125.63171879613,
+              "wall_ns_per_op": 10998.926729396704
+            }
+          ]
+        },
+        {
+          "pair": 1,
+          "order": [
+            "combined",
+            "lazy-only",
+            "attributes-only",
+            "baseline"
+          ],
+          "batches": [
+            {
+              "mode": "combined",
+              "loops": 57581,
+              "cpu_seconds": 0.671875,
+              "wall_seconds": 0.6676802000001771,
+              "cpu_ns_per_op": 11668.34546117643,
+              "wall_ns_per_op": 11595.495041770326
+            },
+            {
+              "mode": "lazy-only",
+              "loops": 57581,
+              "cpu_seconds": 0.71875,
+              "wall_seconds": 0.722603899994283,
+              "cpu_ns_per_op": 12482.416074746878,
+              "wall_ns_per_op": 12549.346138383893
+            },
+            {
+              "mode": "attributes-only",
+              "loops": 57581,
+              "cpu_seconds": 0.921875,
+              "wall_seconds": 0.9252610999974422,
+              "cpu_ns_per_op": 16010.055400218822,
+              "wall_ns_per_op": 16068.861256272769
+            },
+            {
+              "mode": "baseline",
+              "loops": 57581,
+              "cpu_seconds": 0.8125,
+              "wall_seconds": 0.8362819999892963,
+              "cpu_ns_per_op": 14110.557301887775,
+              "wall_ns_per_op": 14523.57548478311
+            }
+          ]
+        },
+        {
+          "pair": 2,
+          "order": [
+            "baseline",
+            "attributes-only",
+            "lazy-only",
+            "combined"
+          ],
+          "batches": [
+            {
+              "mode": "baseline",
+              "loops": 57581,
+              "cpu_seconds": 0.875,
+              "wall_seconds": 0.8598835000011604,
+              "cpu_ns_per_op": 15195.984786648374,
+              "wall_ns_per_op": 14933.458953494388
+            },
+            {
+              "mode": "attributes-only",
+              "loops": 57581,
+              "cpu_seconds": 0.78125,
+              "wall_seconds": 0.787447599999723,
+              "cpu_ns_per_op": 13567.843559507477,
+              "wall_ns_per_op": 13675.476285575503
+            },
+            {
+              "mode": "lazy-only",
+              "loops": 57581,
+              "cpu_seconds": 0.65625,
+              "wall_seconds": 0.69574600001215,
+              "cpu_ns_per_op": 11396.98858998628,
+              "wall_ns_per_op": 12082.909293206962
+            },
+            {
+              "mode": "combined",
+              "loops": 57581,
+              "cpu_seconds": 0.671875,
+              "wall_seconds": 0.6839042000065092,
+              "cpu_ns_per_op": 11668.34546117643,
+              "wall_ns_per_op": 11877.25465008439
+            }
+          ]
+        },
+        {
+          "pair": 3,
+          "order": [
+            "combined",
+            "lazy-only",
+            "attributes-only",
+            "baseline"
+          ],
+          "batches": [
+            {
+              "mode": "combined",
+              "loops": 57581,
+              "cpu_seconds": 0.921875,
+              "wall_seconds": 0.9458149999991292,
+              "cpu_ns_per_op": 16010.055400218822,
+              "wall_ns_per_op": 16425.817543966397
+            },
+            {
+              "mode": "lazy-only",
+              "loops": 57581,
+              "cpu_seconds": 0.796875,
+              "wall_seconds": 0.7990475999977207,
+              "cpu_ns_per_op": 13839.200430697625,
+              "wall_ns_per_op": 13876.931626712296
+            },
+            {
+              "mode": "attributes-only",
+              "loops": 57581,
+              "cpu_seconds": 0.796875,
+              "wall_seconds": 0.8520386000018334,
+              "cpu_ns_per_op": 13839.200430697625,
+              "wall_ns_per_op": 14797.217832302902
+            },
+            {
+              "mode": "baseline",
+              "loops": 57581,
+              "cpu_seconds": 0.78125,
+              "wall_seconds": 0.7956749000004493,
+              "cpu_ns_per_op": 13567.843559507477,
+              "wall_ns_per_op": 13818.35848631405
+            }
+          ]
+        },
+        {
+          "pair": 4,
+          "order": [
+            "baseline",
+            "attributes-only",
+            "lazy-only",
+            "combined"
+          ],
+          "batches": [
+            {
+              "mode": "baseline",
+              "loops": 57581,
+              "cpu_seconds": 0.65625,
+              "wall_seconds": 0.6567244000034407,
+              "cpu_ns_per_op": 11396.98858998628,
+              "wall_ns_per_op": 11405.22741882636
+            },
+            {
+              "mode": "attributes-only",
+              "loops": 57581,
+              "cpu_seconds": 0.90625,
+              "wall_seconds": 0.9082379999890691,
+              "cpu_ns_per_op": 15738.698529028672,
+              "wall_ns_per_op": 15773.223806274103
+            },
+            {
+              "mode": "lazy-only",
+              "loops": 57581,
+              "cpu_seconds": 0.625,
+              "wall_seconds": 0.6246056000090903,
+              "cpu_ns_per_op": 10854.27484760598,
+              "wall_ns_per_op": 10847.425366164018
+            },
+            {
+              "mode": "combined",
+              "loops": 57581,
+              "cpu_seconds": 0.6875,
+              "wall_seconds": 0.7055134999973234,
+              "cpu_ns_per_op": 11939.70233236658,
+              "wall_ns_per_op": 12252.539900267855
+            }
+          ]
+        },
+        {
+          "pair": 5,
+          "order": [
+            "combined",
+            "lazy-only",
+            "attributes-only",
+            "baseline"
+          ],
+          "batches": [
+            {
+              "mode": "combined",
+              "loops": 57581,
+              "cpu_seconds": 0.71875,
+              "wall_seconds": 0.7607713000033982,
+              "cpu_ns_per_op": 12482.416074746878,
+              "wall_ns_per_op": 13212.193258251822
+            },
+            {
+              "mode": "lazy-only",
+              "loops": 57581,
+              "cpu_seconds": 0.78125,
+              "wall_seconds": 0.7895665999967605,
+              "cpu_ns_per_op": 13567.843559507477,
+              "wall_ns_per_op": 13712.276618967377
+            },
+            {
+              "mode": "attributes-only",
+              "loops": 57581,
+              "cpu_seconds": 0.765625,
+              "wall_seconds": 0.7821297000045888,
+              "cpu_ns_per_op": 13296.486688317327,
+              "wall_ns_per_op": 13583.121168520673
+            },
+            {
+              "mode": "baseline",
+              "loops": 57581,
+              "cpu_seconds": 0.609375,
+              "wall_seconds": 0.6280579000012949,
+              "cpu_ns_per_op": 10582.91797641583,
+              "wall_ns_per_op": 10907.38090691886
+            }
+          ]
+        },
+        {
+          "pair": 6,
+          "order": [
+            "baseline",
+            "attributes-only",
+            "lazy-only",
+            "combined"
+          ],
+          "batches": [
+            {
+              "mode": "baseline",
+              "loops": 57581,
+              "cpu_seconds": 0.640625,
+              "wall_seconds": 0.6485893999924883,
+              "cpu_ns_per_op": 11125.63171879613,
+              "wall_ns_per_op": 11263.948177219714
+            },
+            {
+              "mode": "attributes-only",
+              "loops": 57581,
+              "cpu_seconds": 0.640625,
+              "wall_seconds": 0.6351331999903778,
+              "cpu_ns_per_op": 11125.63171879613,
+              "wall_ns_per_op": 11030.25650805609
+            },
+            {
+              "mode": "lazy-only",
+              "loops": 57581,
+              "cpu_seconds": 0.578125,
+              "wall_seconds": 0.5774960999988252,
+              "cpu_ns_per_op": 10040.204234035533,
+              "wall_ns_per_op": 10029.282228492475
+            },
+            {
+              "mode": "combined",
+              "loops": 57581,
+              "cpu_seconds": 0.578125,
+              "wall_seconds": 0.586550799998804,
+              "cpu_ns_per_op": 10040.204234035533,
+              "wall_ns_per_op": 10186.533752432295
+            }
+          ]
+        },
+        {
+          "pair": 7,
+          "order": [
+            "combined",
+            "lazy-only",
+            "attributes-only",
+            "baseline"
+          ],
+          "batches": [
+            {
+              "mode": "combined",
+              "loops": 57581,
+              "cpu_seconds": 0.5625,
+              "wall_seconds": 0.571289399988018,
+              "cpu_ns_per_op": 9768.847362845383,
+              "wall_ns_per_op": 9921.49146399017
+            },
+            {
+              "mode": "lazy-only",
+              "loops": 57581,
+              "cpu_seconds": 0.5625,
+              "wall_seconds": 0.571115099999588,
+              "cpu_ns_per_op": 9768.847362845383,
+              "wall_ns_per_op": 9918.464424021604
+            },
+            {
+              "mode": "attributes-only",
+              "loops": 57581,
+              "cpu_seconds": 0.640625,
+              "wall_seconds": 0.6507682999945246,
+              "cpu_ns_per_op": 11125.63171879613,
+              "wall_ns_per_op": 11301.788784399794
+            },
+            {
+              "mode": "baseline",
+              "loops": 57581,
+              "cpu_seconds": 0.625,
+              "wall_seconds": 0.6315602999966359,
+              "cpu_ns_per_op": 10854.27484760598,
+              "wall_ns_per_op": 10968.206526399958
+            }
+          ]
+        },
+        {
+          "pair": 8,
+          "order": [
+            "baseline",
+            "attributes-only",
+            "lazy-only",
+            "combined"
+          ],
+          "batches": [
+            {
+              "mode": "baseline",
+              "loops": 57581,
+              "cpu_seconds": 0.640625,
+              "wall_seconds": 0.6425663999980316,
+              "cpu_ns_per_op": 11125.63171879613,
+              "wall_ns_per_op": 11159.347701464574
+            },
+            {
+              "mode": "attributes-only",
+              "loops": 57581,
+              "cpu_seconds": 0.625,
+              "wall_seconds": 0.6290402000013273,
+              "cpu_ns_per_op": 10854.27484760598,
+              "wall_ns_per_op": 10924.440353611908
+            },
+            {
+              "mode": "lazy-only",
+              "loops": 57581,
+              "cpu_seconds": 0.578125,
+              "wall_seconds": 0.5857225000072503,
+              "cpu_ns_per_op": 10040.204234035533,
+              "wall_ns_per_op": 10172.148799208946
+            },
+            {
+              "mode": "combined",
+              "loops": 57581,
+              "cpu_seconds": 0.578125,
+              "wall_seconds": 0.5851855000073556,
+              "cpu_ns_per_op": 10040.204234035533,
+              "wall_ns_per_op": 10162.82280626171
+            }
+          ]
+        }
+      ],
+      "summary": {
+        "baseline": {
+          "cpu_ns_per_op_pooled": 12090.45614969444,
+          "wall_ns_per_op_median": 11263.948177219714
+        },
+        "attributes-only": {
+          "cpu_ns_per_op_pooled": 12934.67752673046,
+          "wall_ns_per_op_median": 13583.121168520673
+        },
+        "lazy-only": {
+          "cpu_ns_per_op_pooled": 11366.837826520708,
+          "wall_ns_per_op_median": 10847.425366164018
+        },
+        "combined": {
+          "cpu_ns_per_op_pooled": 11638.194697710858,
+          "wall_ns_per_op_median": 11595.495041770326
+        }
+      }
+    },
+    {
+      "kind": "attributes",
+      "lifecycle": "current-span",
+      "attribute_mode": "constructor",
+      "attribute_count": 10,
+      "extra": "empty",
+      "loops_per_batch": 38607,
+      "samples": [
+        {
+          "pair": 0,
+          "order": [
+            "baseline",
+            "attributes-only",
+            "lazy-only",
+            "combined"
+          ],
+          "batches": [
+            {
+              "mode": "baseline",
+              "loops": 38607,
+              "cpu_seconds": 0.6875,
+              "wall_seconds": 0.7054564999998547,
+              "cpu_ns_per_op": 17807.651462170074,
+              "wall_ns_per_op": 18272.7614163197
+            },
+            {
+              "mode": "attributes-only",
+              "loops": 38607,
+              "cpu_seconds": 0.734375,
+              "wall_seconds": 0.7320181999966735,
+              "cpu_ns_per_op": 19021.809516408943,
+              "wall_ns_per_op": 18960.763592008534
+            },
+            {
+              "mode": "lazy-only",
+              "loops": 38607,
+              "cpu_seconds": 0.765625,
+              "wall_seconds": 0.8122332000057213,
+              "cpu_ns_per_op": 19831.248219234854,
+              "wall_ns_per_op": 21038.49560975267
+            },
+            {
+              "mode": "combined",
+              "loops": 38607,
+              "cpu_seconds": 0.609375,
+              "wall_seconds": 0.6102336999902036,
+              "cpu_ns_per_op": 15784.054705105293,
+              "wall_ns_per_op": 15806.296785303277
+            }
+          ]
+        },
+        {
+          "pair": 1,
+          "order": [
+            "combined",
+            "lazy-only",
+            "attributes-only",
+            "baseline"
+          ],
+          "batches": [
+            {
+              "mode": "combined",
+              "loops": 38607,
+              "cpu_seconds": 0.609375,
+              "wall_seconds": 0.6056816999916919,
+              "cpu_ns_per_op": 15784.054705105293,
+              "wall_ns_per_op": 15688.39070613339
+            },
+            {
+              "mode": "lazy-only",
+              "loops": 38607,
+              "cpu_seconds": 0.65625,
+              "wall_seconds": 0.6624047000077553,
+              "cpu_ns_per_op": 16998.212759344162,
+              "wall_ns_per_op": 17157.63203584208
+            },
+            {
+              "mode": "attributes-only",
+              "loops": 38607,
+              "cpu_seconds": 0.65625,
+              "wall_seconds": 0.6555189000064274,
+              "cpu_ns_per_op": 16998.212759344162,
+              "wall_ns_per_op": 16979.27577917029
+            },
+            {
+              "mode": "baseline",
+              "loops": 38607,
+              "cpu_seconds": 0.6875,
+              "wall_seconds": 0.7071693000034429,
+              "cpu_ns_per_op": 17807.651462170074,
+              "wall_ns_per_op": 18317.12642793905
+            }
+          ]
+        },
+        {
+          "pair": 2,
+          "order": [
+            "baseline",
+            "attributes-only",
+            "lazy-only",
+            "combined"
+          ],
+          "batches": [
+            {
+              "mode": "baseline",
+              "loops": 38607,
+              "cpu_seconds": 0.828125,
+              "wall_seconds": 0.8513892000046326,
+              "cpu_ns_per_op": 21450.125624886678,
+              "wall_ns_per_op": 22052.715828855715
+            },
+            {
+              "mode": "attributes-only",
+              "loops": 38607,
+              "cpu_seconds": 0.734375,
+              "wall_seconds": 0.7663829000084661,
+              "cpu_ns_per_op": 19021.809516408943,
+              "wall_ns_per_op": 19850.87937442604
+            },
+            {
+              "mode": "lazy-only",
+              "loops": 38607,
+              "cpu_seconds": 0.875,
+              "wall_seconds": 0.8826138000003994,
+              "cpu_ns_per_op": 22664.283679125547,
+              "wall_ns_per_op": 22861.49661979432
+            },
+            {
+              "mode": "combined",
+              "loops": 38607,
+              "cpu_seconds": 0.734375,
+              "wall_seconds": 0.7450474999932339,
+              "cpu_ns_per_op": 19021.809516408943,
+              "wall_ns_per_op": 19298.249022022792
+            }
+          ]
+        },
+        {
+          "pair": 3,
+          "order": [
+            "combined",
+            "lazy-only",
+            "attributes-only",
+            "baseline"
+          ],
+          "batches": [
+            {
+              "mode": "combined",
+              "loops": 38607,
+              "cpu_seconds": 0.625,
+              "wall_seconds": 0.6181708000076469,
+              "cpu_ns_per_op": 16188.774056518248,
+              "wall_ns_per_op": 16011.88385545748
+            },
+            {
+              "mode": "lazy-only",
+              "loops": 38607,
+              "cpu_seconds": 0.65625,
+              "wall_seconds": 0.6632086000026902,
+              "cpu_ns_per_op": 16998.212759344162,
+              "wall_ns_per_op": 17178.454684453343
+            },
+            {
+              "mode": "attributes-only",
+              "loops": 38607,
+              "cpu_seconds": 0.625,
+              "wall_seconds": 0.6472890000004554,
+              "cpu_ns_per_op": 16188.774056518248,
+              "wall_ns_per_op": 16766.10459244322
+            },
+            {
+              "mode": "baseline",
+              "loops": 38607,
+              "cpu_seconds": 0.671875,
+              "wall_seconds": 0.704351599997608,
+              "cpu_ns_per_op": 17402.932110757116,
+              "wall_ns_per_op": 18244.14225393343
+            }
+          ]
+        },
+        {
+          "pair": 4,
+          "order": [
+            "baseline",
+            "attributes-only",
+            "lazy-only",
+            "combined"
+          ],
+          "batches": [
+            {
+              "mode": "baseline",
+              "loops": 38607,
+              "cpu_seconds": 0.6875,
+              "wall_seconds": 0.697981899997103,
+              "cpu_ns_per_op": 17807.651462170074,
+              "wall_ns_per_op": 18079.154039347864
+            },
+            {
+              "mode": "attributes-only",
+              "loops": 38607,
+              "cpu_seconds": 0.640625,
+              "wall_seconds": 0.6426830999989761,
+              "cpu_ns_per_op": 16593.493407931204,
+              "wall_ns_per_op": 16646.802393321836
+            },
+            {
+              "mode": "lazy-only",
+              "loops": 38607,
+              "cpu_seconds": 0.65625,
+              "wall_seconds": 0.6588246000028448,
+              "cpu_ns_per_op": 16998.212759344162,
+              "wall_ns_per_op": 17064.900147715307
+            },
+            {
+              "mode": "combined",
+              "loops": 38607,
+              "cpu_seconds": 0.609375,
+              "wall_seconds": 0.6019652000104543,
+              "cpu_ns_per_op": 15784.054705105293,
+              "wall_ns_per_op": 15592.125780569697
+            }
+          ]
+        },
+        {
+          "pair": 5,
+          "order": [
+            "combined",
+            "lazy-only",
+            "attributes-only",
+            "baseline"
+          ],
+          "batches": [
+            {
+              "mode": "combined",
+              "loops": 38607,
+              "cpu_seconds": 0.59375,
+              "wall_seconds": 0.5991659999999683,
+              "cpu_ns_per_op": 15379.335353692335,
+              "wall_ns_per_op": 15519.620794155679
+            },
+            {
+              "mode": "lazy-only",
+              "loops": 38607,
+              "cpu_seconds": 0.65625,
+              "wall_seconds": 0.6642024000029778,
+              "cpu_ns_per_op": 16998.212759344162,
+              "wall_ns_per_op": 17204.196130312583
+            },
+            {
+              "mode": "attributes-only",
+              "loops": 38607,
+              "cpu_seconds": 0.65625,
+              "wall_seconds": 0.6610376000026008,
+              "cpu_ns_per_op": 16998.212759344162,
+              "wall_ns_per_op": 17122.221358888306
+            },
+            {
+              "mode": "baseline",
+              "loops": 38607,
+              "cpu_seconds": 0.6875,
+              "wall_seconds": 0.6948341000097571,
+              "cpu_ns_per_op": 17807.651462170074,
+              "wall_ns_per_op": 17997.619602915456
+            }
+          ]
+        },
+        {
+          "pair": 6,
+          "order": [
+            "baseline",
+            "attributes-only",
+            "lazy-only",
+            "combined"
+          ],
+          "batches": [
+            {
+              "mode": "baseline",
+              "loops": 38607,
+              "cpu_seconds": 0.6875,
+              "wall_seconds": 0.6995910999976331,
+              "cpu_ns_per_op": 17807.651462170074,
+              "wall_ns_per_op": 18120.835599700393
+            },
+            {
+              "mode": "attributes-only",
+              "loops": 38607,
+              "cpu_seconds": 0.640625,
+              "wall_seconds": 0.6441800000029616,
+              "cpu_ns_per_op": 16593.493407931204,
+              "wall_ns_per_op": 16685.575154841394
+            },
+            {
+              "mode": "lazy-only",
+              "loops": 38607,
+              "cpu_seconds": 0.671875,
+              "wall_seconds": 0.6624875999987125,
+              "cpu_ns_per_op": 17402.932110757116,
+              "wall_ns_per_op": 17159.779314598713
+            },
+            {
+              "mode": "combined",
+              "loops": 38607,
+              "cpu_seconds": 0.578125,
+              "wall_seconds": 0.5909842000110075,
+              "cpu_ns_per_op": 14974.61600227938,
+              "wall_ns_per_op": 15307.695495920625
+            }
+          ]
+        },
+        {
+          "pair": 7,
+          "order": [
+            "combined",
+            "lazy-only",
+            "attributes-only",
+            "baseline"
+          ],
+          "batches": [
+            {
+              "mode": "combined",
+              "loops": 38607,
+              "cpu_seconds": 0.609375,
+              "wall_seconds": 0.6039011999964714,
+              "cpu_ns_per_op": 15784.054705105293,
+              "wall_ns_per_op": 15642.272126724984
+            },
+            {
+              "mode": "lazy-only",
+              "loops": 38607,
+              "cpu_seconds": 0.65625,
+              "wall_seconds": 0.6608364999992773,
+              "cpu_ns_per_op": 16998.212759344162,
+              "wall_ns_per_op": 17117.012458861795
+            },
+            {
+              "mode": "attributes-only",
+              "loops": 38607,
+              "cpu_seconds": 0.640625,
+              "wall_seconds": 0.642278700004681,
+              "cpu_ns_per_op": 16593.493407931204,
+              "wall_ns_per_op": 16636.327609104075
+            },
+            {
+              "mode": "baseline",
+              "loops": 38607,
+              "cpu_seconds": 0.71875,
+              "wall_seconds": 0.7266426999995019,
+              "cpu_ns_per_op": 18617.090164995985,
+              "wall_ns_per_op": 18821.527184176495
+            }
+          ]
+        },
+        {
+          "pair": 8,
+          "order": [
+            "baseline",
+            "attributes-only",
+            "lazy-only",
+            "combined"
+          ],
+          "batches": [
+            {
+              "mode": "baseline",
+              "loops": 38607,
+              "cpu_seconds": 0.6875,
+              "wall_seconds": 0.6925970999873243,
+              "cpu_ns_per_op": 17807.651462170074,
+              "wall_ns_per_op": 17939.676742231313
+            },
+            {
+              "mode": "attributes-only",
+              "loops": 38607,
+              "cpu_seconds": 0.640625,
+              "wall_seconds": 0.6371225000038976,
+              "cpu_ns_per_op": 16593.493407931204,
+              "wall_ns_per_op": 16502.77151821943
+            },
+            {
+              "mode": "lazy-only",
+              "loops": 38607,
+              "cpu_seconds": 0.65625,
+              "wall_seconds": 0.6548120999941602,
+              "cpu_ns_per_op": 16998.212759344162,
+              "wall_ns_per_op": 16960.96821804751
+            },
+            {
+              "mode": "combined",
+              "loops": 38607,
+              "cpu_seconds": 0.59375,
+              "wall_seconds": 0.5939157999964664,
+              "cpu_ns_per_op": 15379.335353692335,
+              "wall_ns_per_op": 15383.62991158252
+            }
+          ]
+        }
+      ],
+      "summary": {
+        "baseline": {
+          "cpu_ns_per_op_pooled": 18257.339630406692,
+          "wall_ns_per_op_median": 18244.14225393343
+        },
+        "attributes-only": {
+          "cpu_ns_per_op_pooled": 17178.08802663881,
+          "wall_ns_per_op_median": 16766.10459244322
+        },
+        "lazy-only": {
+          "cpu_ns_per_op_pooled": 17987.52672946472,
+          "wall_ns_per_op_median": 17159.779314598713
+        },
+        "combined": {
+          "cpu_ns_per_op_pooled": 16008.8987892236,
+          "wall_ns_per_op_median": 15642.272126724984
+        }
+      }
+    },
+    {
+      "kind": "empty-event-link-control",
+      "lifecycle": "start-span",
+      "attribute_mode": "constructor",
+      "attribute_count": 0,
+      "extra": "one-event-and-link",
+      "loops_per_batch": 46957,
+      "samples": [
+        {
+          "pair": 0,
+          "order": [
+            "baseline",
+            "attributes-only",
+            "lazy-only",
+            "combined"
+          ],
+          "batches": [
+            {
+              "mode": "baseline",
+              "loops": 46957,
+              "cpu_seconds": 0.53125,
+              "wall_seconds": 0.5327282000071136,
+              "cpu_ns_per_op": 11313.542176885236,
+              "wall_ns_per_op": 11345.022041593664
+            },
+            {
+              "mode": "attributes-only",
+              "loops": 46957,
+              "cpu_seconds": 0.546875,
+              "wall_seconds": 0.5377963000064483,
+              "cpu_ns_per_op": 11646.29341738186,
+              "wall_ns_per_op": 11452.952701544993
+            },
+            {
+              "mode": "lazy-only",
+              "loops": 46957,
+              "cpu_seconds": 0.5625,
+              "wall_seconds": 0.5532839000079548,
+              "cpu_ns_per_op": 11979.044657878485,
+              "wall_ns_per_op": 11782.77786076527
+            },
+            {
+              "mode": "combined",
+              "loops": 46957,
+              "cpu_seconds": 0.546875,
+              "wall_seconds": 0.5443598999991082,
+              "cpu_ns_per_op": 11646.29341738186,
+              "wall_ns_per_op": 11592.731648084593
+            }
+          ]
+        },
+        {
+          "pair": 1,
+          "order": [
+            "combined",
+            "lazy-only",
+            "attributes-only",
+            "baseline"
+          ],
+          "batches": [
+            {
+              "mode": "combined",
+              "loops": 46957,
+              "cpu_seconds": 0.546875,
+              "wall_seconds": 0.5560187999944901,
+              "cpu_ns_per_op": 11646.29341738186,
+              "wall_ns_per_op": 11841.020508007115
+            },
+            {
+              "mode": "lazy-only",
+              "loops": 46957,
+              "cpu_seconds": 0.5625,
+              "wall_seconds": 0.5654092000040691,
+              "cpu_ns_per_op": 11979.044657878485,
+              "wall_ns_per_op": 12040.999212131717
+            },
+            {
+              "mode": "attributes-only",
+              "loops": 46957,
+              "cpu_seconds": 0.546875,
+              "wall_seconds": 0.5352368999883765,
+              "cpu_ns_per_op": 11646.29341738186,
+              "wall_ns_per_op": 11398.447515564805
+            },
+            {
+              "mode": "baseline",
+              "loops": 46957,
+              "cpu_seconds": 0.53125,
+              "wall_seconds": 0.5325090999976965,
+              "cpu_ns_per_op": 11313.542176885236,
+              "wall_ns_per_op": 11340.356070398375
+            }
+          ]
+        },
+        {
+          "pair": 2,
+          "order": [
+            "baseline",
+            "attributes-only",
+            "lazy-only",
+            "combined"
+          ],
+          "batches": [
+            {
+              "mode": "baseline",
+              "loops": 46957,
+              "cpu_seconds": 0.53125,
+              "wall_seconds": 0.5401468000054592,
+              "cpu_ns_per_op": 11313.542176885236,
+              "wall_ns_per_op": 11503.009136134318
+            },
+            {
+              "mode": "attributes-only",
+              "loops": 46957,
+              "cpu_seconds": 0.53125,
+              "wall_seconds": 0.5272666999953799,
+              "cpu_ns_per_op": 11313.542176885236,
+              "wall_ns_per_op": 11228.713503745554
+            },
+            {
+              "mode": "lazy-only",
+              "loops": 46957,
+              "cpu_seconds": 0.5625,
+              "wall_seconds": 0.5678910999995423,
+              "cpu_ns_per_op": 11979.044657878485,
+              "wall_ns_per_op": 12093.853951477786
+            },
+            {
+              "mode": "combined",
+              "loops": 46957,
+              "cpu_seconds": 0.546875,
+              "wall_seconds": 0.5514089000062086,
+              "cpu_ns_per_op": 11646.29341738186,
+              "wall_ns_per_op": 11742.847711868488
+            }
+          ]
+        },
+        {
+          "pair": 3,
+          "order": [
+            "combined",
+            "lazy-only",
+            "attributes-only",
+            "baseline"
+          ],
+          "batches": [
+            {
+              "mode": "combined",
+              "loops": 46957,
+              "cpu_seconds": 0.53125,
+              "wall_seconds": 0.559396900003776,
+              "cpu_ns_per_op": 11313.542176885236,
+              "wall_ns_per_op": 11912.960793998252
+            },
+            {
+              "mode": "lazy-only",
+              "loops": 46957,
+              "cpu_seconds": 0.546875,
+              "wall_seconds": 0.5545323999976972,
+              "cpu_ns_per_op": 11646.29341738186,
+              "wall_ns_per_op": 11809.366015667467
+            },
+            {
+              "mode": "attributes-only",
+              "loops": 46957,
+              "cpu_seconds": 0.546875,
+              "wall_seconds": 0.5358886000030907,
+              "cpu_ns_per_op": 11646.29341738186,
+              "wall_ns_per_op": 11412.326170817783
+            },
+            {
+              "mode": "baseline",
+              "loops": 46957,
+              "cpu_seconds": 0.546875,
+              "wall_seconds": 0.5491336999984924,
+              "cpu_ns_per_op": 11646.29341738186,
+              "wall_ns_per_op": 11694.394871871975
+            }
+          ]
+        },
+        {
+          "pair": 4,
+          "order": [
+            "baseline",
+            "attributes-only",
+            "lazy-only",
+            "combined"
+          ],
+          "batches": [
+            {
+              "mode": "baseline",
+              "loops": 46957,
+              "cpu_seconds": 0.53125,
+              "wall_seconds": 0.5466038000013214,
+              "cpu_ns_per_op": 11313.542176885236,
+              "wall_ns_per_op": 11640.517920678947
+            },
+            {
+              "mode": "attributes-only",
+              "loops": 46957,
+              "cpu_seconds": 0.546875,
+              "wall_seconds": 0.552610700004152,
+              "cpu_ns_per_op": 11646.29341738186,
+              "wall_ns_per_op": 11768.441340037738
+            },
+            {
+              "mode": "lazy-only",
+              "loops": 46957,
+              "cpu_seconds": 0.5625,
+              "wall_seconds": 0.5523004000133369,
+              "cpu_ns_per_op": 11979.044657878485,
+              "wall_ns_per_op": 11761.83316679807
+            },
+            {
+              "mode": "combined",
+              "loops": 46957,
+              "cpu_seconds": 0.5625,
+              "wall_seconds": 0.5696454999997513,
+              "cpu_ns_per_op": 11979.044657878485,
+              "wall_ns_per_op": 12131.21579316718
+            }
+          ]
+        },
+        {
+          "pair": 5,
+          "order": [
+            "combined",
+            "lazy-only",
+            "attributes-only",
+            "baseline"
+          ],
+          "batches": [
+            {
+              "mode": "combined",
+              "loops": 46957,
+              "cpu_seconds": 0.5625,
+              "wall_seconds": 0.5754220000089845,
+              "cpu_ns_per_op": 11979.044657878485,
+              "wall_ns_per_op": 12254.23259597045
+            },
+            {
+              "mode": "lazy-only",
+              "loops": 46957,
+              "cpu_seconds": 0.546875,
+              "wall_seconds": 0.5665394999959972,
+              "cpu_ns_per_op": 11646.29341738186,
+              "wall_ns_per_op": 12065.070170496352
+            },
+            {
+              "mode": "attributes-only",
+              "loops": 46957,
+              "cpu_seconds": 0.578125,
+              "wall_seconds": 0.5755445999966469,
+              "cpu_ns_per_op": 12311.795898375109,
+              "wall_ns_per_op": 12256.843495041141
+            },
+            {
+              "mode": "baseline",
+              "loops": 46957,
+              "cpu_seconds": 0.71875,
+              "wall_seconds": 0.7225731999933487,
+              "cpu_ns_per_op": 15306.55706284473,
+              "wall_ns_per_op": 15387.976233433752
+            }
+          ]
+        },
+        {
+          "pair": 6,
+          "order": [
+            "baseline",
+            "attributes-only",
+            "lazy-only",
+            "combined"
+          ],
+          "batches": [
+            {
+              "mode": "baseline",
+              "loops": 46957,
+              "cpu_seconds": 0.640625,
+              "wall_seconds": 0.6473456000094302,
+              "cpu_ns_per_op": 13642.800860361607,
+              "wall_ns_per_op": 13785.923291722856
+            },
+            {
+              "mode": "attributes-only",
+              "loops": 46957,
+              "cpu_seconds": 0.53125,
+              "wall_seconds": 0.5401533999975072,
+              "cpu_ns_per_op": 11313.542176885236,
+              "wall_ns_per_op": 11503.149690088958
+            },
+            {
+              "mode": "lazy-only",
+              "loops": 46957,
+              "cpu_seconds": 0.53125,
+              "wall_seconds": 0.5565758000011556,
+              "cpu_ns_per_op": 11313.542176885236,
+              "wall_ns_per_op": 11852.882424370287
+            },
+            {
+              "mode": "combined",
+              "loops": 46957,
+              "cpu_seconds": 0.5625,
+              "wall_seconds": 0.5529483999998774,
+              "cpu_ns_per_op": 11979.044657878485,
+              "wall_ns_per_op": 11775.633025957311
+            }
+          ]
+        },
+        {
+          "pair": 7,
+          "order": [
+            "combined",
+            "lazy-only",
+            "attributes-only",
+            "baseline"
+          ],
+          "batches": [
+            {
+              "mode": "combined",
+              "loops": 46957,
+              "cpu_seconds": 0.5625,
+              "wall_seconds": 0.5555973000009544,
+              "cpu_ns_per_op": 11979.044657878485,
+              "wall_ns_per_op": 11832.044210681142
+            },
+            {
+              "mode": "lazy-only",
+              "loops": 46957,
+              "cpu_seconds": 0.546875,
+              "wall_seconds": 0.559585099996184,
+              "cpu_ns_per_op": 11646.29341738186,
+              "wall_ns_per_op": 11916.968715978108
+            },
+            {
+              "mode": "attributes-only",
+              "loops": 46957,
+              "cpu_seconds": 0.53125,
+              "wall_seconds": 0.5318353000038769,
+              "cpu_ns_per_op": 11313.542176885236,
+              "wall_ns_per_op": 11326.00677223581
+            },
+            {
+              "mode": "baseline",
+              "loops": 46957,
+              "cpu_seconds": 0.5625,
+              "wall_seconds": 0.5509687000012491,
+              "cpu_ns_per_op": 11979.044657878485,
+              "wall_ns_per_op": 11733.473177614607
+            }
+          ]
+        },
+        {
+          "pair": 8,
+          "order": [
+            "baseline",
+            "attributes-only",
+            "lazy-only",
+            "combined"
+          ],
+          "batches": [
+            {
+              "mode": "baseline",
+              "loops": 46957,
+              "cpu_seconds": 0.53125,
+              "wall_seconds": 0.5396837000007508,
+              "cpu_ns_per_op": 11313.542176885236,
+              "wall_ns_per_op": 11493.146921667712
+            },
+            {
+              "mode": "attributes-only",
+              "loops": 46957,
+              "cpu_seconds": 0.53125,
+              "wall_seconds": 0.5458894000039436,
+              "cpu_ns_per_op": 11313.542176885236,
+              "wall_ns_per_op": 11625.3040016173
+            },
+            {
+              "mode": "lazy-only",
+              "loops": 46957,
+              "cpu_seconds": 0.546875,
+              "wall_seconds": 0.5619182999944314,
+              "cpu_ns_per_op": 11646.29341738186,
+              "wall_ns_per_op": 11966.656728377697
+            },
+            {
+              "mode": "combined",
+              "loops": 46957,
+              "cpu_seconds": 0.578125,
+              "wall_seconds": 0.5691365999955451,
+              "cpu_ns_per_op": 12311.795898375109,
+              "wall_ns_per_op": 12120.378218275127
+            }
+          ]
+        }
+      ],
+      "summary": {
+        "baseline": {
+          "cpu_ns_per_op_pooled": 12126.934098099207,
+          "wall_ns_per_op_median": 11640.517920678947
+        },
+        "attributes-only": {
+          "cpu_ns_per_op_pooled": 11572.348697271498,
+          "wall_ns_per_op_median": 11452.952701544993
+        },
+        "lazy-only": {
+          "cpu_ns_per_op_pooled": 11757.210497547401,
+          "wall_ns_per_op_median": 11916.968715978108
+        },
+        "combined": {
+          "cpu_ns_per_op_pooled": 11831.155217657762,
+          "wall_ns_per_op_median": 11841.020508007115
+        }
+      }
+    }
+  ]
+}

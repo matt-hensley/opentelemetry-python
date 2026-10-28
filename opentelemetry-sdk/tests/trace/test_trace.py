@@ -11,7 +11,9 @@ import os
 import shutil
 import subprocess
 import sys
+import threading
 import unittest
+from concurrent.futures import ThreadPoolExecutor
 from importlib import reload
 from logging import ERROR, WARNING
 from pathlib import Path
@@ -1043,6 +1045,138 @@ class TestSpan(unittest.TestCase):
             self.assertEqual(root.events[3].attributes, {"name": ("original_contents",)})
             mutable_list = ["new_contents"]
             self.assertEqual(root.events[3].attributes, {"name": ("original_contents",)})
+
+    def test_empty_event_and_link_snapshots_are_immutable(self):
+        span = self.tracer.start_span("root")
+        empty_events = span.events
+        empty_links = span.links
+        self.assertEqual(empty_events, ())
+        self.assertEqual(empty_links, ())
+
+        first_link_context = trace_api.SpanContext(1, 1, is_remote=False)
+        span.add_event("event0")
+        span.add_link(first_link_context)
+        first_events = span.events
+        first_links = span.links
+
+        span.add_event("event1")
+        span.add_link(trace_api.SpanContext(1, 2, is_remote=False))
+
+        self.assertEqual(empty_events, ())
+        self.assertEqual(empty_links, ())
+        self.assertEqual([event.name for event in first_events], ["event0"])
+        self.assertEqual([link.context for link in first_links], [first_link_context])
+        self.assertEqual([event.name for event in span.events], ["event0", "event1"])
+        span.end()
+
+    def test_lazy_event_and_link_storage_respects_limits(self):
+        tracer_provider = trace.TracerProvider(
+            span_limits=trace.SpanLimits(max_events=1, max_links=1),
+            shutdown_on_exit=False,
+        )
+        self.addCleanup(tracer_provider.shutdown)
+        span = tracer_provider.get_tracer(__name__).start_span("bounded")
+        span.add_event("dropped")
+        span.add_event("kept")
+        span.add_link(trace_api.SpanContext(1, 1, is_remote=False))
+        span.add_link(trace_api.SpanContext(1, 2, is_remote=False))
+
+        self.assertEqual([event.name for event in span.events], ["kept"])
+        self.assertEqual([link.context.span_id for link in span.links], [2])
+        self.assertEqual(span.dropped_events, 1)
+        self.assertEqual(span.dropped_links, 1)
+        span.end()
+
+    def test_lazy_event_and_link_storage_respects_zero_limits(self):
+        class CapturingSpanProcessor(trace.SpanProcessor):
+            def __init__(self):
+                self.ended_spans = []
+
+            def on_end(self, span):
+                self.ended_spans.append(span)
+
+        tracer_provider = trace.TracerProvider(
+            span_limits=trace.SpanLimits(max_events=0, max_links=0),
+            shutdown_on_exit=False,
+        )
+        self.addCleanup(tracer_provider.shutdown)
+        processor = CapturingSpanProcessor()
+        tracer_provider.add_span_processor(processor)
+        span = tracer_provider.get_tracer(__name__).start_span("zero-bounds")
+        span.add_event("dropped0")
+        span.add_event("dropped1")
+        span.add_link(trace_api.SpanContext(1, 1, is_remote=False))
+        span.add_link(trace_api.INVALID_SPAN_CONTEXT)
+
+        self.assertEqual(span.events, ())
+        self.assertEqual(span.links, ())
+        self.assertEqual(span.dropped_events, 2)
+        self.assertEqual(span.dropped_links, 1)
+        span.end()
+        exported_span = processor.ended_spans[0]
+        self.assertEqual(exported_span.events, ())
+        self.assertEqual(exported_span.links, ())
+        self.assertEqual(exported_span.dropped_events, 2)
+        self.assertEqual(exported_span.dropped_links, 1)
+
+    def test_lazy_event_and_link_storage_supports_span_callbacks(self):
+        class AddTelemetrySpanProcessor(trace.SpanProcessor):
+            def on_start(self, span, parent_context=None):
+                span.add_event("on_start")
+                span.add_link(trace_api.SpanContext(1, 1, is_remote=False))
+
+            def _on_ending(self, span):
+                span.add_event("on_ending")
+                span.add_link(trace_api.SpanContext(1, 2, is_remote=False))
+
+        tracer_provider = trace.TracerProvider(shutdown_on_exit=False)
+        self.addCleanup(tracer_provider.shutdown)
+        tracer_provider.add_span_processor(AddTelemetrySpanProcessor())
+        span = tracer_provider.get_tracer(__name__).start_span("callbacks")
+
+        self.assertEqual([event.name for event in span.events], ["on_start"])
+        self.assertEqual([link.context.span_id for link in span.links], [1])
+        span.end()
+        self.assertEqual([event.name for event in span.events], ["on_start", "on_ending"])
+        self.assertEqual([link.context.span_id for link in span.links], [1, 2])
+
+    def test_lazy_event_and_link_storage_supports_ending_only_callback(self):
+        class AddTelemetryOnEndingProcessor(trace.SpanProcessor):
+            def _on_ending(self, span):
+                span.add_event("on_ending")
+                span.add_link(trace_api.SpanContext(1, 2, is_remote=False))
+
+        tracer_provider = trace.TracerProvider(shutdown_on_exit=False)
+        self.addCleanup(tracer_provider.shutdown)
+        tracer_provider.add_span_processor(AddTelemetryOnEndingProcessor())
+        span = tracer_provider.get_tracer(__name__).start_span("ending-only-callback")
+        self.assertEqual(span.events, ())
+        self.assertEqual(span.links, ())
+
+        span.end()
+
+        self.assertEqual([event.name for event in span.events], ["on_ending"])
+        self.assertEqual([link.context.span_id for link in span.links], [2])
+
+    def test_concurrent_first_event_and_link_additions(self):
+        worker_count = 8
+        barrier = threading.Barrier(worker_count)
+        span = self.tracer.start_span("concurrent")
+
+        def add_telemetry(index):
+            barrier.wait()
+            span.add_event(f"event{index}")
+            span.add_link(trace_api.SpanContext(1, index + 1, is_remote=False))
+
+        with ThreadPoolExecutor(max_workers=worker_count) as executor:
+            list(executor.map(add_telemetry, range(worker_count)))
+
+        self.assertEqual({event.name for event in span.events}, {f"event{index}" for index in range(worker_count)})
+        self.assertEqual(
+            {link.context.span_id for link in span.links},
+            {index + 1 for index in range(worker_count)},
+        )
+        span.end()
 
     def test_events_are_immutable(self):
         event_properties = [prop for prop in dir(trace.EventBase) if not prop.startswith("_")]

@@ -154,7 +154,7 @@ class Decision(enum.Enum):
     RECORD_AND_SAMPLE = 2
 
     def is_recording(self):
-        return self in (Decision.RECORD_ONLY, Decision.RECORD_AND_SAMPLE)
+        return self is not Decision.DROP
 
     def is_sampled(self):
         return self is Decision.RECORD_AND_SAMPLE

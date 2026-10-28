@@ -1,0 +1,91 @@
+============================= test session starts =============================
+platform win32 -- Python 3.13.14, pytest-9.0.3, pluggy-1.6.0
+benchmark: 4.0.0 (defaults: timer=time.process_time disable_gc=False min_rounds=7 min_time=0.02 max_time=0.3 calibration_precision=10 warmup=True warmup_iterations=2000)
+rootdir: C:\Users\mhensley\wc\worktrees\orca\opentelemetry-python\expedition
+configfile: pyproject.toml
+plugins: flaky-3.8.1, platformdirs-4.13.0, benchmark-4.0.0
+collected 41 items / 7 deselected / 34 selected
+
+opentelemetry-sdk/benchmarks/trace/test_benchmark_dropped_spans.py::test_span_lifecycle[start-span-always-off-root] PASSED [  2%]
+opentelemetry-sdk/benchmarks/trace/test_benchmark_dropped_spans.py::test_span_lifecycle[start-span-always-off-child] PASSED [  5%]
+opentelemetry-sdk/benchmarks/trace/test_benchmark_dropped_spans.py::test_span_lifecycle[start-span-always-off-remote-child] PASSED [  8%]
+opentelemetry-sdk/benchmarks/trace/test_benchmark_dropped_spans.py::test_span_lifecycle[start-span-parentbased-ratio-zero-root] PASSED [ 11%]
+opentelemetry-sdk/benchmarks/trace/test_benchmark_dropped_spans.py::test_span_lifecycle[start-span-parentbased-ratio-zero-child] PASSED [ 14%]
+opentelemetry-sdk/benchmarks/trace/test_benchmark_dropped_spans.py::test_span_lifecycle[start-span-parentbased-ratio-zero-remote-child] PASSED [ 17%]
+opentelemetry-sdk/benchmarks/trace/test_benchmark_dropped_spans.py::test_span_lifecycle[start-span-custom-drop-root] PASSED [ 20%]
+opentelemetry-sdk/benchmarks/trace/test_benchmark_dropped_spans.py::test_span_lifecycle[start-span-custom-drop-child] PASSED [ 23%]
+opentelemetry-sdk/benchmarks/trace/test_benchmark_dropped_spans.py::test_span_lifecycle[start-span-custom-drop-remote-child] PASSED [ 26%]
+opentelemetry-sdk/benchmarks/trace/test_benchmark_dropped_spans.py::test_span_lifecycle[start-span-always-on-root] PASSED [ 29%]
+opentelemetry-sdk/benchmarks/trace/test_benchmark_dropped_spans.py::test_span_lifecycle[start-span-always-on-child] PASSED [ 32%]
+opentelemetry-sdk/benchmarks/trace/test_benchmark_dropped_spans.py::test_span_lifecycle[start-span-always-on-remote-child] PASSED [ 35%]
+opentelemetry-sdk/benchmarks/trace/test_benchmark_dropped_spans.py::test_span_lifecycle[start-span-always-off-sdk-recording-parent] PASSED [ 38%]
+opentelemetry-sdk/benchmarks/trace/test_benchmark_dropped_spans.py::test_span_lifecycle[start-span-always-on-sdk-recording-parent] PASSED [ 41%]
+opentelemetry-sdk/benchmarks/trace/test_benchmark_dropped_spans.py::test_span_lifecycle[current-span-always-off-root] PASSED [ 44%]
+opentelemetry-sdk/benchmarks/trace/test_benchmark_dropped_spans.py::test_span_lifecycle[current-span-always-off-child] PASSED [ 47%]
+opentelemetry-sdk/benchmarks/trace/test_benchmark_dropped_spans.py::test_span_lifecycle[current-span-always-off-remote-child] PASSED [ 50%]
+opentelemetry-sdk/benchmarks/trace/test_benchmark_dropped_spans.py::test_span_lifecycle[current-span-parentbased-ratio-zero-root] PASSED [ 52%]
+opentelemetry-sdk/benchmarks/trace/test_benchmark_dropped_spans.py::test_span_lifecycle[current-span-parentbased-ratio-zero-child] PASSED [ 55%]
+opentelemetry-sdk/benchmarks/trace/test_benchmark_dropped_spans.py::test_span_lifecycle[current-span-parentbased-ratio-zero-remote-child] PASSED [ 58%]
+opentelemetry-sdk/benchmarks/trace/test_benchmark_dropped_spans.py::test_span_lifecycle[current-span-custom-drop-root] PASSED [ 61%]
+opentelemetry-sdk/benchmarks/trace/test_benchmark_dropped_spans.py::test_span_lifecycle[current-span-custom-drop-child] PASSED [ 64%]
+opentelemetry-sdk/benchmarks/trace/test_benchmark_dropped_spans.py::test_span_lifecycle[current-span-custom-drop-remote-child] PASSED [ 67%]
+opentelemetry-sdk/benchmarks/trace/test_benchmark_dropped_spans.py::test_span_lifecycle[current-span-always-on-root] PASSED [ 70%]
+opentelemetry-sdk/benchmarks/trace/test_benchmark_dropped_spans.py::test_span_lifecycle[current-span-always-on-child] PASSED [ 73%]
+opentelemetry-sdk/benchmarks/trace/test_benchmark_dropped_spans.py::test_span_lifecycle[current-span-always-on-remote-child] PASSED [ 76%]
+opentelemetry-sdk/benchmarks/trace/test_benchmark_dropped_spans.py::test_span_lifecycle[current-span-always-off-sdk-recording-parent] PASSED [ 79%]
+opentelemetry-sdk/benchmarks/trace/test_benchmark_dropped_spans.py::test_span_lifecycle[current-span-always-on-sdk-recording-parent] PASSED [ 82%]
+opentelemetry-sdk/benchmarks/trace/test_benchmark_dropped_spans.py::test_get_current_span[empty-explicit] PASSED [ 85%]
+opentelemetry-sdk/benchmarks/trace/test_benchmark_dropped_spans.py::test_get_current_span[empty-implicit] PASSED [ 88%]
+opentelemetry-sdk/benchmarks/trace/test_benchmark_dropped_spans.py::test_get_current_span[nonrecording-explicit] PASSED [ 91%]
+opentelemetry-sdk/benchmarks/trace/test_benchmark_dropped_spans.py::test_get_current_span[nonrecording-implicit] PASSED [ 94%]
+opentelemetry-sdk/benchmarks/trace/test_benchmark_dropped_spans.py::test_get_current_span[sdk-recording-explicit] PASSED [ 97%]
+opentelemetry-sdk/benchmarks/trace/test_benchmark_dropped_spans.py::test_get_current_span[sdk-recording-implicit] PASSED [100%]C:\Users\mhensley\wc\worktrees\orca\opentelemetry-python\expedition\.venv\Lib\site-packages\pytest_benchmark\plugin.py:387: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  "datetime": datetime.utcnow().isoformat(),
+
+Wrote benchmark data in: <_io.BufferedWriter name='.agent\\baseline-cpu-repeat-1.json'>
+
+
+
+------------------------------------------------ benchmark: 34 tests ------------------------------------------------
+Name (time in ns)                                                              Median                   IQR          
+---------------------------------------------------------------------------------------------------------------------
+test_get_current_span[empty-explicit]                                        140.6249 (1.0)         14.0625 (inf)    
+test_get_current_span[empty-implicit]                                        218.7500 (1.56)        15.6250 (inf)    
+test_get_current_span[nonrecording-explicit]                                 312.5000 (2.22)        11.7187 (inf)    
+test_get_current_span[sdk-recording-explicit]                                328.1250 (2.33)         0.0000 (1.0)    
+test_get_current_span[nonrecording-implicit]                                 406.2500 (2.89)        27.3437 (inf)    
+test_get_current_span[sdk-recording-implicit]                                421.8750 (3.00)        23.4375 (inf)    
+test_span_lifecycle[start-span-custom-drop-child]                          2,343.7500 (16.67)        0.0000 (1.0)    
+test_span_lifecycle[start-span-custom-drop-remote-child]                   2,500.0000 (17.78)      156.2500 (inf)    
+test_span_lifecycle[start-span-always-off-root]                            2,656.2500 (18.89)        0.0000 (1.0)    
+test_span_lifecycle[start-span-custom-drop-root]                           2,500.0000 (17.78)      117.1875 (inf)    
+test_span_lifecycle[start-span-always-off-child]                           2,812.5000 (20.00)      156.2500 (inf)    
+test_span_lifecycle[start-span-always-off-remote-child]                    2,812.5000 (20.00)      273.4375 (inf)    
+test_span_lifecycle[start-span-always-off-sdk-recording-parent]            3,125.0000 (22.22)      156.2500 (inf)    
+test_span_lifecycle[start-span-parentbased-ratio-zero-root]                3,125.0000 (22.22)      156.2500 (inf)    
+test_span_lifecycle[start-span-parentbased-ratio-zero-remote-child]        3,437.5000 (24.44)      156.2500 (inf)    
+test_span_lifecycle[start-span-parentbased-ratio-zero-child]               3,437.5000 (24.44)        0.0000 (1.0)    
+test_span_lifecycle[current-span-custom-drop-child]                        5,468.7500 (38.89)      117.1875 (inf)    
+test_span_lifecycle[current-span-custom-drop-remote-child]                 5,312.5000 (37.78)      156.2500 (inf)    
+test_span_lifecycle[current-span-custom-drop-root]                         5,468.7500 (38.89)      156.2500 (inf)    
+test_span_lifecycle[current-span-always-off-root]                          5,781.2500 (41.11)      273.4375 (inf)    
+test_span_lifecycle[current-span-always-off-remote-child]                  6,093.7500 (43.33)      273.4375 (inf)    
+test_span_lifecycle[current-span-always-off-sdk-recording-parent]          6,250.0000 (44.44)      273.4375 (inf)    
+test_span_lifecycle[current-span-always-off-child]                         5,937.5000 (42.22)      156.2500 (inf)    
+test_span_lifecycle[current-span-parentbased-ratio-zero-root]              6,250.0000 (44.44)      273.4375 (inf)    
+test_span_lifecycle[current-span-parentbased-ratio-zero-child]             6,562.5000 (46.67)      117.1875 (inf)    
+test_span_lifecycle[current-span-parentbased-ratio-zero-remote-child]      6,562.5000 (46.67)        0.0000 (1.0)    
+test_span_lifecycle[start-span-always-on-child]                           10,827.4537 (77.00)      984.3140 (inf)    
+test_span_lifecycle[start-span-always-on-remote-child]                    10,827.4537 (77.00)      984.3140 (inf)    
+test_span_lifecycle[start-span-always-on-root]                            10,827.4537 (77.00)      984.3140 (inf)    
+test_span_lifecycle[start-span-always-on-sdk-recording-parent]            10,827.4537 (77.00)        0.0000 (1.0)    
+test_span_lifecycle[current-span-always-on-child]                         15,625.0000 (111.11)       0.0000 (1.0)    
+test_span_lifecycle[current-span-always-on-remote-child]                  15,625.0000 (111.11)       0.0000 (1.0)    
+test_span_lifecycle[current-span-always-on-root]                          15,625.0000 (111.11)   1,171.8750 (inf)    
+test_span_lifecycle[current-span-always-on-sdk-recording-parent]          15,625.0000 (111.11)   1,562.5000 (inf)    
+---------------------------------------------------------------------------------------------------------------------
+
+Legend:
+  Outliers: 1 Standard Deviation from Mean; 1.5 IQR (InterQuartile Range) from 1st Quartile and 3rd Quartile.
+  OPS: Operations Per Second, computed as 1 / Mean
+================ 34 passed, 7 deselected in 130.18s (0:02:10) =================

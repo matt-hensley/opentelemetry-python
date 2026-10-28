@@ -1,0 +1,43 @@
+============================= test session starts =============================
+platform win32 -- Python 3.13.14, pytest-9.0.3, pluggy-1.6.0
+benchmark: 4.0.0 (defaults: timer=time.perf_counter disable_gc=False min_rounds=5 min_time=0.000005 max_time=1.0 calibration_precision=10 warmup=False warmup_iterations=100000)
+rootdir: C:\Users\mhensley\wc\worktrees\orca\opentelemetry-python\expedition
+configfile: pyproject.toml
+plugins: flaky-3.8.1, platformdirs-4.13.0, benchmark-4.0.0
+collected 20 items
+
+opentelemetry-api/tests/attributes/test_attributes.py::TestBoundedAttributes::test_base_copy_isolated_and_len_works PASSED [  5%]
+opentelemetry-api/tests/attributes/test_attributes.py::TestBoundedAttributes::test_basic_insertion_update_iteration_and_deletion 
+-------------------------------- live log call --------------------------------
+WARNING  opentelemetry.attributes:__init__.py:221 Attributes dict is full. Dropping the oldest key-value pair from attributes to make space for the new key-value pair.
+PASSED                                                                   [ 10%]
+opentelemetry-api/tests/attributes/test_attributes.py::TestBoundedAttributes::test_clean_attribute_value_with_various_params 
+-------------------------------- live log call --------------------------------
+WARNING  opentelemetry.attributes:__init__.py:91 Invalid type `<class 'test_attributes._NoStrNoReprObject'>` for attribute value. Expected one of bool, str, None, bytes, int, float or a Mapping or Sequence of those types. Value's __str__ method will be called if it exists, otherwise the value will be replaced with None.
+WARNING  opentelemetry.attributes:__init__.py:78 Invalid type `<class 'test_attributes._NoStrNoReprObject'>` for attribute key `<test_attributes._NoStrNoReprObject object at 0x0000015EC1D45950>`, must be a str. Key's `__str__/__repr__` method will be called if it exists, otherwise the key/value pair will be dropped.
+PASSED                                                                   [ 15%]
+opentelemetry-api/tests/attributes/test_attributes.py::TestBoundedAttributes::test_constructor_cleans_nested_attributes_without_aliasing PASSED [ 20%]
+opentelemetry-api/tests/attributes/test_attributes.py::TestBoundedAttributes::test_constructor_preserves_invalid_and_coerced_key_drop_counts PASSED [ 25%]
+opentelemetry-api/tests/attributes/test_attributes.py::TestBoundedAttributes::test_deepcopy PASSED [ 30%]
+opentelemetry-api/tests/attributes/test_attributes.py::TestBoundedAttributes::test_deepcopy_preserves_immutability PASSED [ 35%]
+opentelemetry-api/tests/attributes/test_attributes.py::TestBoundedAttributes::test_immutable PASSED [ 40%]
+opentelemetry-api/tests/attributes/test_attributes.py::TestBoundedAttributes::test_invalid_key_not_used PASSED [ 45%]
+opentelemetry-api/tests/attributes/test_attributes.py::TestBoundedAttributes::test_maxlen_reached PASSED [ 50%]
+opentelemetry-api/tests/attributes/test_attributes.py::TestBoundedAttributes::test_maxlen_reached_logs_warning_after_invalid_key_drop PASSED [ 55%]
+opentelemetry-api/tests/attributes/test_attributes.py::TestBoundedAttributes::test_maxlen_reached_logs_warning_once PASSED [ 60%]
+opentelemetry-api/tests/attributes/test_attributes.py::TestBoundedAttributes::test_negative_max_value_len_not_allowed PASSED [ 65%]
+opentelemetry-api/tests/attributes/test_attributes.py::TestBoundedAttributes::test_negative_maxlen_not_allowed PASSED [ 70%]
+opentelemetry-api/tests/attributes/test_attributes.py::TestBoundedAttributes::test_no_deadlock_on_reentrant_logging 
+-------------------------------- live log call --------------------------------
+WARNING  opentelemetry.attributes:__init__.py:59 String attribute value exceeds max length of 20, truncating.
+PASSED                                                                   [ 75%]
+opentelemetry-api/tests/attributes/test_attributes.py::TestBoundedAttributes::test_same_key_value_overwritten PASSED [ 80%]
+opentelemetry-api/tests/attributes/test_attributes.py::TestBoundedAttributes::test_set_items_into_empty_attributes_preserves_unlimited_and_zero_limits PASSED [ 85%]
+opentelemetry-api/tests/attributes/test_attributes.py::TestBoundedAttributes::test_set_items_preserves_overlap_order_and_overflow PASSED [ 90%]
+opentelemetry-api/tests/attributes/test_attributes.py::TestBoundedAttributes::test_subclass_setitem_locked_is_used_for_initial_attributes PASSED [ 95%]
+opentelemetry-api/tests/attributes/test_attributes.py::TestBoundedAttributes::test_wsgi_request_conversion_to_string 
+-------------------------------- live log call --------------------------------
+WARNING  opentelemetry.attributes:__init__.py:91 Invalid type `<class 'test_attributes.TestBoundedAttributes.test_wsgi_request_conversion_to_string.<locals>.DummyWSGIRequest'>` for attribute value. Expected one of bool, str, None, bytes, int, float or a Mapping or Sequence of those types. Value's __str__ method will be called if it exists, otherwise the value will be replaced with None.
+PASSED                                                                   [100%]
+
+============================= 20 passed in 0.13s ==============================

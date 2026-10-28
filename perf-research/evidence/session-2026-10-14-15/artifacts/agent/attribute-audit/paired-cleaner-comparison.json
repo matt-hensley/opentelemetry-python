@@ -1,0 +1,759 @@
+{
+  "metadata": {
+    "python": "3.13.14 (tags/v3.13.14:fd17997, Jun 10 2026, 13:03:48) [MSC v.1944 64 bit (AMD64)]",
+    "affinity": {
+      "psutil_available": true,
+      "affinity_before": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11
+      ],
+      "affinity_pinned": [
+        0
+      ]
+    },
+    "harness_sha256": "16e00bdea8a1de50cbebd322edeff43a5cb2fa4ae8b52280fc3bd72da133e2cb",
+    "attributes_sha256": "429b347acac243dd63b595372a76c4b3f094adaf659730ce149548ea9e000d28",
+    "trace_sha256": "3de799f888fa8c1d0747e06a83232d644ab33dcb58f405a57c8516e3346a05ce",
+    "candidate_source": "def _clean_attribute_value(\n    value: types.AnyValue,\n    max_string_value_length: int | None,\n) -> types.AnyValue:\n    \"\"\"Recursively checks if an attribute value is valid and cleans it if required.\n\n    String values are truncated to max_string_value_length if provided.\n    Anything that isn't of `types.AnyValue`, we attempt to cast to `str`.\n    If this fails, the value is replaced with None. Sequence's are converted to tuples and mappings\n    are copied into new dicts.\n\n    Returns:\n        The recursively cleaned AnyValue.\n    \"\"\"\n    if isinstance(value, _SCALAR_TYPES):\n        return value\n    if isinstance(value, str):\n        if max_string_value_length is not None and len(value) > max_string_value_length:\n            _logger.warning(\n                \"String attribute value exceeds max length of %d, truncating.\",\n                max_string_value_length,\n            )\n            value = value[:max_string_value_length]\n        return value\n    if isinstance(value, Sequence):\n        return tuple(_clean_attribute_value(v, max_string_value_length) for v in value)\n    if isinstance(value, Mapping):\n        cleaned_mapping: dict[str, types.AnyValue] = {}\n        for key, val in value.items():\n            if not key:\n                _logger.warning(\n                    \"invalid attribute key `%s`. must be non-empty string. Dropping key from attributes.\",\n                    key,\n                )\n                continue\n            # Spec says to convert unknown types to strings if possible (here and below too).\n            if not isinstance(key, str):\n                _logger.warning(\n                    \"Invalid type `%s` for attribute key `%s`, must be a str. Key's `__str__/__repr__` method will be called if it exists, otherwise the key/value pair will be dropped.\",\n                    type(key),\n                    key,\n                )\n                if _is_non_custom_str(key):\n                    key = str(key)\n                else:\n                    continue\n            cleaned_mapping[key] = _clean_attribute_value(val, max_string_value_length)\n        return cleaned_mapping\n    if TYPE_CHECKING:\n        assert_never(value)\n    _logger.warning(\n        \"Invalid type `%s` for attribute value. Expected one of bool, str, None, bytes, int, float or a \"\n        \"Mapping or Sequence of those types. Value's __str__ method will be called if it exists, otherwise the value will be replaced with None.\",\n        type(value),\n    )\n    if _is_non_custom_str(value):\n        return str(value)\n    return None\n"
+  },
+  "results": [
+    {
+      "count": 0,
+      "shape": "empty",
+      "samples": [
+        {
+          "pair": 0,
+          "mode": "current",
+          "loops": 118694,
+          "cpu_seconds": 0.75,
+          "wall_seconds": 0.7482272000052035,
+          "cpu_ns_per_op": 6318.769272246281,
+          "wall_ns_per_op": 6303.833386735669
+        },
+        {
+          "pair": 0,
+          "mode": "tuple-constant",
+          "loops": 118694,
+          "cpu_seconds": 0.734375,
+          "wall_seconds": 0.7486706000054255,
+          "cpu_ns_per_op": 6187.12824574115,
+          "wall_ns_per_op": 6307.569043131291
+        },
+        {
+          "pair": 1,
+          "mode": "tuple-constant",
+          "loops": 118694,
+          "cpu_seconds": 0.734375,
+          "wall_seconds": 0.746820000000298,
+          "cpu_ns_per_op": 6187.12824574115,
+          "wall_ns_per_op": 6291.977690534467
+        },
+        {
+          "pair": 1,
+          "mode": "current",
+          "loops": 118694,
+          "cpu_seconds": 0.765625,
+          "wall_seconds": 0.7566530000040075,
+          "cpu_ns_per_op": 6450.410298751412,
+          "wall_ns_per_op": 6374.8209682377155
+        },
+        {
+          "pair": 2,
+          "mode": "current",
+          "loops": 118694,
+          "cpu_seconds": 0.765625,
+          "wall_seconds": 0.7700113000028068,
+          "cpu_ns_per_op": 6450.410298751412,
+          "wall_ns_per_op": 6487.364988986864
+        },
+        {
+          "pair": 2,
+          "mode": "tuple-constant",
+          "loops": 118694,
+          "cpu_seconds": 0.78125,
+          "wall_seconds": 0.78380790000665,
+          "cpu_ns_per_op": 6582.051325256542,
+          "wall_ns_per_op": 6603.601698541206
+        },
+        {
+          "pair": 3,
+          "mode": "tuple-constant",
+          "loops": 118694,
+          "cpu_seconds": 0.90625,
+          "wall_seconds": 0.9179338999965694,
+          "cpu_ns_per_op": 7635.1795372975885,
+          "wall_ns_per_op": 7733.616695002017
+        },
+        {
+          "pair": 3,
+          "mode": "current",
+          "loops": 118694,
+          "cpu_seconds": 0.875,
+          "wall_seconds": 0.8660403999965638,
+          "cpu_ns_per_op": 7371.897484287327,
+          "wall_ns_per_op": 7296.412624029554
+        },
+        {
+          "pair": 4,
+          "mode": "current",
+          "loops": 118694,
+          "cpu_seconds": 0.765625,
+          "wall_seconds": 0.7670664000033867,
+          "cpu_ns_per_op": 6450.410298751412,
+          "wall_ns_per_op": 6462.554130818631
+        },
+        {
+          "pair": 4,
+          "mode": "tuple-constant",
+          "loops": 118694,
+          "cpu_seconds": 0.734375,
+          "wall_seconds": 0.7653257999918424,
+          "cpu_ns_per_op": 6187.12824574115,
+          "wall_ns_per_op": 6447.889530994342
+        },
+        {
+          "pair": 5,
+          "mode": "tuple-constant",
+          "loops": 118694,
+          "cpu_seconds": 0.78125,
+          "wall_seconds": 0.7804500999918673,
+          "cpu_ns_per_op": 6582.051325256542,
+          "wall_ns_per_op": 6575.312147133531
+        },
+        {
+          "pair": 5,
+          "mode": "current",
+          "loops": 118694,
+          "cpu_seconds": 0.765625,
+          "wall_seconds": 0.7857891000021482,
+          "cpu_ns_per_op": 6450.410298751412,
+          "wall_ns_per_op": 6620.293359412844
+        },
+        {
+          "pair": 6,
+          "mode": "current",
+          "loops": 118694,
+          "cpu_seconds": 0.78125,
+          "wall_seconds": 0.7779283999989275,
+          "cpu_ns_per_op": 6582.051325256542,
+          "wall_ns_per_op": 6554.066759894582
+        },
+        {
+          "pair": 6,
+          "mode": "tuple-constant",
+          "loops": 118694,
+          "cpu_seconds": 0.75,
+          "wall_seconds": 0.7814757000014652,
+          "cpu_ns_per_op": 6318.769272246281,
+          "wall_ns_per_op": 6583.952853568548
+        },
+        {
+          "pair": 7,
+          "mode": "tuple-constant",
+          "loops": 118694,
+          "cpu_seconds": 0.78125,
+          "wall_seconds": 0.7958210000069812,
+          "cpu_ns_per_op": 6582.051325256542,
+          "wall_ns_per_op": 6704.812374736559
+        },
+        {
+          "pair": 7,
+          "mode": "current",
+          "loops": 118694,
+          "cpu_seconds": 0.765625,
+          "wall_seconds": 0.7704494999925373,
+          "cpu_ns_per_op": 6450.410298751412,
+          "wall_ns_per_op": 6491.056835160473
+        },
+        {
+          "pair": 8,
+          "mode": "current",
+          "loops": 118694,
+          "cpu_seconds": 0.75,
+          "wall_seconds": 0.7629212000028929,
+          "cpu_ns_per_op": 6318.769272246281,
+          "wall_ns_per_op": 6427.630714298051
+        },
+        {
+          "pair": 8,
+          "mode": "tuple-constant",
+          "loops": 118694,
+          "cpu_seconds": 0.765625,
+          "wall_seconds": 0.7681508999958169,
+          "cpu_ns_per_op": 6450.410298751412,
+          "wall_ns_per_op": 6471.691071122524
+        }
+      ],
+      "summary": {
+        "current": {
+          "cpu_ns": 6538.1709830881655,
+          "wall_ns": 6487.364988986864
+        },
+        "tuple-constant": {
+          "cpu_ns": 6523.544202365373,
+          "wall_ns": 6575.312147133531
+        }
+      },
+      "change_percent": {
+        "cpu_ns": -0.22371364653244186,
+        "wall_ns": 1.3556684153885001
+      }
+    },
+    {
+      "count": 4,
+      "shape": "strings",
+      "samples": [
+        {
+          "pair": 0,
+          "mode": "current",
+          "loops": 83255,
+          "cpu_seconds": 0.78125,
+          "wall_seconds": 0.7821785999985877,
+          "cpu_ns_per_op": 9383.82079154405,
+          "wall_ns_per_op": 9394.974475990484
+        },
+        {
+          "pair": 0,
+          "mode": "tuple-constant",
+          "loops": 83255,
+          "cpu_seconds": 0.75,
+          "wall_seconds": 0.7642240999994101,
+          "cpu_ns_per_op": 9008.46795988229,
+          "wall_ns_per_op": 9179.317758686087
+        },
+        {
+          "pair": 1,
+          "mode": "tuple-constant",
+          "loops": 83255,
+          "cpu_seconds": 0.75,
+          "wall_seconds": 0.7553321000013966,
+          "cpu_ns_per_op": 9008.46795988229,
+          "wall_ns_per_op": 9072.513362577583
+        },
+        {
+          "pair": 1,
+          "mode": "current",
+          "loops": 83255,
+          "cpu_seconds": 0.765625,
+          "wall_seconds": 0.7593381000042427,
+          "cpu_ns_per_op": 9196.144375713171,
+          "wall_ns_per_op": 9120.630592808153
+        },
+        {
+          "pair": 2,
+          "mode": "current",
+          "loops": 83255,
+          "cpu_seconds": 0.78125,
+          "wall_seconds": 0.7775506000034511,
+          "cpu_ns_per_op": 9383.82079154405,
+          "wall_ns_per_op": 9339.386223091118
+        },
+        {
+          "pair": 2,
+          "mode": "tuple-constant",
+          "loops": 83255,
+          "cpu_seconds": 0.734375,
+          "wall_seconds": 0.7406183999992209,
+          "cpu_ns_per_op": 8820.791544051408,
+          "wall_ns_per_op": 8895.782835856355
+        },
+        {
+          "pair": 3,
+          "mode": "tuple-constant",
+          "loops": 83255,
+          "cpu_seconds": 0.734375,
+          "wall_seconds": 0.7442585000098916,
+          "cpu_ns_per_op": 8820.791544051408,
+          "wall_ns_per_op": 8939.505134945548
+        },
+        {
+          "pair": 3,
+          "mode": "current",
+          "loops": 83255,
+          "cpu_seconds": 0.734375,
+          "wall_seconds": 0.7526585000014165,
+          "cpu_ns_per_op": 8820.791544051408,
+          "wall_ns_per_op": 9040.399975994433
+        },
+        {
+          "pair": 4,
+          "mode": "current",
+          "loops": 83255,
+          "cpu_seconds": 0.734375,
+          "wall_seconds": 0.7562543000094593,
+          "cpu_ns_per_op": 8820.791544051408,
+          "wall_ns_per_op": 9083.590174877896
+        },
+        {
+          "pair": 4,
+          "mode": "tuple-constant",
+          "loops": 83255,
+          "cpu_seconds": 0.71875,
+          "wall_seconds": 0.7453892000048654,
+          "cpu_ns_per_op": 8633.115128220526,
+          "wall_ns_per_op": 8953.086301181496
+        },
+        {
+          "pair": 5,
+          "mode": "tuple-constant",
+          "loops": 83255,
+          "cpu_seconds": 1.078125,
+          "wall_seconds": 1.117020899997442,
+          "cpu_ns_per_op": 12949.67269233079,
+          "wall_ns_per_op": 13416.862650861114
+        },
+        {
+          "pair": 5,
+          "mode": "current",
+          "loops": 83255,
+          "cpu_seconds": 0.984375,
+          "wall_seconds": 1.0451147999992827,
+          "cpu_ns_per_op": 11823.614197345505,
+          "wall_ns_per_op": 12553.1775869231
+        },
+        {
+          "pair": 6,
+          "mode": "current",
+          "loops": 83255,
+          "cpu_seconds": 0.78125,
+          "wall_seconds": 0.8053963999991538,
+          "cpu_ns_per_op": 9383.82079154405,
+          "wall_ns_per_op": 9673.85021919589
+        },
+        {
+          "pair": 6,
+          "mode": "tuple-constant",
+          "loops": 83255,
+          "cpu_seconds": 0.765625,
+          "wall_seconds": 0.7703164999984438,
+          "cpu_ns_per_op": 9196.144375713171,
+          "wall_ns_per_op": 9252.495345606194
+        },
+        {
+          "pair": 7,
+          "mode": "tuple-constant",
+          "loops": 83255,
+          "cpu_seconds": 0.765625,
+          "wall_seconds": 0.7845209999941289,
+          "cpu_ns_per_op": 9196.144375713171,
+          "wall_ns_per_op": 9423.109723069232
+        },
+        {
+          "pair": 7,
+          "mode": "current",
+          "loops": 83255,
+          "cpu_seconds": 0.921875,
+          "wall_seconds": 0.9299701999989338,
+          "cpu_ns_per_op": 11072.90853402198,
+          "wall_ns_per_op": 11170.14233378096
+        },
+        {
+          "pair": 8,
+          "mode": "current",
+          "loops": 83255,
+          "cpu_seconds": 1.0,
+          "wall_seconds": 1.0139271000080043,
+          "cpu_ns_per_op": 12011.290613176387,
+          "wall_ns_per_op": 12178.573058771297
+        },
+        {
+          "pair": 8,
+          "mode": "tuple-constant",
+          "loops": 83255,
+          "cpu_seconds": 0.90625,
+          "wall_seconds": 0.9151558999874396,
+          "cpu_ns_per_op": 10885.2321181911,
+          "wall_ns_per_op": 10992.203471112121
+        }
+      ],
+      "summary": {
+        "current": {
+          "cpu_ns": 9988.555909221335,
+          "wall_ns": 9394.974475990484
+        },
+        "tuple-constant": {
+          "cpu_ns": 9613.203077559572,
+          "wall_ns": 9179.317758686087
+        }
+      },
+      "change_percent": {
+        "cpu_ns": -3.757828810020891,
+        "wall_ns": -2.2954476125030765
+      }
+    },
+    {
+      "count": 10,
+      "shape": "strings",
+      "samples": [
+        {
+          "pair": 0,
+          "mode": "current",
+          "loops": 36070,
+          "cpu_seconds": 0.4375,
+          "wall_seconds": 0.4415530999976909,
+          "cpu_ns_per_op": 12129.193235375658,
+          "wall_ns_per_op": 12241.560853831186
+        },
+        {
+          "pair": 0,
+          "mode": "tuple-constant",
+          "loops": 36070,
+          "cpu_seconds": 0.390625,
+          "wall_seconds": 0.37944959999003913,
+          "cpu_ns_per_op": 10829.636817299695,
+          "wall_ns_per_op": 10519.81147740613
+        },
+        {
+          "pair": 1,
+          "mode": "tuple-constant",
+          "loops": 36070,
+          "cpu_seconds": 0.4375,
+          "wall_seconds": 0.4305688000022201,
+          "cpu_ns_per_op": 12129.193235375658,
+          "wall_ns_per_op": 11937.033545944554
+        },
+        {
+          "pair": 1,
+          "mode": "current",
+          "loops": 36070,
+          "cpu_seconds": 0.46875,
+          "wall_seconds": 0.4719829999958165,
+          "cpu_ns_per_op": 12995.564180759635,
+          "wall_ns_per_op": 13085.195453169295
+        },
+        {
+          "pair": 2,
+          "mode": "current",
+          "loops": 36070,
+          "cpu_seconds": 0.421875,
+          "wall_seconds": 0.4637949000025401,
+          "cpu_ns_per_op": 11696.00776268367,
+          "wall_ns_per_op": 12858.189631342948
+        },
+        {
+          "pair": 2,
+          "mode": "tuple-constant",
+          "loops": 36070,
+          "cpu_seconds": 0.421875,
+          "wall_seconds": 0.43987810000544414,
+          "cpu_ns_per_op": 11696.00776268367,
+          "wall_ns_per_op": 12195.123371373556
+        },
+        {
+          "pair": 3,
+          "mode": "tuple-constant",
+          "loops": 36070,
+          "cpu_seconds": 0.375,
+          "wall_seconds": 0.38254310000047553,
+          "cpu_ns_per_op": 10396.451344607707,
+          "wall_ns_per_op": 10605.575270320918
+        },
+        {
+          "pair": 3,
+          "mode": "current",
+          "loops": 36070,
+          "cpu_seconds": 0.40625,
+          "wall_seconds": 0.40167269999801647,
+          "cpu_ns_per_op": 11262.822289991684,
+          "wall_ns_per_op": 11135.921818630897
+        },
+        {
+          "pair": 4,
+          "mode": "current",
+          "loops": 36070,
+          "cpu_seconds": 0.375,
+          "wall_seconds": 0.38482910000311676,
+          "cpu_ns_per_op": 10396.451344607707,
+          "wall_ns_per_op": 10668.952037790872
+        },
+        {
+          "pair": 4,
+          "mode": "tuple-constant",
+          "loops": 36070,
+          "cpu_seconds": 0.390625,
+          "wall_seconds": 0.3948392999882344,
+          "cpu_ns_per_op": 10829.636817299695,
+          "wall_ns_per_op": 10946.473523377721
+        },
+        {
+          "pair": 5,
+          "mode": "tuple-constant",
+          "loops": 36070,
+          "cpu_seconds": 0.375,
+          "wall_seconds": 0.38346960001217667,
+          "cpu_ns_per_op": 10396.451344607707,
+          "wall_ns_per_op": 10631.261436434064
+        },
+        {
+          "pair": 5,
+          "mode": "current",
+          "loops": 36070,
+          "cpu_seconds": 0.375,
+          "wall_seconds": 0.39452519999758806,
+          "cpu_ns_per_op": 10396.451344607707,
+          "wall_ns_per_op": 10937.765455990797
+        },
+        {
+          "pair": 6,
+          "mode": "current",
+          "loops": 36070,
+          "cpu_seconds": 0.375,
+          "wall_seconds": 0.3894739999959711,
+          "cpu_ns_per_op": 10396.451344607707,
+          "wall_ns_per_op": 10797.726642527616
+        },
+        {
+          "pair": 6,
+          "mode": "tuple-constant",
+          "loops": 36070,
+          "cpu_seconds": 0.390625,
+          "wall_seconds": 0.38933540000289213,
+          "cpu_ns_per_op": 10829.636817299695,
+          "wall_ns_per_op": 10793.884114302527
+        },
+        {
+          "pair": 7,
+          "mode": "tuple-constant",
+          "loops": 36070,
+          "cpu_seconds": 0.390625,
+          "wall_seconds": 0.38280740000482183,
+          "cpu_ns_per_op": 10829.636817299695,
+          "wall_ns_per_op": 10612.902689349094
+        },
+        {
+          "pair": 7,
+          "mode": "current",
+          "loops": 36070,
+          "cpu_seconds": 0.40625,
+          "wall_seconds": 0.39843260000634473,
+          "cpu_ns_per_op": 11262.822289991684,
+          "wall_ns_per_op": 11046.093706857353
+        },
+        {
+          "pair": 8,
+          "mode": "current",
+          "loops": 36070,
+          "cpu_seconds": 0.4375,
+          "wall_seconds": 0.46802020000177436,
+          "cpu_ns_per_op": 12129.193235375658,
+          "wall_ns_per_op": 12975.331300298707
+        },
+        {
+          "pair": 8,
+          "mode": "tuple-constant",
+          "loops": 36070,
+          "cpu_seconds": 0.5,
+          "wall_seconds": 0.5177832000044873,
+          "cpu_ns_per_op": 13861.93512614361,
+          "wall_ns_per_op": 14354.954255738488
+        }
+      ],
+      "summary": {
+        "current": {
+          "cpu_ns": 11407.217447555679,
+          "wall_ns": 11135.921818630897
+        },
+        "tuple-constant": {
+          "cpu_ns": 11310.95400917968,
+          "wall_ns": 10793.884114302527
+        }
+      },
+      "change_percent": {
+        "cpu_ns": -0.8438818565400852,
+        "wall_ns": -3.0714808338194843
+      }
+    },
+    {
+      "count": 10,
+      "shape": "mixed",
+      "samples": [
+        {
+          "pair": 0,
+          "mode": "current",
+          "loops": 53573,
+          "cpu_seconds": 0.765625,
+          "wall_seconds": 0.8555845999944722,
+          "cpu_ns_per_op": 14291.247456741268,
+          "wall_ns_per_op": 15970.444066870854
+        },
+        {
+          "pair": 0,
+          "mode": "tuple-constant",
+          "loops": 53573,
+          "cpu_seconds": 0.578125,
+          "wall_seconds": 0.6140468999947188,
+          "cpu_ns_per_op": 10791.350120396468,
+          "wall_ns_per_op": 11461.872584972258
+        },
+        {
+          "pair": 1,
+          "mode": "tuple-constant",
+          "loops": 53573,
+          "cpu_seconds": 0.53125,
+          "wall_seconds": 0.5337828999909107,
+          "cpu_ns_per_op": 9916.375786310267,
+          "wall_ns_per_op": 9963.65519927782
+        },
+        {
+          "pair": 1,
+          "mode": "current",
+          "loops": 53573,
+          "cpu_seconds": 0.5625,
+          "wall_seconds": 0.5740045999991708,
+          "cpu_ns_per_op": 10499.692009034401,
+          "wall_ns_per_op": 10714.438243129389
+        },
+        {
+          "pair": 2,
+          "mode": "current",
+          "loops": 53573,
+          "cpu_seconds": 0.53125,
+          "wall_seconds": 0.5646238000044832,
+          "cpu_ns_per_op": 9916.375786310267,
+          "wall_ns_per_op": 10539.335112920375
+        },
+        {
+          "pair": 2,
+          "mode": "tuple-constant",
+          "loops": 53573,
+          "cpu_seconds": 0.546875,
+          "wall_seconds": 0.5422187000076519,
+          "cpu_ns_per_op": 10208.033897672334,
+          "wall_ns_per_op": 10121.118847323314
+        },
+        {
+          "pair": 3,
+          "mode": "tuple-constant",
+          "loops": 53573,
+          "cpu_seconds": 0.5625,
+          "wall_seconds": 0.554861600001459,
+          "cpu_ns_per_op": 10499.692009034401,
+          "wall_ns_per_op": 10357.112724720642
+        },
+        {
+          "pair": 3,
+          "mode": "current",
+          "loops": 53573,
+          "cpu_seconds": 0.578125,
+          "wall_seconds": 0.5778494999976829,
+          "cpu_ns_per_op": 10791.350120396468,
+          "wall_ns_per_op": 10786.20760453368
+        },
+        {
+          "pair": 4,
+          "mode": "current",
+          "loops": 53573,
+          "cpu_seconds": 0.546875,
+          "wall_seconds": 0.5476288000063505,
+          "cpu_ns_per_op": 10208.033897672334,
+          "wall_ns_per_op": 10222.104418388937
+        },
+        {
+          "pair": 4,
+          "mode": "tuple-constant",
+          "loops": 53573,
+          "cpu_seconds": 0.53125,
+          "wall_seconds": 0.5311102999985451,
+          "cpu_ns_per_op": 9916.375786310267,
+          "wall_ns_per_op": 9913.768129441045
+        },
+        {
+          "pair": 5,
+          "mode": "tuple-constant",
+          "loops": 53573,
+          "cpu_seconds": 0.703125,
+          "wall_seconds": 0.6947027999995044,
+          "cpu_ns_per_op": 13124.615011293003,
+          "wall_ns_per_op": 12967.40522277088
+        },
+        {
+          "pair": 5,
+          "mode": "current",
+          "loops": 53573,
+          "cpu_seconds": 0.625,
+          "wall_seconds": 0.6432026999973459,
+          "cpu_ns_per_op": 11666.324454482668,
+          "wall_ns_per_op": 12006.098221069306
+        },
+        {
+          "pair": 6,
+          "mode": "current",
+          "loops": 53573,
+          "cpu_seconds": 0.65625,
+          "wall_seconds": 0.6556918999995105,
+          "cpu_ns_per_op": 12249.640677206802,
+          "wall_ns_per_op": 12239.223116112791
+        },
+        {
+          "pair": 6,
+          "mode": "tuple-constant",
+          "loops": 53573,
+          "cpu_seconds": 0.578125,
+          "wall_seconds": 0.5706993000057992,
+          "cpu_ns_per_op": 10791.350120396468,
+          "wall_ns_per_op": 10652.741119702074
+        },
+        {
+          "pair": 7,
+          "mode": "tuple-constant",
+          "loops": 53573,
+          "cpu_seconds": 0.5,
+          "wall_seconds": 0.5335466999968048,
+          "cpu_ns_per_op": 9333.059563586135,
+          "wall_ns_per_op": 9959.246262050003
+        },
+        {
+          "pair": 7,
+          "mode": "current",
+          "loops": 53573,
+          "cpu_seconds": 0.53125,
+          "wall_seconds": 0.5416787000140175,
+          "cpu_ns_per_op": 9916.375786310267,
+          "wall_ns_per_op": 10111.039143113463
+        },
+        {
+          "pair": 8,
+          "mode": "current",
+          "loops": 53573,
+          "cpu_seconds": 0.53125,
+          "wall_seconds": 0.5427698999992572,
+          "cpu_ns_per_op": 9916.375786310267,
+          "wall_ns_per_op": 10131.407612029516
+        },
+        {
+          "pair": 8,
+          "mode": "tuple-constant",
+          "loops": 53573,
+          "cpu_seconds": 0.5625,
+          "wall_seconds": 0.5809448000072734,
+          "cpu_ns_per_op": 10499.692009034401,
+          "wall_ns_per_op": 10843.984843247035
+        }
+      ],
+      "summary": {
+        "current": {
+          "cpu_ns": 11050.601774940527,
+          "wall_ns": 10714.438243129389
+        },
+        "tuple-constant": {
+          "cpu_ns": 10564.504922670416,
+          "wall_ns": 10357.112724720642
+        }
+      },
+      "change_percent": {
+        "cpu_ns": -4.3988269794721475,
+        "wall_ns": -3.3349906948026975
+      }
+    }
+  ]
+}

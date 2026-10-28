@@ -1,0 +1,763 @@
+{
+  "metadata": {
+    "python": "3.13.14 (tags/v3.13.14:fd17997, Jun 10 2026, 13:03:48) [MSC v.1944 64 bit (AMD64)]",
+    "pairs": 9,
+    "target_seconds": 0.8,
+    "affinity": [
+      0
+    ],
+    "harness_sha256": "a912dfb9e1ec51b70bd2899e2a74ba278f48b1637b042616c0251e31c301809a",
+    "source_sha256": {
+      "opentelemetry-api\\src\\opentelemetry\\trace\\propagation\\tracecontext.py": "149879d5e19bcf9c3533e484e4e80c6c4169649910d84941042b00971c67947f",
+      "opentelemetry-api\\src\\opentelemetry\\trace\\span.py": "67886d3802f7d87adcc6bc26d790ecef0b1fb89b1aed3e28f7c6d73b0b739e38",
+      "opentelemetry-api\\src\\opentelemetry\\propagators\\textmap.py": "d9cd853b30d309fdb7d80d88d9ac729e3927bfa011b384713be5bb627cdc6e33"
+    },
+    "candidate_sources": {
+      "extract": "def extract(\n    self,\n    carrier: textmap.CarrierT,\n    context: Context | None = None,\n    getter: textmap.Getter[textmap.CarrierT] = textmap.default_getter,\n) -> Context:\n    \"\"\"Extracts SpanContext from the carrier.\n\n    See `opentelemetry.propagators.textmap.TextMapPropagator.extract`\n    \"\"\"\n    if context is None:\n        context = Context()\n\n    header = getter.get(carrier, self._TRACEPARENT_HEADER_NAME)\n\n    if not header:\n        return context\n\n    match = self._TRACEPARENT_HEADER_FORMAT_RE.search(header[0])\n    if not match:\n        return context\n\n    version, trace_id, span_id, trace_flags, suffix = match.groups()\n\n    if trace_id == \"0\" * 32 or span_id == \"0\" * 16:\n        return context\n\n    if version == \"00\":\n        if suffix:\n            return context\n    if version == \"ff\":\n        return context\n\n    tracestate_headers = getter.get(carrier, self._TRACESTATE_HEADER_NAME)\n    if tracestate_headers is None:\n        tracestate = None\n    elif (\n        # multiple header fields are combined with \",\" (RFC 9110, section 5.3)\n        sum(len(header) for header in tracestate_headers) + len(tracestate_headers) - 1\n        > _TRACECONTEXT_MAXIMUM_TRACESTATE_LENGTH\n    ):\n        _logger.warning(\n            \"tracestate header exceeded the maximum length of %d characters\",\n            _TRACECONTEXT_MAXIMUM_TRACESTATE_LENGTH,\n        )\n        tracestate = None\n    else:\n        tracestate = TraceState.from_header(tracestate_headers)\n\n    span_context = trace.SpanContext(\n        trace_id=int(trace_id, 16),\n        span_id=int(span_id, 16),\n        is_remote=True,\n        trace_flags=trace.TraceFlags(int(trace_flags, 16)),\n        trace_state=tracestate,\n    )\n    return trace.set_span_in_context(trace.NonRecordingSpan(span_context), context)\n",
+      "tracestate": "def from_header(cls, header_list: list[str]) -> TraceState:\n    \"\"\"Parses one or more w3c tracestate header into a TraceState.\n\n    Args:\n        header_list: one or more w3c tracestate headers.\n\n    Returns:\n        A valid TraceState that contains values extracted from\n        the tracestate header.\n\n        If the format of one headers is illegal, all values will\n        be discarded and an empty tracestate will be returned.\n\n        If the number of keys is beyond the maximum, all values\n        will be discarded and an empty tracestate will be returned.\n    \"\"\"\n    pairs = {}  # type: dict[str, str]\n    for header in header_list:\n        for member in header.split(\",\"):\n            # remove optional whitespace (RFC 9110, section 5.6.3)\n            member = member.strip(\" \\t\")\n            # empty members are valid, but no need to process further.\n            if not member:\n                continue\n            match = _member_pattern.fullmatch(member)\n            if not match:\n                _logger.warning(\n                    \"Member doesn't match the w3c identifiers format %s\",\n                    member,\n                )\n                return cls()\n            key, value = match.groups()\n            # duplicate keys are not legal in header\n            if key in pairs:\n                return cls()\n            pairs[key] = value\n    if cls is TraceState and len(pairs) <= _TRACECONTEXT_MAXIMUM_TRACESTATE_KEYS:\n        result = cls()\n        result._dict = pairs\n        return result\n    return cls(list(pairs.items()))\n",
+      "getter": "def get(self, carrier, key):\n    val = carrier.get(key, None)\n    if val is None:\n        return None\n    if isinstance(val, str):\n        return [val]\n    if isinstance(val, Iterable):\n        return list(val)\n    return [val]\n"
+    }
+  },
+  "results": [
+    {
+      "case": "default_strings/no-state",
+      "loops_per_batch": 253116,
+      "summary": {
+        "baseline": {
+          "cpu_ns_op_pooled": 3203.1317217753476,
+          "wall_ns_op_median": 3246.654103257005,
+          "min_cpu_seconds": 0.78125
+        },
+        "combined": {
+          "cpu_ns_op_pooled": 2270.3139184317774,
+          "wall_ns_op_median": 2228.1120118838794,
+          "min_cpu_seconds": 0.53125
+        }
+      },
+      "change_percent": {
+        "cpu_ns_op_pooled": -29.1220556745182,
+        "wall_ns_op_median": -31.3720543975207
+      },
+      "samples": [
+        {
+          "pair": 0,
+          "mode": "baseline",
+          "loops": 253116,
+          "cpu_ns": 796875000,
+          "wall_ns": 794243000
+        },
+        {
+          "pair": 0,
+          "mode": "combined",
+          "loops": 253116,
+          "cpu_ns": 531250000,
+          "wall_ns": 544392000
+        },
+        {
+          "pair": 1,
+          "mode": "combined",
+          "loops": 253116,
+          "cpu_ns": 546875000,
+          "wall_ns": 550048600
+        },
+        {
+          "pair": 1,
+          "mode": "baseline",
+          "loops": 253116,
+          "cpu_ns": 781250000,
+          "wall_ns": 792363500
+        },
+        {
+          "pair": 2,
+          "mode": "baseline",
+          "loops": 253116,
+          "cpu_ns": 812500000,
+          "wall_ns": 816641600
+        },
+        {
+          "pair": 2,
+          "mode": "combined",
+          "loops": 253116,
+          "cpu_ns": 625000000,
+          "wall_ns": 611905400
+        },
+        {
+          "pair": 3,
+          "mode": "combined",
+          "loops": 253116,
+          "cpu_ns": 562500000,
+          "wall_ns": 567353700
+        },
+        {
+          "pair": 3,
+          "mode": "baseline",
+          "loops": 253116,
+          "cpu_ns": 781250000,
+          "wall_ns": 808907200
+        },
+        {
+          "pair": 4,
+          "mode": "baseline",
+          "loops": 253116,
+          "cpu_ns": 828125000,
+          "wall_ns": 821780100
+        },
+        {
+          "pair": 4,
+          "mode": "combined",
+          "loops": 253116,
+          "cpu_ns": 609375000,
+          "wall_ns": 629548000
+        },
+        {
+          "pair": 5,
+          "mode": "combined",
+          "loops": 253116,
+          "cpu_ns": 578125000,
+          "wall_ns": 563970800
+        },
+        {
+          "pair": 5,
+          "mode": "baseline",
+          "loops": 253116,
+          "cpu_ns": 828125000,
+          "wall_ns": 826378100
+        },
+        {
+          "pair": 6,
+          "mode": "baseline",
+          "loops": 253116,
+          "cpu_ns": 828125000,
+          "wall_ns": 830523400
+        },
+        {
+          "pair": 6,
+          "mode": "combined",
+          "loops": 253116,
+          "cpu_ns": 593750000,
+          "wall_ns": 592093300
+        },
+        {
+          "pair": 7,
+          "mode": "combined",
+          "loops": 253116,
+          "cpu_ns": 562500000,
+          "wall_ns": 558791000
+        },
+        {
+          "pair": 7,
+          "mode": "baseline",
+          "loops": 253116,
+          "cpu_ns": 812500000,
+          "wall_ns": 826639000
+        },
+        {
+          "pair": 8,
+          "mode": "baseline",
+          "loops": 253116,
+          "cpu_ns": 828125000,
+          "wall_ns": 830644600
+        },
+        {
+          "pair": 8,
+          "mode": "combined",
+          "loops": 253116,
+          "cpu_ns": 562500000,
+          "wall_ns": 563371400
+        }
+      ]
+    },
+    {
+      "case": "default_strings/one-state",
+      "loops_per_batch": 153030,
+      "summary": {
+        "baseline": {
+          "cpu_ns_op_pooled": 6035.490499321121,
+          "wall_ns_op_median": 5776.393517610926,
+          "min_cpu_seconds": 0.8125
+        },
+        "combined": {
+          "cpu_ns_op_pooled": 3494.2313417122277,
+          "wall_ns_op_median": 3457.2704698425146,
+          "min_cpu_seconds": 0.515625
+        }
+      },
+      "change_percent": {
+        "cpu_ns_op_pooled": -42.10526315789475,
+        "wall_ns_op_median": -40.14828700118726
+      },
+      "samples": [
+        {
+          "pair": 0,
+          "mode": "baseline",
+          "loops": 153030,
+          "cpu_ns": 812500000,
+          "wall_ns": 820281500
+        },
+        {
+          "pair": 0,
+          "mode": "combined",
+          "loops": 153030,
+          "cpu_ns": 515625000,
+          "wall_ns": 522793100
+        },
+        {
+          "pair": 1,
+          "mode": "combined",
+          "loops": 153030,
+          "cpu_ns": 531250000,
+          "wall_ns": 531135500
+        },
+        {
+          "pair": 1,
+          "mode": "baseline",
+          "loops": 153030,
+          "cpu_ns": 812500000,
+          "wall_ns": 812035700
+        },
+        {
+          "pair": 2,
+          "mode": "baseline",
+          "loops": 153030,
+          "cpu_ns": 859375000,
+          "wall_ns": 883961500
+        },
+        {
+          "pair": 2,
+          "mode": "combined",
+          "loops": 153030,
+          "cpu_ns": 515625000,
+          "wall_ns": 532610500
+        },
+        {
+          "pair": 3,
+          "mode": "combined",
+          "loops": 153030,
+          "cpu_ns": 531250000,
+          "wall_ns": 524645700
+        },
+        {
+          "pair": 3,
+          "mode": "baseline",
+          "loops": 153030,
+          "cpu_ns": 953125000,
+          "wall_ns": 976098500
+        },
+        {
+          "pair": 4,
+          "mode": "baseline",
+          "loops": 153030,
+          "cpu_ns": 1187500000,
+          "wall_ns": 1217194000
+        },
+        {
+          "pair": 4,
+          "mode": "combined",
+          "loops": 153030,
+          "cpu_ns": 531250000,
+          "wall_ns": 523831300
+        },
+        {
+          "pair": 5,
+          "mode": "combined",
+          "loops": 153030,
+          "cpu_ns": 562500000,
+          "wall_ns": 560688500
+        },
+        {
+          "pair": 5,
+          "mode": "baseline",
+          "loops": 153030,
+          "cpu_ns": 875000000,
+          "wall_ns": 872095300
+        },
+        {
+          "pair": 6,
+          "mode": "baseline",
+          "loops": 153030,
+          "cpu_ns": 859375000,
+          "wall_ns": 860327100
+        },
+        {
+          "pair": 6,
+          "mode": "combined",
+          "loops": 153030,
+          "cpu_ns": 515625000,
+          "wall_ns": 529066100
+        },
+        {
+          "pair": 7,
+          "mode": "combined",
+          "loops": 153030,
+          "cpu_ns": 515625000,
+          "wall_ns": 517763300
+        },
+        {
+          "pair": 7,
+          "mode": "baseline",
+          "loops": 153030,
+          "cpu_ns": 1000000000,
+          "wall_ns": 1020779000
+        },
+        {
+          "pair": 8,
+          "mode": "baseline",
+          "loops": 153030,
+          "cpu_ns": 953125000,
+          "wall_ns": 965217600
+        },
+        {
+          "pair": 8,
+          "mode": "combined",
+          "loops": 153030,
+          "cpu_ns": 593750000,
+          "wall_ns": 586050100
+        }
+      ]
+    },
+    {
+      "case": "default_strings/three-state",
+      "loops_per_batch": 105105,
+      "summary": {
+        "baseline": {
+          "cpu_ns_op_pooled": 7598.221883936169,
+          "wall_ns_op_median": 7635.8993387564815,
+          "min_cpu_seconds": 0.765625
+        },
+        "combined": {
+          "cpu_ns_op_pooled": 4261.611404468547,
+          "wall_ns_op_median": 4243.698206555349,
+          "min_cpu_seconds": 0.4375
+        }
+      },
+      "change_percent": {
+        "cpu_ns_op_pooled": -43.913043478260875,
+        "wall_ns_op_median": -44.42438253453401
+      },
+      "samples": [
+        {
+          "pair": 0,
+          "mode": "baseline",
+          "loops": 105105,
+          "cpu_ns": 812500000,
+          "wall_ns": 823730200
+        },
+        {
+          "pair": 0,
+          "mode": "combined",
+          "loops": 105105,
+          "cpu_ns": 437500000,
+          "wall_ns": 438316700
+        },
+        {
+          "pair": 1,
+          "mode": "combined",
+          "loops": 105105,
+          "cpu_ns": 468750000,
+          "wall_ns": 481425700
+        },
+        {
+          "pair": 1,
+          "mode": "baseline",
+          "loops": 105105,
+          "cpu_ns": 781250000,
+          "wall_ns": 784885600
+        },
+        {
+          "pair": 2,
+          "mode": "baseline",
+          "loops": 105105,
+          "cpu_ns": 796875000,
+          "wall_ns": 795251300
+        },
+        {
+          "pair": 2,
+          "mode": "combined",
+          "loops": 105105,
+          "cpu_ns": 453125000,
+          "wall_ns": 446033900
+        },
+        {
+          "pair": 3,
+          "mode": "combined",
+          "loops": 105105,
+          "cpu_ns": 453125000,
+          "wall_ns": 446760600
+        },
+        {
+          "pair": 3,
+          "mode": "baseline",
+          "loops": 105105,
+          "cpu_ns": 796875000,
+          "wall_ns": 796599000
+        },
+        {
+          "pair": 4,
+          "mode": "baseline",
+          "loops": 105105,
+          "cpu_ns": 765625000,
+          "wall_ns": 795816400
+        },
+        {
+          "pair": 4,
+          "mode": "combined",
+          "loops": 105105,
+          "cpu_ns": 437500000,
+          "wall_ns": 443009900
+        },
+        {
+          "pair": 5,
+          "mode": "combined",
+          "loops": 105105,
+          "cpu_ns": 453125000,
+          "wall_ns": 471326000
+        },
+        {
+          "pair": 5,
+          "mode": "baseline",
+          "loops": 105105,
+          "cpu_ns": 859375000,
+          "wall_ns": 878802100
+        },
+        {
+          "pair": 6,
+          "mode": "baseline",
+          "loops": 105105,
+          "cpu_ns": 812500000,
+          "wall_ns": 813206900
+        },
+        {
+          "pair": 6,
+          "mode": "combined",
+          "loops": 105105,
+          "cpu_ns": 437500000,
+          "wall_ns": 444922200
+        },
+        {
+          "pair": 7,
+          "mode": "combined",
+          "loops": 105105,
+          "cpu_ns": 437500000,
+          "wall_ns": 439698300
+        },
+        {
+          "pair": 7,
+          "mode": "baseline",
+          "loops": 105105,
+          "cpu_ns": 781250000,
+          "wall_ns": 802571200
+        },
+        {
+          "pair": 8,
+          "mode": "baseline",
+          "loops": 105105,
+          "cpu_ns": 781250000,
+          "wall_ns": 804371300
+        },
+        {
+          "pair": 8,
+          "mode": "combined",
+          "loops": 105105,
+          "cpu_ns": 453125000,
+          "wall_ns": 462894900
+        }
+      ]
+    },
+    {
+      "case": "custom_lists/no-state",
+      "loops_per_batch": 239865,
+      "summary": {
+        "baseline": {
+          "cpu_ns_op_pooled": 3199.1374777942224,
+          "wall_ns_op_median": 3042.1320326016717,
+          "min_cpu_seconds": 0.703125
+        },
+        "combined": {
+          "cpu_ns_op_pooled": 2279.9282929981446,
+          "wall_ns_op_median": 2224.8089550372083,
+          "min_cpu_seconds": 0.5
+        }
+      },
+      "change_percent": {
+        "cpu_ns_op_pooled": -28.733031674208153,
+        "wall_ns_op_median": -26.866785162689922
+      },
+      "samples": [
+        {
+          "pair": 0,
+          "mode": "baseline",
+          "loops": 239865,
+          "cpu_ns": 718750000,
+          "wall_ns": 713303900
+        },
+        {
+          "pair": 0,
+          "mode": "combined",
+          "loops": 239865,
+          "cpu_ns": 531250000,
+          "wall_ns": 528921900
+        },
+        {
+          "pair": 1,
+          "mode": "combined",
+          "loops": 239865,
+          "cpu_ns": 531250000,
+          "wall_ns": 533653800
+        },
+        {
+          "pair": 1,
+          "mode": "baseline",
+          "loops": 239865,
+          "cpu_ns": 734375000,
+          "wall_ns": 727076600
+        },
+        {
+          "pair": 2,
+          "mode": "baseline",
+          "loops": 239865,
+          "cpu_ns": 718750000,
+          "wall_ns": 736114600
+        },
+        {
+          "pair": 2,
+          "mode": "combined",
+          "loops": 239865,
+          "cpu_ns": 500000000,
+          "wall_ns": 515346300
+        },
+        {
+          "pair": 3,
+          "mode": "combined",
+          "loops": 239865,
+          "cpu_ns": 515625000,
+          "wall_ns": 521397200
+        },
+        {
+          "pair": 3,
+          "mode": "baseline",
+          "loops": 239865,
+          "cpu_ns": 703125000,
+          "wall_ns": 729701000
+        },
+        {
+          "pair": 4,
+          "mode": "baseline",
+          "loops": 239865,
+          "cpu_ns": 718750000,
+          "wall_ns": 721120300
+        },
+        {
+          "pair": 4,
+          "mode": "combined",
+          "loops": 239865,
+          "cpu_ns": 578125000,
+          "wall_ns": 581161300
+        },
+        {
+          "pair": 5,
+          "mode": "combined",
+          "loops": 239865,
+          "cpu_ns": 562500000,
+          "wall_ns": 558777700
+        },
+        {
+          "pair": 5,
+          "mode": "baseline",
+          "loops": 239865,
+          "cpu_ns": 859375000,
+          "wall_ns": 876047700
+        },
+        {
+          "pair": 6,
+          "mode": "baseline",
+          "loops": 239865,
+          "cpu_ns": 703125000,
+          "wall_ns": 725760000
+        },
+        {
+          "pair": 6,
+          "mode": "combined",
+          "loops": 239865,
+          "cpu_ns": 531250000,
+          "wall_ns": 534660700
+        },
+        {
+          "pair": 7,
+          "mode": "combined",
+          "loops": 239865,
+          "cpu_ns": 515625000,
+          "wall_ns": 529537500
+        },
+        {
+          "pair": 7,
+          "mode": "baseline",
+          "loops": 239865,
+          "cpu_ns": 812500000,
+          "wall_ns": 829343300
+        },
+        {
+          "pair": 8,
+          "mode": "baseline",
+          "loops": 239865,
+          "cpu_ns": 937500000,
+          "wall_ns": 943688600
+        },
+        {
+          "pair": 8,
+          "mode": "combined",
+          "loops": 239865,
+          "cpu_ns": 656250000,
+          "wall_ns": 653968700
+        }
+      ]
+    },
+    {
+      "case": "custom_lists/three-state",
+      "loops_per_batch": 117868,
+      "summary": {
+        "baseline": {
+          "cpu_ns_op_pooled": 6996.409354343654,
+          "wall_ns_op_median": 7006.4461940475785,
+          "min_cpu_seconds": 0.796875
+        },
+        "combined": {
+          "cpu_ns_op_pooled": 4242.033461159942,
+          "wall_ns_op_median": 4254.370142871687,
+          "min_cpu_seconds": 0.484375
+        }
+      },
+      "change_percent": {
+        "cpu_ns_op_pooled": -39.368421052631575,
+        "wall_ns_op_median": -39.27920053841212
+      },
+      "samples": [
+        {
+          "pair": 0,
+          "mode": "baseline",
+          "loops": 117868,
+          "cpu_ns": 812500000,
+          "wall_ns": 819084400
+        },
+        {
+          "pair": 0,
+          "mode": "combined",
+          "loops": 117868,
+          "cpu_ns": 500000000,
+          "wall_ns": 499362000
+        },
+        {
+          "pair": 1,
+          "mode": "combined",
+          "loops": 117868,
+          "cpu_ns": 484375000,
+          "wall_ns": 490475800
+        },
+        {
+          "pair": 1,
+          "mode": "baseline",
+          "loops": 117868,
+          "cpu_ns": 828125000,
+          "wall_ns": 831262000
+        },
+        {
+          "pair": 2,
+          "mode": "baseline",
+          "loops": 117868,
+          "cpu_ns": 812500000,
+          "wall_ns": 818732500
+        },
+        {
+          "pair": 2,
+          "mode": "combined",
+          "loops": 117868,
+          "cpu_ns": 515625000,
+          "wall_ns": 501891100
+        },
+        {
+          "pair": 3,
+          "mode": "combined",
+          "loops": 117868,
+          "cpu_ns": 500000000,
+          "wall_ns": 501454100
+        },
+        {
+          "pair": 3,
+          "mode": "baseline",
+          "loops": 117868,
+          "cpu_ns": 796875000,
+          "wall_ns": 823398600
+        },
+        {
+          "pair": 4,
+          "mode": "baseline",
+          "loops": 117868,
+          "cpu_ns": 828125000,
+          "wall_ns": 824841600
+        },
+        {
+          "pair": 4,
+          "mode": "combined",
+          "loops": 117868,
+          "cpu_ns": 500000000,
+          "wall_ns": 506232600
+        },
+        {
+          "pair": 5,
+          "mode": "combined",
+          "loops": 117868,
+          "cpu_ns": 500000000,
+          "wall_ns": 515527800
+        },
+        {
+          "pair": 5,
+          "mode": "baseline",
+          "loops": 117868,
+          "cpu_ns": 828125000,
+          "wall_ns": 825835800
+        },
+        {
+          "pair": 6,
+          "mode": "baseline",
+          "loops": 117868,
+          "cpu_ns": 812500000,
+          "wall_ns": 828644600
+        },
+        {
+          "pair": 6,
+          "mode": "combined",
+          "loops": 117868,
+          "cpu_ns": 500000000,
+          "wall_ns": 497294700
+        },
+        {
+          "pair": 7,
+          "mode": "combined",
+          "loops": 117868,
+          "cpu_ns": 500000000,
+          "wall_ns": 501350100
+        },
+        {
+          "pair": 7,
+          "mode": "baseline",
+          "loops": 117868,
+          "cpu_ns": 859375000,
+          "wall_ns": 857781200
+        },
+        {
+          "pair": 8,
+          "mode": "baseline",
+          "loops": 117868,
+          "cpu_ns": 843750000,
+          "wall_ns": 831451000
+        },
+        {
+          "pair": 8,
+          "mode": "combined",
+          "loops": 117868,
+          "cpu_ns": 500000000,
+          "wall_ns": 511763300
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,37 @@
+{
+  "recorded": "2026-10-15",
+  "source_kind": "Observed tool output in this conversation, not a newly executed suite.",
+  "scope": "Retained production working-tree changes, before creation of the research corpus.",
+  "api": {
+    "passed": 297,
+    "skipped": 2
+  },
+  "sdk": {
+    "passed": 917,
+    "skipped": 20,
+    "notes": [
+      "Suite exited successfully; existing atexit executor-shutdown messages remained."
+    ]
+  },
+  "benchmark_smoke": {
+    "passed": 75,
+    "mode": "--benchmark-disable"
+  },
+  "static_checks": {
+    "ruff_check": "passed",
+    "ruff_format": "9 changed Python files already formatted",
+    "pylint": "10.00/10, exit 0",
+    "pyright": "0 errors, 0 warnings; explicit venv python path and Linux platform to model fork-capable CI"
+  },
+  "prototype_preflights": [
+    "Propagation alternatives: 11770 header cases matched original parser for context identity, retained values, getter calls and span fields.",
+    "Scope candidates: lazy creation, nesting/restoration, end flag, sync/async decorator reuse, Exception, StopIteration and KeyboardInterrupt.",
+    "Parent reuse: 90 parent/sampler combinations including local/remote, sampled flags, invalid IDs, custom delegates and subclass overrides.",
+    "Counted batch confirmation: exported count equals requested spans after each measured/warmup batch; max_queue_size=131072; drain included."
+  ],
+  "not_claimed": [
+    "Full regression validation of any runtime prototype",
+    "Current research corpus benchmark reruns",
+    "Cumulative application CPU savings"
+  ]
+}

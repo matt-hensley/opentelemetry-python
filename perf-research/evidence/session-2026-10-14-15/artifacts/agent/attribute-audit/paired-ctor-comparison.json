@@ -1,0 +1,57 @@
+{
+  "provenance": {
+    "candidate_file": ".agent\\attribute-audit\\ctor-candidate.py",
+    "candidate_sha256": "b29c557e8109d6444dc3b38967cc879230e3b794a04b6e3ada666fb4000b7c35",
+    "adoption_only_source_sha256": "429b347acac243dd63b595372a76c4b3f094adaf659730ce149548ea9e000d28",
+    "loops_per_sample": 50000,
+    "pairs": 9,
+    "timing": "time.process_time_ns; same provider/tracer per case; alternating lane order"
+  },
+  "results": {
+    "empty": {
+      "baseline_median_ns_per_op": 6250.0,
+      "candidate_median_ns_per_op": 6250.0,
+      "median_cpu_change_percent": 0.0,
+      "raw_samples_cpu_ns": {
+        "baseline_cpu_ns": [281250000,312500000,312500000,328125000,312500000,328125000,328125000,312500000,312500000],
+        "candidate_cpu_ns": [312500000,312500000,296875000,312500000,343750000,343750000,312500000,312500000,312500000]
+      }
+    },
+    "4_strings": {
+      "baseline_median_ns_per_op": 9062.5,
+      "candidate_median_ns_per_op": 8750.0,
+      "median_cpu_change_percent": -3.4482758620689613,
+      "raw_samples_cpu_ns": {
+        "baseline_cpu_ns": [453125000,484375000,453125000,453125000,437500000,468750000,453125000,437500000,437500000],
+        "candidate_cpu_ns": [468750000,484375000,453125000,421875000,437500000,484375000,421875000,437500000,437500000]
+      }
+    },
+    "4_mixed": {
+      "baseline_median_ns_per_op": 9062.5,
+      "candidate_median_ns_per_op": 8750.0,
+      "median_cpu_change_percent": -3.4482758620689613,
+      "raw_samples_cpu_ns": {
+        "baseline_cpu_ns": [453125000,500000000,453125000,453125000,453125000,437500000,453125000,453125000,453125000],
+        "candidate_cpu_ns": [437500000,421875000,437500000,437500000,437500000,437500000,437500000,437500000,437500000]
+      }
+    },
+    "10_strings": {
+      "baseline_median_ns_per_op": 10625.0,
+      "candidate_median_ns_per_op": 10312.5,
+      "median_cpu_change_percent": -2.941176470588236,
+      "raw_samples_cpu_ns": {
+        "baseline_cpu_ns": [531250000,578125000,562500000,531250000,515625000,531250000,531250000,531250000,546875000],
+        "candidate_cpu_ns": [500000000,500000000,562500000,593750000,531250000,515625000,546875000,500000000,515625000]
+      }
+    },
+    "10_mixed": {
+      "baseline_median_ns_per_op": 10312.5,
+      "candidate_median_ns_per_op": 10312.5,
+      "median_cpu_change_percent": 0.0,
+      "raw_samples_cpu_ns": {
+        "baseline_cpu_ns": [500000000,656250000,656250000,531250000,515625000,515625000,515625000,515625000,546875000],
+        "candidate_cpu_ns": [515625000,500000000,515625000,515625000,515625000,515625000,500000000,500000000,500000000]
+      }
+    }
+  }
+}

@@ -1,0 +1,373 @@
+============================= test session starts =============================
+platform win32 -- Python 3.13.14, pytest-9.0.3, pluggy-1.6.0
+benchmark: 4.0.0 (defaults: timer=time.perf_counter disable_gc=False min_rounds=5 min_time=0.000005 max_time=1.0 calibration_precision=10 warmup=False warmup_iterations=100000)
+rootdir: C:\Users\mhensley\wc\worktrees\orca\opentelemetry-python\expedition
+configfile: pyproject.toml
+plugins: flaky-3.8.1, platformdirs-4.13.0, benchmark-4.0.0
+collected 293 items
+
+opentelemetry-api/tests/attributes/test_attributes.py::TestBoundedAttributes::test_base_copy_isolated_and_len_works PASSED [  0%]
+opentelemetry-api/tests/attributes/test_attributes.py::TestBoundedAttributes::test_basic_insertion_update_iteration_and_deletion 
+-------------------------------- live log call --------------------------------
+WARNING  opentelemetry.attributes:__init__.py:211 Attributes dict is full. Dropping the oldest key-value pair from attributes to make space for the new key-value pair.
+PASSED                                                                   [  0%]
+opentelemetry-api/tests/attributes/test_attributes.py::TestBoundedAttributes::test_clean_attribute_value_with_various_params 
+-------------------------------- live log call --------------------------------
+WARNING  opentelemetry.attributes:__init__.py:91 Invalid type `<class 'test_attributes._NoStrNoReprObject'>` for attribute value. Expected one of bool, str, None, bytes, int, float or a Mapping or Sequence of those types. Value's __str__ method will be called if it exists, otherwise the value will be replaced with None.
+WARNING  opentelemetry.attributes:__init__.py:78 Invalid type `<class 'test_attributes._NoStrNoReprObject'>` for attribute key `<test_attributes._NoStrNoReprObject object at 0x000001E7F2D71950>`, must be a str. Key's `__str__/__repr__` method will be called if it exists, otherwise the key/value pair will be dropped.
+PASSED                                                                   [  1%]
+opentelemetry-api/tests/attributes/test_attributes.py::TestBoundedAttributes::test_deepcopy PASSED [  1%]
+opentelemetry-api/tests/attributes/test_attributes.py::TestBoundedAttributes::test_deepcopy_preserves_immutability PASSED [  1%]
+opentelemetry-api/tests/attributes/test_attributes.py::TestBoundedAttributes::test_immutable PASSED [  2%]
+opentelemetry-api/tests/attributes/test_attributes.py::TestBoundedAttributes::test_invalid_key_not_used PASSED [  2%]
+opentelemetry-api/tests/attributes/test_attributes.py::TestBoundedAttributes::test_maxlen_reached PASSED [  2%]
+opentelemetry-api/tests/attributes/test_attributes.py::TestBoundedAttributes::test_maxlen_reached_logs_warning_after_invalid_key_drop PASSED [  3%]
+opentelemetry-api/tests/attributes/test_attributes.py::TestBoundedAttributes::test_maxlen_reached_logs_warning_once PASSED [  3%]
+opentelemetry-api/tests/attributes/test_attributes.py::TestBoundedAttributes::test_negative_max_value_len_not_allowed PASSED [  3%]
+opentelemetry-api/tests/attributes/test_attributes.py::TestBoundedAttributes::test_negative_maxlen_not_allowed PASSED [  4%]
+opentelemetry-api/tests/attributes/test_attributes.py::TestBoundedAttributes::test_no_deadlock_on_reentrant_logging 
+-------------------------------- live log call --------------------------------
+WARNING  opentelemetry.attributes:__init__.py:59 String attribute value exceeds max length of 20, truncating.
+PASSED                                                                   [  4%]
+opentelemetry-api/tests/attributes/test_attributes.py::TestBoundedAttributes::test_same_key_value_overwritten PASSED [  4%]
+opentelemetry-api/tests/attributes/test_attributes.py::TestBoundedAttributes::test_wsgi_request_conversion_to_string 
+-------------------------------- live log call --------------------------------
+WARNING  opentelemetry.attributes:__init__.py:91 Invalid type `<class 'test_attributes.TestBoundedAttributes.test_wsgi_request_conversion_to_string.<locals>.DummyWSGIRequest'>` for attribute value. Expected one of bool, str, None, bytes, int, float or a Mapping or Sequence of those types. Value's __str__ method will be called if it exists, otherwise the value will be replaced with None.
+PASSED                                                                   [  5%]
+opentelemetry-api/tests/baggage/propagation/test_propagation.py::TestBaggageManager::test_propagate_baggage PASSED [  5%]
+opentelemetry-api/tests/baggage/test_baggage.py::TestBaggageManager::test__is_valid_value 
+opentelemetry-api/tests/baggage/test_baggage.py::TestBaggageManager::test__is_valid_value PASSED [  5%]
+opentelemetry-api/tests/baggage/test_baggage.py::TestBaggageManager::test_baggages_current_context PASSED [  6%]
+opentelemetry-api/tests/baggage/test_baggage.py::TestBaggageManager::test_clear_baggage PASSED [  6%]
+opentelemetry-api/tests/baggage/test_baggage.py::TestBaggageManager::test_modifying_baggage PASSED [  6%]
+opentelemetry-api/tests/baggage/test_baggage.py::TestBaggageManager::test_remove_baggage_entry PASSED [  7%]
+opentelemetry-api/tests/baggage/test_baggage.py::TestBaggageManager::test_set_baggage PASSED [  7%]
+opentelemetry-api/tests/baggage/test_baggage.py::TestBaggageManager::test_set_multiple_baggage_entries PASSED [  7%]
+opentelemetry-api/tests/context/test_context.py::TestContext::test_context PASSED [  8%]
+opentelemetry-api/tests/context/test_context.py::TestContext::test_context_is_immutable PASSED [  8%]
+opentelemetry-api/tests/context/test_context.py::TestContext::test_context_key PASSED [  8%]
+opentelemetry-api/tests/context/test_context.py::TestContext::test_set_current PASSED [  9%]
+opentelemetry-api/tests/context/test_context.py::TestContext::test_set_value PASSED [  9%]
+opentelemetry-api/tests/context/test_context.py::TestInitContext::test_load_runtime_context PASSED [  9%]
+opentelemetry-api/tests/context/test_context.py::TestInitContext::test_load_runtime_context_default PASSED [ 10%]
+opentelemetry-api/tests/context/test_context.py::TestInitContext::test_load_runtime_context_fallback 
+-------------------------------- live log call --------------------------------
+ERROR    opentelemetry.context:__init__.py:37 Failed to load context: foo, falling back to contextvars_context
+Traceback (most recent call last):
+  File "C:\Users\mhensley\wc\worktrees\orca\opentelemetry-python\expedition\opentelemetry-api\src\opentelemetry\context\__init__.py", line 35, in _load_runtime_context
+    return next(iter(entry_points(group="opentelemetry_context", name=configured_context))).load()()
+           ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+StopIteration
+PASSED                                                                   [ 10%]
+opentelemetry-api/tests/context/test_contextvars_context.py::TestContextVarsContext::test_attach PASSED [ 10%]
+opentelemetry-api/tests/context/test_contextvars_context.py::TestContextVarsContext::test_context PASSED [ 11%]
+opentelemetry-api/tests/context/test_contextvars_context.py::TestContextVarsContext::test_detach_out_of_order PASSED [ 11%]
+opentelemetry-api/tests/context/test_contextvars_context.py::TestContextVarsContext::test_set_value PASSED [ 11%]
+opentelemetry-api/tests/logs/test_log_record.py::TestLogRecord::test_log_record_exception PASSED [ 12%]
+opentelemetry-api/tests/logs/test_log_record.py::TestLogRecord::test_log_record_observed_timestamp_default PASSED [ 12%]
+opentelemetry-api/tests/logs/test_logger_provider.py::TestGlobals::test_get_logger_provider PASSED [ 12%]
+opentelemetry-api/tests/logs/test_logger_provider.py::TestGlobals::test_set_logger_provider PASSED [ 13%]
+opentelemetry-api/tests/logs/test_proxy.py::TestProxy::test_noop_logger_enabled_returns_false PASSED [ 13%]
+opentelemetry-api/tests/logs/test_proxy.py::TestProxy::test_proxy_logger PASSED [ 13%]
+opentelemetry-api/tests/logs/test_proxy.py::TestProxy::test_proxy_logger_enabled_delegates_to_real_logger PASSED [ 14%]
+opentelemetry-api/tests/logs/test_proxy.py::TestProxy::test_proxy_logger_enabled_falls_back_to_noop PASSED [ 14%]
+opentelemetry-api/tests/logs/test_proxy.py::TestProxy::test_proxy_logger_forwards_record_with_exception PASSED [ 15%]
+opentelemetry-api/tests/metrics/test_instruments.py::TestCounter::test_api_counter_abstract PASSED [ 15%]
+opentelemetry-api/tests/metrics/test_instruments.py::TestCounter::test_counter_add_method PASSED [ 15%]
+opentelemetry-api/tests/metrics/test_instruments.py::TestCounter::test_create_counter PASSED [ 16%]
+opentelemetry-api/tests/metrics/test_instruments.py::TestCounter::test_create_counter_api PASSED [ 16%]
+opentelemetry-api/tests/metrics/test_instruments.py::TestObservableCounter::test_api_observable_counter_abstract PASSED [ 16%]
+opentelemetry-api/tests/metrics/test_instruments.py::TestObservableCounter::test_create_observable_counter PASSED [ 17%]
+opentelemetry-api/tests/metrics/test_instruments.py::TestObservableCounter::test_create_observable_counter_api PASSED [ 17%]
+opentelemetry-api/tests/metrics/test_instruments.py::TestObservableCounter::test_observable_counter_generator PASSED [ 17%]
+opentelemetry-api/tests/metrics/test_instruments.py::TestHistogram::test_api_histogram_abstract PASSED [ 18%]
+opentelemetry-api/tests/metrics/test_instruments.py::TestHistogram::test_create_histogram PASSED [ 18%]
+opentelemetry-api/tests/metrics/test_instruments.py::TestHistogram::test_create_histogram_api PASSED [ 18%]
+opentelemetry-api/tests/metrics/test_instruments.py::TestHistogram::test_histogram_record_method PASSED [ 19%]
+opentelemetry-api/tests/metrics/test_instruments.py::TestGauge::test_api_gauge_abstract PASSED [ 19%]
+opentelemetry-api/tests/metrics/test_instruments.py::TestGauge::test_create_gauge PASSED [ 19%]
+opentelemetry-api/tests/metrics/test_instruments.py::TestGauge::test_create_gauge_api PASSED [ 20%]
+opentelemetry-api/tests/metrics/test_instruments.py::TestObservableGauge::test_api_observable_gauge_abstract PASSED [ 20%]
+opentelemetry-api/tests/metrics/test_instruments.py::TestObservableGauge::test_create_observable_gauge PASSED [ 20%]
+opentelemetry-api/tests/metrics/test_instruments.py::TestObservableGauge::test_create_observable_gauge_api PASSED [ 21%]
+opentelemetry-api/tests/metrics/test_instruments.py::TestObservableGauge::test_observable_gauge_callback PASSED [ 21%]
+opentelemetry-api/tests/metrics/test_instruments.py::TestUpDownCounter::test_api_up_down_counter_abstract PASSED [ 21%]
+opentelemetry-api/tests/metrics/test_instruments.py::TestUpDownCounter::test_create_up_down_counter PASSED [ 22%]
+opentelemetry-api/tests/metrics/test_instruments.py::TestUpDownCounter::test_create_up_down_counter_api PASSED [ 22%]
+opentelemetry-api/tests/metrics/test_instruments.py::TestUpDownCounter::test_up_down_counter_add_method PASSED [ 22%]
+opentelemetry-api/tests/metrics/test_instruments.py::TestObservableUpDownCounter::test_api_observable_up_down_counter_abstract PASSED [ 23%]
+opentelemetry-api/tests/metrics/test_instruments.py::TestObservableUpDownCounter::test_create_observable_up_down_counter PASSED [ 23%]
+opentelemetry-api/tests/metrics/test_instruments.py::TestObservableUpDownCounter::test_create_observable_up_down_counter_api PASSED [ 23%]
+opentelemetry-api/tests/metrics/test_instruments.py::TestObservableUpDownCounter::test_description_check PASSED [ 24%]
+opentelemetry-api/tests/metrics/test_instruments.py::TestObservableUpDownCounter::test_name_check PASSED [ 24%]
+opentelemetry-api/tests/metrics/test_instruments.py::TestObservableUpDownCounter::test_observable_up_down_counter_callback PASSED [ 24%]
+opentelemetry-api/tests/metrics/test_instruments.py::TestObservableUpDownCounter::test_unit_check PASSED [ 25%]
+opentelemetry-api/tests/metrics/test_meter.py::TestMeter::test_create_counter PASSED [ 25%]
+opentelemetry-api/tests/metrics/test_meter.py::TestMeter::test_create_gauge PASSED [ 25%]
+opentelemetry-api/tests/metrics/test_meter.py::TestMeter::test_create_histogram PASSED [ 26%]
+opentelemetry-api/tests/metrics/test_meter.py::TestMeter::test_create_observable_counter PASSED [ 26%]
+opentelemetry-api/tests/metrics/test_meter.py::TestMeter::test_create_observable_gauge PASSED [ 26%]
+opentelemetry-api/tests/metrics/test_meter.py::TestMeter::test_create_observable_up_down_counter PASSED [ 27%]
+opentelemetry-api/tests/metrics/test_meter.py::TestMeter::test_create_up_down_counter PASSED [ 27%]
+opentelemetry-api/tests/metrics/test_meter.py::TestMeter::test_repeated_instrument_names PASSED [ 27%]
+opentelemetry-api/tests/metrics/test_meter.py::TestMeter::test_repeated_instrument_names_with_different_advisory PASSED [ 28%]
+opentelemetry-api/tests/metrics/test_meter_provider.py::test_set_meter_provider PASSED [ 28%]
+opentelemetry-api/tests/metrics/test_meter_provider.py::test_set_meter_provider_calls_proxy_provider PASSED [ 29%]
+opentelemetry-api/tests/metrics/test_meter_provider.py::test_get_meter_provider PASSED [ 29%]
+opentelemetry-api/tests/metrics/test_meter_provider.py::TestGetMeter::test_get_meter_parameters PASSED [ 29%]
+opentelemetry-api/tests/metrics/test_meter_provider.py::TestGetMeter::test_get_meter_wrapper PASSED [ 30%]
+opentelemetry-api/tests/metrics/test_meter_provider.py::TestGetMeter::test_invalid_name PASSED [ 30%]
+opentelemetry-api/tests/metrics/test_meter_provider.py::TestProxy::test_global_proxy_meter_provider PASSED [ 30%]
+opentelemetry-api/tests/metrics/test_meter_provider.py::TestProxy::test_proxy_meter PASSED [ 31%]
+opentelemetry-api/tests/metrics/test_meter_provider.py::TestProxy::test_proxy_meter_with_real_meter PASSED [ 31%]
+opentelemetry-api/tests/metrics/test_meter_provider.py::TestProxy::test_proxy_provider PASSED [ 31%]
+opentelemetry-api/tests/metrics/test_observation.py::TestObservation::test_measurement_equality PASSED [ 32%]
+opentelemetry-api/tests/metrics/test_observation.py::TestObservation::test_measurement_init PASSED [ 32%]
+opentelemetry-api/tests/metrics/test_subclass_instantiation.py::test_meter_provider_subclass_instantiation PASSED [ 32%]
+opentelemetry-api/tests/metrics/test_subclass_instantiation.py::test_meter_subclass_instantiation PASSED [ 33%]
+opentelemetry-api/tests/metrics/test_subclass_instantiation.py::test_synchronous_subclass_instantiation PASSED [ 33%]
+opentelemetry-api/tests/metrics/test_subclass_instantiation.py::test_asynchronous_subclass_instantiation PASSED [ 33%]
+opentelemetry-api/tests/metrics/test_subclass_instantiation.py::test_counter_subclass_instantiation PASSED [ 34%]
+opentelemetry-api/tests/metrics/test_subclass_instantiation.py::test_up_down_counter_subclass_instantiation PASSED [ 34%]
+opentelemetry-api/tests/metrics/test_subclass_instantiation.py::test_observable_counter_subclass_instantiation PASSED [ 34%]
+opentelemetry-api/tests/metrics/test_subclass_instantiation.py::test_histogram_subclass_instantiation PASSED [ 35%]
+opentelemetry-api/tests/metrics/test_subclass_instantiation.py::test_gauge_subclass_instantiation PASSED [ 35%]
+opentelemetry-api/tests/metrics/test_subclass_instantiation.py::test_instrument_subclass_instantiation PASSED [ 35%]
+opentelemetry-api/tests/metrics/test_subclass_instantiation.py::test_observable_gauge_subclass_instantiation PASSED [ 36%]
+opentelemetry-api/tests/metrics/test_subclass_instantiation.py::test_observable_up_down_counter_subclass_instantiation PASSED [ 36%]
+opentelemetry-api/tests/propagators/test__envcarrier.py::TestNormalizeKey::test_already_valid PASSED [ 36%]
+opentelemetry-api/tests/propagators/test__envcarrier.py::TestNormalizeKey::test_empty_string PASSED [ 37%]
+opentelemetry-api/tests/propagators/test__envcarrier.py::TestNormalizeKey::test_hyphen_replaced PASSED [ 37%]
+opentelemetry-api/tests/propagators/test__envcarrier.py::TestNormalizeKey::test_leading_digit_prefixed PASSED [ 37%]
+opentelemetry-api/tests/propagators/test__envcarrier.py::TestNormalizeKey::test_lowercase PASSED [ 38%]
+opentelemetry-api/tests/propagators/test__envcarrier.py::TestNormalizeKey::test_non_ascii_replaced PASSED [ 38%]
+opentelemetry-api/tests/propagators/test__envcarrier.py::TestIsNormalizedKey::test_non_normalized_keys PASSED [ 38%]
+opentelemetry-api/tests/propagators/test__envcarrier.py::TestIsNormalizedKey::test_normalized_keys PASSED [ 39%]
+opentelemetry-api/tests/propagators/test__envcarrier.py::TestEnvironmentGetter::test_extracts_from_os_environ_when_provided_as_carrier PASSED [ 39%]
+opentelemetry-api/tests/propagators/test__envcarrier.py::TestEnvironmentGetter::test_get_empty_key_maps_to_underscore PASSED [ 39%]
+opentelemetry-api/tests/propagators/test__envcarrier.py::TestEnvironmentGetter::test_get_empty_value PASSED [ 40%]
+opentelemetry-api/tests/propagators/test__envcarrier.py::TestEnvironmentGetter::test_get_existing_env_var PASSED [ 40%]
+opentelemetry-api/tests/propagators/test__envcarrier.py::TestEnvironmentGetter::test_get_ignores_non_normalized_env_var_name PASSED [ 40%]
+opentelemetry-api/tests/propagators/test__envcarrier.py::TestEnvironmentGetter::test_get_nonexistent_env_var PASSED [ 41%]
+opentelemetry-api/tests/propagators/test__envcarrier.py::TestEnvironmentGetter::test_get_normalizes_requested_key_case PASSED [ 41%]
+opentelemetry-api/tests/propagators/test__envcarrier.py::TestEnvironmentGetter::test_get_prefers_normalized_env_var_name PASSED [ 41%]
+opentelemetry-api/tests/propagators/test__envcarrier.py::TestEnvironmentGetter::test_get_with_special_characters PASSED [ 42%]
+opentelemetry-api/tests/propagators/test__envcarrier.py::TestEnvironmentGetter::test_keys PASSED [ 42%]
+opentelemetry-api/tests/propagators/test__envcarrier.py::TestEnvironmentGetter::test_keys_empty_environment PASSED [ 43%]
+opentelemetry-api/tests/propagators/test__envcarrier.py::TestEnvironmentGetter::test_keys_ignores_non_normalized_env_var_names PASSED [ 43%]
+opentelemetry-api/tests/propagators/test__envcarrier.py::TestEnvironmentGetter::test_reads_current_carrier_without_snapshot PASSED [ 43%]
+opentelemetry-api/tests/propagators/test__envcarrier.py::TestEnvironmentGetter::test_uses_carrier_parameter PASSED [ 44%]
+opentelemetry-api/tests/propagators/test__envcarrier.py::TestEnvironmentSetter::test_does_not_modify_os_environ PASSED [ 44%]
+opentelemetry-api/tests/propagators/test__envcarrier.py::TestEnvironmentSetter::test_set_basic PASSED [ 44%]
+opentelemetry-api/tests/propagators/test__envcarrier.py::TestEnvironmentSetter::test_set_empty_key_maps_to_underscore PASSED [ 45%]
+opentelemetry-api/tests/propagators/test__envcarrier.py::TestEnvironmentSetter::test_set_empty_value PASSED [ 45%]
+opentelemetry-api/tests/propagators/test__envcarrier.py::TestEnvironmentSetter::test_set_multiple_values PASSED [ 45%]
+opentelemetry-api/tests/propagators/test__envcarrier.py::TestEnvironmentSetter::test_set_overwrites_existing PASSED [ 46%]
+opentelemetry-api/tests/propagators/test__envcarrier.py::TestEnvironmentSetter::test_set_special_characters_in_value PASSED [ 46%]
+opentelemetry-api/tests/propagators/test__envcarrier.py::TestEnvironmentSetter::test_set_uppercases_keys PASSED [ 46%]
+opentelemetry-api/tests/propagators/test__envcarrier.py::TestEnvironmentCarrierWithTraceContext::test_case_handling PASSED [ 47%]
+opentelemetry-api/tests/propagators/test__envcarrier.py::TestEnvironmentCarrierWithTraceContext::test_extract_ignores_lowercase_trace_context_names SKIPPED [ 47%]
+opentelemetry-api/tests/propagators/test__envcarrier.py::TestEnvironmentCarrierWithTraceContext::test_extract_invalid_traceparent 
+opentelemetry-api/tests/propagators/test__envcarrier.py::TestEnvironmentCarrierWithTraceContext::test_extract_invalid_traceparent PASSED [ 47%]
+opentelemetry-api/tests/propagators/test__envcarrier.py::TestEnvironmentCarrierWithTraceContext::test_extract_missing_traceparent PASSED [ 48%]
+opentelemetry-api/tests/propagators/test__envcarrier.py::TestEnvironmentCarrierWithTraceContext::test_extract_preserves_context_on_invalid_traceparent PASSED [ 48%]
+opentelemetry-api/tests/propagators/test__envcarrier.py::TestEnvironmentCarrierWithTraceContext::test_extract_traceparent_not_sampled PASSED [ 48%]
+opentelemetry-api/tests/propagators/test__envcarrier.py::TestEnvironmentCarrierWithTraceContext::test_extract_valid_traceparent PASSED [ 49%]
+opentelemetry-api/tests/propagators/test__envcarrier.py::TestEnvironmentCarrierWithTraceContext::test_extract_with_tracestate PASSED [ 49%]
+opentelemetry-api/tests/propagators/test__envcarrier.py::TestEnvironmentCarrierWithTraceContext::test_fields PASSED [ 49%]
+opentelemetry-api/tests/propagators/test__envcarrier.py::TestEnvironmentCarrierWithTraceContext::test_inject_does_not_include_empty_tracestate PASSED [ 50%]
+opentelemetry-api/tests/propagators/test__envcarrier.py::TestEnvironmentCarrierWithTraceContext::test_inject_invalid_context PASSED [ 50%]
+opentelemetry-api/tests/propagators/test__envcarrier.py::TestEnvironmentCarrierWithTraceContext::test_inject_valid_span_context PASSED [ 50%]
+opentelemetry-api/tests/propagators/test__envcarrier.py::TestEnvironmentCarrierWithTraceContext::test_roundtrip_preserves_traceparent PASSED [ 51%]
+opentelemetry-api/tests/propagators/test__envcarrier.py::TestEnvironmentCarrierWithTraceContext::test_roundtrip_preserves_tracestate PASSED [ 51%]
+opentelemetry-api/tests/propagators/test__envcarrier.py::TestEnvironmentCarrierWithBaggage::test_extract_baggage PASSED [ 51%]
+opentelemetry-api/tests/propagators/test__envcarrier.py::TestEnvironmentCarrierWithBaggage::test_extract_empty_baggage PASSED [ 52%]
+opentelemetry-api/tests/propagators/test__envcarrier.py::TestEnvironmentCarrierWithBaggage::test_extract_missing_baggage PASSED [ 52%]
+opentelemetry-api/tests/propagators/test__envcarrier.py::TestEnvironmentCarrierWithBaggage::test_fields PASSED [ 52%]
+opentelemetry-api/tests/propagators/test__envcarrier.py::TestEnvironmentCarrierWithBaggage::test_inject_baggage PASSED [ 53%]
+opentelemetry-api/tests/propagators/test__envcarrier.py::TestEnvironmentCarrierWithBaggage::test_inject_no_baggage PASSED [ 53%]
+opentelemetry-api/tests/propagators/test__envcarrier.py::TestEnvironmentCarrierWithBaggage::test_roundtrip_baggage PASSED [ 53%]
+opentelemetry-api/tests/propagators/test__envcarrier.py::TestEnvironmentCarrierWithCompositePropagator::test_empty_environment PASSED [ 54%]
+opentelemetry-api/tests/propagators/test__envcarrier.py::TestEnvironmentCarrierWithCompositePropagator::test_extract_all_w3c_headers PASSED [ 54%]
+opentelemetry-api/tests/propagators/test__envcarrier.py::TestEnvironmentCarrierWithCompositePropagator::test_inject_all_w3c_headers PASSED [ 54%]
+opentelemetry-api/tests/propagators/test_composite.py::TestCompositePropagator::test_fields PASSED [ 55%]
+opentelemetry-api/tests/propagators/test_composite.py::TestCompositePropagator::test_multiple_propagators PASSED [ 55%]
+opentelemetry-api/tests/propagators/test_composite.py::TestCompositePropagator::test_multiple_propagators_same_key PASSED [ 55%]
+opentelemetry-api/tests/propagators/test_composite.py::TestCompositePropagator::test_no_propagators PASSED [ 56%]
+opentelemetry-api/tests/propagators/test_composite.py::TestCompositePropagator::test_single_propagator PASSED [ 56%]
+opentelemetry-api/tests/propagators/test_global_httptextformat.py::TestDefaultGlobalPropagator::test_propagation PASSED [ 56%]
+opentelemetry-api/tests/propagators/test_propagators.py::TestPropagators::test_composite_propagators_error PASSED [ 57%]
+opentelemetry-api/tests/propagators/test_propagators.py::TestPropagators::test_default_composite_propagators PASSED [ 57%]
+opentelemetry-api/tests/propagators/test_propagators.py::TestPropagators::test_multiple_propagators_with_none PASSED [ 58%]
+opentelemetry-api/tests/propagators/test_propagators.py::TestPropagators::test_non_default_propagators PASSED [ 58%]
+opentelemetry-api/tests/propagators/test_propagators.py::TestPropagators::test_none_propagators PASSED [ 58%]
+opentelemetry-api/tests/propagators/test_propagators.py::TestTraceContextTextMapPropagator::test_extract_future_version_with_future_suffix_data PASSED [ 59%]
+opentelemetry-api/tests/propagators/test_propagators.py::TestTraceContextTextMapPropagator::test_extract_non_decimal_trace_flags PASSED [ 59%]
+opentelemetry-api/tests/propagators/test_propagators.py::TestTraceContextTextMapPropagator::test_extract_nothing PASSED [ 59%]
+opentelemetry-api/tests/propagators/test_propagators.py::TestTraceContextTextMapPropagator::test_extract_simple_traceparent PASSED [ 60%]
+opentelemetry-api/tests/propagators/test_propagators.py::TestTraceContextTextMapPropagator::test_extract_span_id_invalid_all_zeros PASSED [ 60%]
+opentelemetry-api/tests/propagators/test_propagators.py::TestTraceContextTextMapPropagator::test_extract_trace_id_invalid_all_zeros PASSED [ 60%]
+opentelemetry-api/tests/propagators/test_propagators.py::TestTraceContextTextMapPropagator::test_extract_version_00_with_unsupported_suffix PASSED [ 61%]
+opentelemetry-api/tests/propagators/test_propagators.py::TestTraceContextTextMapPropagator::test_extract_version_forbidden_ff PASSED [ 61%]
+opentelemetry-api/tests/propagators/test_w3cbaggagepropagator.py::TestW3CBaggagePropagator::test_empty_context_header PASSED [ 61%]
+opentelemetry-api/tests/propagators/test_w3cbaggagepropagator.py::TestW3CBaggagePropagator::test_encode_baggage_pairs PASSED [ 62%]
+opentelemetry-api/tests/propagators/test_w3cbaggagepropagator.py::TestW3CBaggagePropagator::test_extract_non_ascii_header PASSED [ 62%]
+opentelemetry-api/tests/propagators/test_w3cbaggagepropagator.py::TestW3CBaggagePropagator::test_extract_non_ascii_header_exceeds_byte_limit PASSED [ 62%]
+opentelemetry-api/tests/propagators/test_w3cbaggagepropagator.py::TestW3CBaggagePropagator::test_extract_unquote_plus PASSED [ 63%]
+opentelemetry-api/tests/propagators/test_w3cbaggagepropagator.py::TestW3CBaggagePropagator::test_fields PASSED [ 63%]
+opentelemetry-api/tests/propagators/test_w3cbaggagepropagator.py::TestW3CBaggagePropagator::test_header_contains_pair_too_long PASSED [ 63%]
+opentelemetry-api/tests/propagators/test_w3cbaggagepropagator.py::TestW3CBaggagePropagator::test_header_contains_too_many_entries PASSED [ 64%]
+opentelemetry-api/tests/propagators/test_w3cbaggagepropagator.py::TestW3CBaggagePropagator::test_header_max_entries_skip_invalid_entry PASSED [ 64%]
+opentelemetry-api/tests/propagators/test_w3cbaggagepropagator.py::TestW3CBaggagePropagator::test_header_too_long PASSED [ 64%]
+opentelemetry-api/tests/propagators/test_w3cbaggagepropagator.py::TestW3CBaggagePropagator::test_header_with_invalid_value PASSED [ 65%]
+opentelemetry-api/tests/propagators/test_w3cbaggagepropagator.py::TestW3CBaggagePropagator::test_inject PASSED [ 65%]
+opentelemetry-api/tests/propagators/test_w3cbaggagepropagator.py::TestW3CBaggagePropagator::test_inject_empty_after_all_dropped 
+-------------------------------- live log call --------------------------------
+WARNING  opentelemetry.baggage.propagation:__init__.py:32 Baggage entry with key `big1` exceeded the maximum number of bytes per list-member with length 4101
+WARNING  opentelemetry.baggage.propagation:__init__.py:32 Baggage entry with key `big2` exceeded the maximum number of bytes per list-member with length 4101
+PASSED                                                                   [ 65%]
+opentelemetry-api/tests/propagators/test_w3cbaggagepropagator.py::TestW3CBaggagePropagator::test_inject_entry_too_long PASSED [ 66%]
+opentelemetry-api/tests/propagators/test_w3cbaggagepropagator.py::TestW3CBaggagePropagator::test_inject_escaped_values PASSED [ 66%]
+opentelemetry-api/tests/propagators/test_w3cbaggagepropagator.py::TestW3CBaggagePropagator::test_inject_extract PASSED [ 66%]
+opentelemetry-api/tests/propagators/test_w3cbaggagepropagator.py::TestW3CBaggagePropagator::test_inject_no_baggage_entries PASSED [ 67%]
+opentelemetry-api/tests/propagators/test_w3cbaggagepropagator.py::TestW3CBaggagePropagator::test_inject_non_string_values PASSED [ 67%]
+opentelemetry-api/tests/propagators/test_w3cbaggagepropagator.py::TestW3CBaggagePropagator::test_inject_space_entries PASSED [ 67%]
+opentelemetry-api/tests/propagators/test_w3cbaggagepropagator.py::TestW3CBaggagePropagator::test_inject_too_many_entries PASSED [ 68%]
+opentelemetry-api/tests/propagators/test_w3cbaggagepropagator.py::TestW3CBaggagePropagator::test_inject_total_header_too_long PASSED [ 68%]
+opentelemetry-api/tests/propagators/test_w3cbaggagepropagator.py::TestW3CBaggagePropagator::test_invalid_header 
+-------------------------------- live log call --------------------------------
+WARNING  opentelemetry.baggage.propagation:__init__.py:111 Baggage list-member `header1` doesn't match the format
+WARNING  opentelemetry.baggage.propagation:__init__.py:119 Invalid baggage entry: ` = `
+PASSED                                                                   [ 68%]
+opentelemetry-api/tests/propagators/test_w3cbaggagepropagator.py::TestW3CBaggagePropagator::test_invalid_header_with_inner_whitespace 
+-------------------------------- live log call --------------------------------
+WARNING  opentelemetry.baggage.propagation:__init__.py:119 Invalid baggage entry: `key 1=val1`
+----------------------------- live log logreport ------------------------------
+WARNING  opentelemetry.baggage.propagation:__init__.py:119 Invalid baggage entry: `key1=val 1`
+----------------------------- live log logreport ------------------------------
+WARNING  opentelemetry.baggage.propagation:__init__.py:119 Invalid baggage entry: `key1=val1;pr op=1`
+----------------------------- live log logreport ------------------------------
+WARNING  opentelemetry.baggage.propagation:__init__.py:119 Invalid baggage entry: ` = `
+
+opentelemetry-api/tests/propagators/test_w3cbaggagepropagator.py::TestW3CBaggagePropagator::test_invalid_header_with_inner_whitespace PASSED [ 69%]
+opentelemetry-api/tests/propagators/test_w3cbaggagepropagator.py::TestW3CBaggagePropagator::test_no_context_header PASSED [ 69%]
+opentelemetry-api/tests/propagators/test_w3cbaggagepropagator.py::TestW3CBaggagePropagator::test_valid_header PASSED [ 69%]
+opentelemetry-api/tests/propagators/test_w3cbaggagepropagator.py::TestW3CBaggagePropagator::test_valid_header_with_empty_value PASSED [ 70%]
+opentelemetry-api/tests/propagators/test_w3cbaggagepropagator.py::TestW3CBaggagePropagator::test_valid_header_with_properties PASSED [ 70%]
+opentelemetry-api/tests/propagators/test_w3cbaggagepropagator.py::TestW3CBaggagePropagator::test_valid_header_with_url_escaped_values PASSED [ 70%]
+opentelemetry-api/tests/propagators/test_w3cbaggagepropagator.py::TestW3CBaggagePropagator::test_valid_header_with_whitespace 
+opentelemetry-api/tests/propagators/test_w3cbaggagepropagator.py::TestW3CBaggagePropagator::test_valid_header_with_whitespace PASSED [ 71%]
+opentelemetry-api/tests/test_implementation.py::TestAPIOnlyImplementation::test_default_span PASSED [ 71%]
+opentelemetry-api/tests/test_implementation.py::TestAPIOnlyImplementation::test_default_tracer PASSED [ 72%]
+opentelemetry-api/tests/test_implementation.py::TestAPIOnlyImplementation::test_default_tracer_context_propagation_non_recording_span PASSED [ 72%]
+opentelemetry-api/tests/test_implementation.py::TestAPIOnlyImplementation::test_default_tracer_context_propagation_recording_span PASSED [ 72%]
+opentelemetry-api/tests/test_implementation.py::TestAPIOnlyImplementation::test_default_tracer_context_propagation_with_invalid_context 
+-------------------------------- live log call --------------------------------
+WARNING  opentelemetry.trace:__init__.py:466 Invalid span context for RecordingSpan('invalid_context'): invalid_context
+PASSED                                                                   [ 73%]
+opentelemetry-api/tests/test_implementation.py::TestAPIOnlyImplementation::test_span PASSED [ 73%]
+opentelemetry-api/tests/test_implementation.py::TestAPIOnlyImplementation::test_tracer PASSED [ 73%]
+opentelemetry-api/tests/trace/propagation/test_textmap.py::TestDefaultGetter::test_get_iter PASSED [ 74%]
+opentelemetry-api/tests/trace/propagation/test_textmap.py::TestDefaultGetter::test_get_none PASSED [ 74%]
+opentelemetry-api/tests/trace/propagation/test_textmap.py::TestDefaultGetter::test_get_str PASSED [ 74%]
+opentelemetry-api/tests/trace/propagation/test_textmap.py::TestDefaultGetter::test_keys PASSED [ 75%]
+opentelemetry-api/tests/trace/propagation/test_tracecontexthttptextformat.py::TestTraceContextFormat::test_extract_invalid_trace_parent_to_explicit_ctx 
+opentelemetry-api/tests/trace/propagation/test_tracecontexthttptextformat.py::TestTraceContextFormat::test_extract_invalid_trace_parent_to_explicit_ctx PASSED [ 75%]
+opentelemetry-api/tests/trace/propagation/test_tracecontexthttptextformat.py::TestTraceContextFormat::test_extract_invalid_trace_parent_to_implicit_ctx 
+opentelemetry-api/tests/trace/propagation/test_tracecontexthttptextformat.py::TestTraceContextFormat::test_extract_invalid_trace_parent_to_implicit_ctx PASSED [ 75%]
+opentelemetry-api/tests/trace/propagation/test_tracecontexthttptextformat.py::TestTraceContextFormat::test_extract_no_trace_parent_to_explicit_ctx PASSED [ 76%]
+opentelemetry-api/tests/trace/propagation/test_tracecontexthttptextformat.py::TestTraceContextFormat::test_extract_no_trace_parent_to_implicit_ctx PASSED [ 76%]
+opentelemetry-api/tests/trace/propagation/test_tracecontexthttptextformat.py::TestTraceContextFormat::test_fields PASSED [ 76%]
+opentelemetry-api/tests/trace/propagation/test_tracecontexthttptextformat.py::TestTraceContextFormat::test_format_not_supported PASSED [ 77%]
+opentelemetry-api/tests/trace/propagation/test_tracecontexthttptextformat.py::TestTraceContextFormat::test_headers_with_tracestate PASSED [ 77%]
+opentelemetry-api/tests/trace/propagation/test_tracecontexthttptextformat.py::TestTraceContextFormat::test_inject_invalid_span_context 
+opentelemetry-api/tests/trace/propagation/test_tracecontexthttptextformat.py::TestTraceContextFormat::test_inject_invalid_span_context PASSED [ 77%]
+opentelemetry-api/tests/trace/propagation/test_tracecontexthttptextformat.py::TestTraceContextFormat::test_invalid_parent_id PASSED [ 78%]
+opentelemetry-api/tests/trace/propagation/test_tracecontexthttptextformat.py::TestTraceContextFormat::test_invalid_trace_id PASSED [ 78%]
+opentelemetry-api/tests/trace/propagation/test_tracecontexthttptextformat.py::TestTraceContextFormat::test_no_send_empty_tracestate PASSED [ 78%]
+opentelemetry-api/tests/trace/propagation/test_tracecontexthttptextformat.py::TestTraceContextFormat::test_no_traceparent_header PASSED [ 79%]
+opentelemetry-api/tests/trace/propagation/test_tracecontexthttptextformat.py::TestTraceContextFormat::test_propagate_invalid_context PASSED [ 79%]
+opentelemetry-api/tests/trace/propagation/test_tracecontexthttptextformat.py::TestTraceContextFormat::test_tracestate_empty_header PASSED [ 79%]
+opentelemetry-api/tests/trace/propagation/test_tracecontexthttptextformat.py::TestTraceContextFormat::test_tracestate_header_at_maximum_length 
+opentelemetry-api/tests/trace/propagation/test_tracecontexthttptextformat.py::TestTraceContextFormat::test_tracestate_header_at_maximum_length PASSED [ 80%]
+opentelemetry-api/tests/trace/propagation/test_tracecontexthttptextformat.py::TestTraceContextFormat::test_tracestate_header_exceeds_maximum_length 
+opentelemetry-api/tests/trace/propagation/test_tracecontexthttptextformat.py::TestTraceContextFormat::test_tracestate_header_exceeds_maximum_length PASSED [ 80%]
+opentelemetry-api/tests/trace/propagation/test_tracecontexthttptextformat.py::TestTraceContextFormat::test_tracestate_header_with_trailing_comma PASSED [ 80%]
+opentelemetry-api/tests/trace/propagation/test_tracecontexthttptextformat.py::TestTraceContextFormat::test_tracestate_keys PASSED [ 81%]
+opentelemetry-api/tests/trace/test_defaultspan.py::TestNonRecordingSpan::test_ctor PASSED [ 81%]
+opentelemetry-api/tests/trace/test_defaultspan.py::TestNonRecordingSpan::test_invalid_span PASSED [ 81%]
+opentelemetry-api/tests/trace/test_globals.py::TestGlobals::test_get_tracer PASSED [ 82%]
+opentelemetry-api/tests/trace/test_globals.py::TestGlobalsConcurrency::test_set_tracer_provider_many_threads PASSED [ 82%]
+opentelemetry-api/tests/trace/test_globals.py::TestTracer::test_get_current_span PASSED [ 82%]
+opentelemetry-api/tests/trace/test_globals.py::TestTracer::test_get_current_span_explicit_empty_context_overrides_current PASSED [ 83%]
+opentelemetry-api/tests/trace/test_globals.py::TestTracer::test_get_current_span_returns_invalid_for_non_span_context_value PASSED [ 83%]
+opentelemetry-api/tests/trace/test_globals.py::TestTracer::test_get_current_span_returns_span_implementations 
+opentelemetry-api/tests/trace/test_globals.py::TestTracer::test_get_current_span_returns_span_implementations PASSED [ 83%]
+opentelemetry-api/tests/trace/test_globals.py::TestTracer::test_get_current_span_uses_installed_runtime_context PASSED [ 84%]
+opentelemetry-api/tests/trace/test_globals.py::TestUseTracer::test_use_span PASSED [ 84%]
+opentelemetry-api/tests/trace/test_globals.py::TestUseTracer::test_use_span_base_exceptions 
+opentelemetry-api/tests/trace/test_globals.py::TestUseTracer::test_use_span_base_exceptions PASSED [ 84%]
+opentelemetry-api/tests/trace/test_globals.py::TestUseTracer::test_use_span_end_on_exit PASSED [ 85%]
+opentelemetry-api/tests/trace/test_globals.py::TestUseTracer::test_use_span_exception PASSED [ 85%]
+opentelemetry-api/tests/trace/test_globals.py::TestUseTracer::test_use_span_set_status PASSED [ 86%]
+opentelemetry-api/tests/trace/test_immutablespancontext.py::TestImmutableSpanContext::test_attempt_change_attributes PASSED [ 86%]
+opentelemetry-api/tests/trace/test_immutablespancontext.py::TestImmutableSpanContext::test_ctor PASSED [ 86%]
+opentelemetry-api/tests/trace/test_proxy.py::TestProxy::test_late_config PASSED [ 87%]
+opentelemetry-api/tests/trace/test_proxy.py::TestProxy::test_proxy_tracer PASSED [ 87%]
+opentelemetry-api/tests/trace/test_span_context.py::TestSpanContext::test_span_context_pickle PASSED [ 87%]
+opentelemetry-api/tests/trace/test_span_context.py::TestSpanContext::test_span_id_validity PASSED [ 88%]
+opentelemetry-api/tests/trace/test_span_context.py::TestSpanContext::test_trace_id_validity PASSED [ 88%]
+opentelemetry-api/tests/trace/test_status.py::TestStatus::test_constructor PASSED [ 88%]
+opentelemetry-api/tests/trace/test_status.py::TestStatus::test_description_and_non_error_status PASSED [ 89%]
+opentelemetry-api/tests/trace/test_status.py::TestStatus::test_invalid_description PASSED [ 89%]
+opentelemetry-api/tests/trace/test_tracer.py::TestTracer::test_get_current_span PASSED [ 89%]
+opentelemetry-api/tests/trace/test_tracer.py::TestTracer::test_start_as_current_span_context_manager PASSED [ 90%]
+opentelemetry-api/tests/trace/test_tracer.py::TestTracer::test_start_as_current_span_decorator PASSED [ 90%]
+opentelemetry-api/tests/trace/test_tracer.py::TestTracer::test_start_span PASSED [ 90%]
+opentelemetry-api/tests/trace/test_tracestate.py::TestTraceContextFormat::test_empty_tracestate PASSED [ 91%]
+opentelemetry-api/tests/trace/test_tracestate.py::TestTraceContextFormat::test_trace_contains PASSED [ 91%]
+opentelemetry-api/tests/trace/test_tracestate.py::TestTraceContextFormat::test_tracestate_add_invalid 
+-------------------------------- live log call --------------------------------
+WARNING  opentelemetry.trace.span:span.py:300 Invalid key/value pair (%%%nsasa, val) found.
+WARNING  opentelemetry.trace.span:span.py:300 Invalid key/value pair (key, ====val====) found.
+PASSED                                                                   [ 91%]
+opentelemetry-api/tests/trace/test_tracestate.py::TestTraceContextFormat::test_tracestate_add_valid PASSED [ 92%]
+opentelemetry-api/tests/trace/test_tracestate.py::TestTraceContextFormat::test_tracestate_delete_preserved PASSED [ 92%]
+opentelemetry-api/tests/trace/test_tracestate.py::TestTraceContextFormat::test_tracestate_from_header PASSED [ 92%]
+opentelemetry-api/tests/trace/test_tracestate.py::TestTraceContextFormat::test_tracestate_from_header_long_whitespace_run 
+opentelemetry-api/tests/trace/test_tracestate.py::TestTraceContextFormat::test_tracestate_from_header_long_whitespace_run PASSED [ 93%]
+opentelemetry-api/tests/trace/test_tracestate.py::TestTraceContextFormat::test_tracestate_from_header_optional_whitespace 
+opentelemetry-api/tests/trace/test_tracestate.py::TestTraceContextFormat::test_tracestate_from_header_optional_whitespace PASSED [ 93%]
+opentelemetry-api/tests/trace/test_tracestate.py::TestTraceContextFormat::test_tracestate_order_changed PASSED [ 93%]
+opentelemetry-api/tests/trace/test_tracestate.py::TestTraceContextFormat::test_tracestate_update_at_capacity_new_key_preserved 
+-------------------------------- live log call --------------------------------
+WARNING  opentelemetry.trace.span:span.py:344 There can't be more 32 key/value pairs.
+PASSED                                                                   [ 94%]
+opentelemetry-api/tests/trace/test_tracestate.py::TestTraceContextFormat::test_tracestate_update_existing_key_at_capacity PASSED [ 94%]
+opentelemetry-api/tests/trace/test_tracestate.py::TestTraceContextFormat::test_tracestate_update_invalid 
+-------------------------------- live log call --------------------------------
+WARNING  opentelemetry.trace.span:span.py:338 Invalid key/value pair (a, 2=/) found.
+WARNING  opentelemetry.trace.span:span.py:338 Invalid key/value pair (a, ,,2,,f) found.
+PASSED                                                                   [ 94%]
+opentelemetry-api/tests/trace/test_tracestate.py::TestTraceContextFormat::test_tracestate_update_new_key_added_below_capacity PASSED [ 95%]
+opentelemetry-api/tests/trace/test_tracestate.py::TestTraceContextFormat::test_tracestate_update_valid PASSED [ 95%]
+opentelemetry-api/tests/trace/test_tracestate.py::TestTraceContextFormat::test_tracestate_valid_pairs PASSED [ 95%]
+opentelemetry-api/tests/util/test__importlib_metadata.py::TestEntryPoints::test_as_entry_points_selectable_groups_compat PASSED [ 96%]
+opentelemetry-api/tests/util/test__importlib_metadata.py::TestEntryPoints::test_as_entry_points_selectable_groups_no_deprecation_warning SKIPPED [ 96%]
+opentelemetry-api/tests/util/test__importlib_metadata.py::TestEntryPoints::test_entry_points PASSED [ 96%]
+opentelemetry-api/tests/util/test__importlib_metadata.py::TestEntryPoints::test_uniform_behavior PASSED [ 97%]
+opentelemetry-api/tests/util/test__providers.py::Test_Providers::test__providers PASSED [ 97%]
+opentelemetry-api/tests/util/test_contextmanager.py::TestContextManager::test_decorate_async_func PASSED [ 97%]
+opentelemetry-api/tests/util/test_contextmanager.py::TestContextManager::test_decorate_sync_func PASSED [ 98%]
+opentelemetry-api/tests/util/test_contextmanager.py::TestContextManager::test_sync_with PASSED [ 98%]
+opentelemetry-api/tests/util/test_once.py::TestOnce::test_once_many_threads PASSED [ 98%]
+opentelemetry-api/tests/util/test_once.py::TestOnce::test_once_single_thread PASSED [ 99%]
+opentelemetry-api/tests/util/test_re.py::TestParseHeaders::test_parse_env_headers 
+opentelemetry-api/tests/util/test_re.py::TestParseHeaders::test_parse_env_headers PASSED [ 99%]
+opentelemetry-api/tests/util/test_re.py::TestParseHeaders::test_parse_env_headers_liberal 
+opentelemetry-api/tests/util/test_re.py::TestParseHeaders::test_parse_env_headers_liberal PASSED [100%]
+
+=========================== short test summary info ===========================
+SKIPPED [1] opentelemetry-api\tests\propagators\test__envcarrier.py:295: Windows environment variable names are case-insensitive
+SKIPPED [1] opentelemetry-api\tests\util\test__importlib_metadata.py:125: SelectableGroups not available on this Python version
+============= 291 passed, 2 skipped, 82 subtests passed in 1.00s ==============

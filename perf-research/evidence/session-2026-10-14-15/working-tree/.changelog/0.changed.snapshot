@@ -1,0 +1,3 @@
+`opentelemetry-api`, `opentelemetry-sdk`: reduce overhead when looking up
+non-recording spans, checking sampling decisions, and initializing span
+attributes. Allocate span event and link storage only when needed.

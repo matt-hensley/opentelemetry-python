@@ -1,0 +1,847 @@
+{
+  "metadata": {
+    "python": "3.13.14 (tags/v3.13.14:fd17997, Jun 10 2026, 13:03:48) [MSC v.1944 64 bit (AMD64)]",
+    "checked_headers": 11770,
+    "parsers_checked": [
+      "optimized-regex",
+      "native-strings",
+      "translate",
+      "character-loop",
+      "fused-loop"
+    ],
+    "pairs": 7,
+    "target_seconds": 0.6,
+    "affinity": [
+      0
+    ],
+    "harness_sha256": "3e47af0499ce37668c93ce09209a230b09d19e0dc11d45eefb52a2b93365b597",
+    "regex_harness_sha256": "a912dfb9e1ec51b70bd2899e2a74ba278f48b1637b042616c0251e31c301809a",
+    "sources": {
+      "native-strings": "def extract(\n    self,\n    carrier: textmap.CarrierT,\n    context: Context | None = None,\n    getter: textmap.Getter[textmap.CarrierT] = textmap.default_getter,\n) -> Context:\n    \"\"\"Extracts SpanContext from the carrier.\n\n    See `opentelemetry.propagators.textmap.TextMapPropagator.extract`\n    \"\"\"\n    if context is None:\n        context = Context()\n\n    header = getter.get(carrier, self._TRACEPARENT_HEADER_NAME)\n\n    if not header:\n        return context\n\n    value = header[0]\n    if type(value) is str and len(value) == 55 and value.startswith(\"00-\") and value[35] == \"-\" and value[52] == \"-\":\n        if not value.isascii() or value.lower() != value:\n            return context\n        trace_id = value[3:35]\n        span_id = value[36:52]\n        trace_flags = value[53:55]\n        if not (trace_id.isalnum() and span_id.isalnum() and trace_flags.isalnum()):\n            return context\n        try:\n            trace_id = int(trace_id, 16)\n            span_id = int(span_id, 16)\n            trace_flags = int(trace_flags, 16)\n        except ValueError:\n            return context\n    else:\n        match = self._TRACEPARENT_HEADER_FORMAT_RE.search(value)\n        if not match:\n            return context\n        version, trace_id, span_id, trace_flags, suffix = match.groups()\n        if version == \"ff\" or (version == \"00\" and suffix):\n            return context\n        trace_id = int(trace_id, 16)\n        span_id = int(span_id, 16)\n        trace_flags = int(trace_flags, 16)\n    if not trace_id or not span_id:\n        return context\n\n    tracestate_headers = getter.get(carrier, self._TRACESTATE_HEADER_NAME)\n    if tracestate_headers is None:\n        tracestate = None\n    elif (\n        # multiple header fields are combined with \",\" (RFC 9110, section 5.3)\n        sum(len(header) for header in tracestate_headers) + len(tracestate_headers) - 1\n        > _TRACECONTEXT_MAXIMUM_TRACESTATE_LENGTH\n    ):\n        _logger.warning(\n            \"tracestate header exceeded the maximum length of %d characters\",\n            _TRACECONTEXT_MAXIMUM_TRACESTATE_LENGTH,\n        )\n        tracestate = None\n    else:\n        tracestate = TraceState.from_header(tracestate_headers)\n\n    span_context = trace.SpanContext(\n        trace_id=trace_id,\n        span_id=span_id,\n        is_remote=True,\n        trace_flags=trace.TraceFlags(trace_flags),\n        trace_state=tracestate,\n    )\n    return trace.set_span_in_context(trace.NonRecordingSpan(span_context), context)\n",
+      "translate": "def extract(\n    self,\n    carrier: textmap.CarrierT,\n    context: Context | None = None,\n    getter: textmap.Getter[textmap.CarrierT] = textmap.default_getter,\n) -> Context:\n    \"\"\"Extracts SpanContext from the carrier.\n\n    See `opentelemetry.propagators.textmap.TextMapPropagator.extract`\n    \"\"\"\n    if context is None:\n        context = Context()\n\n    header = getter.get(carrier, self._TRACEPARENT_HEADER_NAME)\n\n    if not header:\n        return context\n\n    value = header[0]\n    if type(value) is str and len(value) == 55 and value.startswith(\"00-\") and value[35] == \"-\" and value[52] == \"-\":\n        if value.count(\"-\") != 3 or value.translate(_DELETE_HEX):\n            return context\n        trace_id = value[3:35]\n        span_id = value[36:52]\n        trace_flags = value[53:55]\n        trace_id = int(trace_id, 16)\n        span_id = int(span_id, 16)\n        trace_flags = int(trace_flags, 16)\n    else:\n        match = self._TRACEPARENT_HEADER_FORMAT_RE.search(value)\n        if not match:\n            return context\n        version, trace_id, span_id, trace_flags, suffix = match.groups()\n        if version == \"ff\" or (version == \"00\" and suffix):\n            return context\n        trace_id = int(trace_id, 16)\n        span_id = int(span_id, 16)\n        trace_flags = int(trace_flags, 16)\n    if not trace_id or not span_id:\n        return context\n\n    tracestate_headers = getter.get(carrier, self._TRACESTATE_HEADER_NAME)\n    if tracestate_headers is None:\n        tracestate = None\n    elif (\n        # multiple header fields are combined with \",\" (RFC 9110, section 5.3)\n        sum(len(header) for header in tracestate_headers) + len(tracestate_headers) - 1\n        > _TRACECONTEXT_MAXIMUM_TRACESTATE_LENGTH\n    ):\n        _logger.warning(\n            \"tracestate header exceeded the maximum length of %d characters\",\n            _TRACECONTEXT_MAXIMUM_TRACESTATE_LENGTH,\n        )\n        tracestate = None\n    else:\n        tracestate = TraceState.from_header(tracestate_headers)\n\n    span_context = trace.SpanContext(\n        trace_id=trace_id,\n        span_id=span_id,\n        is_remote=True,\n        trace_flags=trace.TraceFlags(trace_flags),\n        trace_state=tracestate,\n    )\n    return trace.set_span_in_context(trace.NonRecordingSpan(span_context), context)\n",
+      "character-loop": "def extract(\n    self,\n    carrier: textmap.CarrierT,\n    context: Context | None = None,\n    getter: textmap.Getter[textmap.CarrierT] = textmap.default_getter,\n) -> Context:\n    \"\"\"Extracts SpanContext from the carrier.\n\n    See `opentelemetry.propagators.textmap.TextMapPropagator.extract`\n    \"\"\"\n    if context is None:\n        context = Context()\n\n    header = getter.get(carrier, self._TRACEPARENT_HEADER_NAME)\n\n    if not header:\n        return context\n\n    value = header[0]\n    if type(value) is str and len(value) == 55 and value.startswith(\"00-\") and value[35] == \"-\" and value[52] == \"-\":\n        trace_id = value[3:35]\n        span_id = value[36:52]\n        trace_flags = value[53:55]\n        for field in (trace_id, span_id, trace_flags):\n            for character in field:\n                if character not in _HEX:\n                    return context\n        trace_id = int(trace_id, 16)\n        span_id = int(span_id, 16)\n        trace_flags = int(trace_flags, 16)\n    else:\n        match = self._TRACEPARENT_HEADER_FORMAT_RE.search(value)\n        if not match:\n            return context\n        version, trace_id, span_id, trace_flags, suffix = match.groups()\n        if version == \"ff\" or (version == \"00\" and suffix):\n            return context\n        trace_id = int(trace_id, 16)\n        span_id = int(span_id, 16)\n        trace_flags = int(trace_flags, 16)\n    if not trace_id or not span_id:\n        return context\n\n    tracestate_headers = getter.get(carrier, self._TRACESTATE_HEADER_NAME)\n    if tracestate_headers is None:\n        tracestate = None\n    elif (\n        # multiple header fields are combined with \",\" (RFC 9110, section 5.3)\n        sum(len(header) for header in tracestate_headers) + len(tracestate_headers) - 1\n        > _TRACECONTEXT_MAXIMUM_TRACESTATE_LENGTH\n    ):\n        _logger.warning(\n            \"tracestate header exceeded the maximum length of %d characters\",\n            _TRACECONTEXT_MAXIMUM_TRACESTATE_LENGTH,\n        )\n        tracestate = None\n    else:\n        tracestate = TraceState.from_header(tracestate_headers)\n\n    span_context = trace.SpanContext(\n        trace_id=trace_id,\n        span_id=span_id,\n        is_remote=True,\n        trace_flags=trace.TraceFlags(trace_flags),\n        trace_state=tracestate,\n    )\n    return trace.set_span_in_context(trace.NonRecordingSpan(span_context), context)\n",
+      "fused-loop": "def extract(\n    self,\n    carrier: textmap.CarrierT,\n    context: Context | None = None,\n    getter: textmap.Getter[textmap.CarrierT] = textmap.default_getter,\n) -> Context:\n    \"\"\"Extracts SpanContext from the carrier.\n\n    See `opentelemetry.propagators.textmap.TextMapPropagator.extract`\n    \"\"\"\n    if context is None:\n        context = Context()\n\n    header = getter.get(carrier, self._TRACEPARENT_HEADER_NAME)\n\n    if not header:\n        return context\n\n    value = header[0]\n    if type(value) is str and len(value) == 55 and value.startswith(\"00-\") and value[35] == \"-\" and value[52] == \"-\":\n        digit_for = _HEX_VALUES.get\n        trace_id = 0\n        for character in value[3:35]:\n            digit = digit_for(character)\n            if digit is None:\n                return context\n            trace_id = (trace_id << 4) | digit\n        span_id = 0\n        for character in value[36:52]:\n            digit = digit_for(character)\n            if digit is None:\n                return context\n            span_id = (span_id << 4) | digit\n        trace_flags = 0\n        for character in value[53:55]:\n            digit = digit_for(character)\n            if digit is None:\n                return context\n            trace_flags = (trace_flags << 4) | digit\n    else:\n        match = self._TRACEPARENT_HEADER_FORMAT_RE.search(value)\n        if not match:\n            return context\n        version, trace_id, span_id, trace_flags, suffix = match.groups()\n        if version == \"ff\" or (version == \"00\" and suffix):\n            return context\n        trace_id = int(trace_id, 16)\n        span_id = int(span_id, 16)\n        trace_flags = int(trace_flags, 16)\n    if not trace_id or not span_id:\n        return context\n\n    tracestate_headers = getter.get(carrier, self._TRACESTATE_HEADER_NAME)\n    if tracestate_headers is None:\n        tracestate = None\n    elif (\n        # multiple header fields are combined with \",\" (RFC 9110, section 5.3)\n        sum(len(header) for header in tracestate_headers) + len(tracestate_headers) - 1\n        > _TRACECONTEXT_MAXIMUM_TRACESTATE_LENGTH\n    ):\n        _logger.warning(\n            \"tracestate header exceeded the maximum length of %d characters\",\n            _TRACECONTEXT_MAXIMUM_TRACESTATE_LENGTH,\n        )\n        tracestate = None\n    else:\n        tracestate = TraceState.from_header(tracestate_headers)\n\n    span_context = trace.SpanContext(\n        trace_id=trace_id,\n        span_id=span_id,\n        is_remote=True,\n        trace_flags=trace.TraceFlags(trace_flags),\n        trace_state=tracestate,\n    )\n    return trace.set_span_in_context(trace.NonRecordingSpan(span_context), context)\n"
+    }
+  },
+  "results": [
+    {
+      "case": "default_strings/no-state",
+      "loops_per_batch": 271957,
+      "summary": {
+        "optimized-regex": {
+          "cpu_ns_op": 2248.911198671639,
+          "wall_ns_op": 2264.6054339472785
+        },
+        "native-strings": {
+          "cpu_ns_op": 2248.911198671639,
+          "wall_ns_op": 2289.295366546917
+        },
+        "translate": {
+          "cpu_ns_op": 2339.19595482269,
+          "wall_ns_op": 2385.275613424181
+        },
+        "character-loop": {
+          "cpu_ns_op": 3480.066964367791,
+          "wall_ns_op": 3466.238044985053
+        },
+        "fused-loop": {
+          "cpu_ns_op": 5778.224393667276,
+          "wall_ns_op": 5661.494648050979
+        }
+      },
+      "samples": [
+        {
+          "pair": 0,
+          "mode": "optimized-regex",
+          "loops": 271957,
+          "cpu_ns": 578125000,
+          "wall_ns": 594219100
+        },
+        {
+          "pair": 0,
+          "mode": "native-strings",
+          "loops": 271957,
+          "cpu_ns": 593750000,
+          "wall_ns": 589572400
+        },
+        {
+          "pair": 0,
+          "mode": "translate",
+          "loops": 271957,
+          "cpu_ns": 609375000,
+          "wall_ns": 619047400
+        },
+        {
+          "pair": 0,
+          "mode": "character-loop",
+          "loops": 271957,
+          "cpu_ns": 875000000,
+          "wall_ns": 912226200
+        },
+        {
+          "pair": 0,
+          "mode": "fused-loop",
+          "loops": 271957,
+          "cpu_ns": 1531250000,
+          "wall_ns": 1539683100
+        },
+        {
+          "pair": 1,
+          "mode": "optimized-regex",
+          "loops": 271957,
+          "cpu_ns": 609375000,
+          "wall_ns": 609868300
+        },
+        {
+          "pair": 1,
+          "mode": "fused-loop",
+          "loops": 271957,
+          "cpu_ns": 1515625000,
+          "wall_ns": 1535288800
+        },
+        {
+          "pair": 1,
+          "mode": "character-loop",
+          "loops": 271957,
+          "cpu_ns": 906250000,
+          "wall_ns": 920584700
+        },
+        {
+          "pair": 1,
+          "mode": "translate",
+          "loops": 271957,
+          "cpu_ns": 640625000,
+          "wall_ns": 635333900
+        },
+        {
+          "pair": 1,
+          "mode": "native-strings",
+          "loops": 271957,
+          "cpu_ns": 609375000,
+          "wall_ns": 602745000
+        },
+        {
+          "pair": 2,
+          "mode": "translate",
+          "loops": 271957,
+          "cpu_ns": 671875000,
+          "wall_ns": 664135000
+        },
+        {
+          "pair": 2,
+          "mode": "character-loop",
+          "loops": 271957,
+          "cpu_ns": 937500000,
+          "wall_ns": 944376600
+        },
+        {
+          "pair": 2,
+          "mode": "fused-loop",
+          "loops": 271957,
+          "cpu_ns": 1515625000,
+          "wall_ns": 1512954200
+        },
+        {
+          "pair": 2,
+          "mode": "optimized-regex",
+          "loops": 271957,
+          "cpu_ns": 625000000,
+          "wall_ns": 622794000
+        },
+        {
+          "pair": 2,
+          "mode": "native-strings",
+          "loops": 271957,
+          "cpu_ns": 593750000,
+          "wall_ns": 618963900
+        },
+        {
+          "pair": 3,
+          "mode": "translate",
+          "loops": 271957,
+          "cpu_ns": 640625000,
+          "wall_ns": 648692400
+        },
+        {
+          "pair": 3,
+          "mode": "native-strings",
+          "loops": 271957,
+          "cpu_ns": 640625000,
+          "wall_ns": 643615600
+        },
+        {
+          "pair": 3,
+          "mode": "optimized-regex",
+          "loops": 271957,
+          "cpu_ns": 609375000,
+          "wall_ns": 615875300
+        },
+        {
+          "pair": 3,
+          "mode": "fused-loop",
+          "loops": 271957,
+          "cpu_ns": 1609375000,
+          "wall_ns": 1688782400
+        },
+        {
+          "pair": 3,
+          "mode": "character-loop",
+          "loops": 271957,
+          "cpu_ns": 937500000,
+          "wall_ns": 938947100
+        },
+        {
+          "pair": 4,
+          "mode": "fused-loop",
+          "loops": 271957,
+          "cpu_ns": 1562500000,
+          "wall_ns": 1562126500
+        },
+        {
+          "pair": 4,
+          "mode": "optimized-regex",
+          "loops": 271957,
+          "cpu_ns": 625000000,
+          "wall_ns": 627065300
+        },
+        {
+          "pair": 4,
+          "mode": "native-strings",
+          "loops": 271957,
+          "cpu_ns": 625000000,
+          "wall_ns": 647116100
+        },
+        {
+          "pair": 4,
+          "mode": "translate",
+          "loops": 271957,
+          "cpu_ns": 609375000,
+          "wall_ns": 645392500
+        },
+        {
+          "pair": 4,
+          "mode": "character-loop",
+          "loops": 271957,
+          "cpu_ns": 1046875000,
+          "wall_ns": 1036728400
+        },
+        {
+          "pair": 5,
+          "mode": "fused-loop",
+          "loops": 271957,
+          "cpu_ns": 1781250000,
+          "wall_ns": 1830598800
+        },
+        {
+          "pair": 5,
+          "mode": "character-loop",
+          "loops": 271957,
+          "cpu_ns": 953125000,
+          "wall_ns": 942667700
+        },
+        {
+          "pair": 5,
+          "mode": "translate",
+          "loops": 271957,
+          "cpu_ns": 640625000,
+          "wall_ns": 654041400
+        },
+        {
+          "pair": 5,
+          "mode": "native-strings",
+          "loops": 271957,
+          "cpu_ns": 609375000,
+          "wall_ns": 622589900
+        },
+        {
+          "pair": 5,
+          "mode": "optimized-regex",
+          "loops": 271957,
+          "cpu_ns": 609375000,
+          "wall_ns": 611724000
+        },
+        {
+          "pair": 6,
+          "mode": "native-strings",
+          "loops": 271957,
+          "cpu_ns": 609375000,
+          "wall_ns": 623976300
+        },
+        {
+          "pair": 6,
+          "mode": "translate",
+          "loops": 271957,
+          "cpu_ns": 640625000,
+          "wall_ns": 652259900
+        },
+        {
+          "pair": 6,
+          "mode": "character-loop",
+          "loops": 271957,
+          "cpu_ns": 968750000,
+          "wall_ns": 985449800
+        },
+        {
+          "pair": 6,
+          "mode": "fused-loop",
+          "loops": 271957,
+          "cpu_ns": 1484375000,
+          "wall_ns": 1510282700
+        },
+        {
+          "pair": 6,
+          "mode": "optimized-regex",
+          "loops": 271957,
+          "cpu_ns": 625000000,
+          "wall_ns": 622869300
+        }
+      ]
+    },
+    {
+      "case": "custom_lists/no-state",
+      "loops_per_batch": 277068,
+      "summary": {
+        "optimized-regex": {
+          "cpu_ns_op": 2183.2572303034426,
+          "wall_ns_op": 2211.2430883393245
+        },
+        "native-strings": {
+          "cpu_ns_op": 2263.820227731614,
+          "wall_ns_op": 2237.0883681984205
+        },
+        "translate": {
+          "cpu_ns_op": 2392.7210236166884,
+          "wall_ns_op": 2307.899143892474
+        },
+        "character-loop": {
+          "cpu_ns_op": 3431.983690440098,
+          "wall_ns_op": 3472.5377885573216
+        },
+        "fused-loop": {
+          "cpu_ns_op": 5607.184621000724,
+          "wall_ns_op": 5644.92940361211
+        }
+      },
+      "samples": [
+        {
+          "pair": 0,
+          "mode": "optimized-regex",
+          "loops": 277068,
+          "cpu_ns": 609375000,
+          "wall_ns": 608437600
+        },
+        {
+          "pair": 0,
+          "mode": "native-strings",
+          "loops": 277068,
+          "cpu_ns": 609375000,
+          "wall_ns": 603036400
+        },
+        {
+          "pair": 0,
+          "mode": "translate",
+          "loops": 277068,
+          "cpu_ns": 625000000,
+          "wall_ns": 639940900
+        },
+        {
+          "pair": 0,
+          "mode": "character-loop",
+          "loops": 277068,
+          "cpu_ns": 937500000,
+          "wall_ns": 968584400
+        },
+        {
+          "pair": 0,
+          "mode": "fused-loop",
+          "loops": 277068,
+          "cpu_ns": 1531250000,
+          "wall_ns": 1533873500
+        },
+        {
+          "pair": 1,
+          "mode": "optimized-regex",
+          "loops": 277068,
+          "cpu_ns": 593750000,
+          "wall_ns": 603957800
+        },
+        {
+          "pair": 1,
+          "mode": "fused-loop",
+          "loops": 277068,
+          "cpu_ns": 1531250000,
+          "wall_ns": 1536278000
+        },
+        {
+          "pair": 1,
+          "mode": "character-loop",
+          "loops": 277068,
+          "cpu_ns": 937500000,
+          "wall_ns": 941439900
+        },
+        {
+          "pair": 1,
+          "mode": "translate",
+          "loops": 277068,
+          "cpu_ns": 640625000,
+          "wall_ns": 643086200
+        },
+        {
+          "pair": 1,
+          "mode": "native-strings",
+          "loops": 277068,
+          "cpu_ns": 625000000,
+          "wall_ns": 633306200
+        },
+        {
+          "pair": 2,
+          "mode": "translate",
+          "loops": 277068,
+          "cpu_ns": 640625000,
+          "wall_ns": 639445000
+        },
+        {
+          "pair": 2,
+          "mode": "character-loop",
+          "loops": 277068,
+          "cpu_ns": 906250000,
+          "wall_ns": 937464300
+        },
+        {
+          "pair": 2,
+          "mode": "fused-loop",
+          "loops": 277068,
+          "cpu_ns": 1500000000,
+          "wall_ns": 1546669700
+        },
+        {
+          "pair": 2,
+          "mode": "optimized-regex",
+          "loops": 277068,
+          "cpu_ns": 578125000,
+          "wall_ns": 602158200
+        },
+        {
+          "pair": 2,
+          "mode": "native-strings",
+          "loops": 277068,
+          "cpu_ns": 609375000,
+          "wall_ns": 626888700
+        },
+        {
+          "pair": 3,
+          "mode": "translate",
+          "loops": 277068,
+          "cpu_ns": 640625000,
+          "wall_ns": 632259100
+        },
+        {
+          "pair": 3,
+          "mode": "native-strings",
+          "loops": 277068,
+          "cpu_ns": 609375000,
+          "wall_ns": 615702500
+        },
+        {
+          "pair": 3,
+          "mode": "optimized-regex",
+          "loops": 277068,
+          "cpu_ns": 609375000,
+          "wall_ns": 614048300
+        },
+        {
+          "pair": 3,
+          "mode": "fused-loop",
+          "loops": 277068,
+          "cpu_ns": 1562500000,
+          "wall_ns": 1564029300
+        },
+        {
+          "pair": 3,
+          "mode": "character-loop",
+          "loops": 277068,
+          "cpu_ns": 968750000,
+          "wall_ns": 966176900
+        },
+        {
+          "pair": 4,
+          "mode": "fused-loop",
+          "loops": 277068,
+          "cpu_ns": 1578125000,
+          "wall_ns": 1571421300
+        },
+        {
+          "pair": 4,
+          "mode": "optimized-regex",
+          "loops": 277068,
+          "cpu_ns": 609375000,
+          "wall_ns": 612917900
+        },
+        {
+          "pair": 4,
+          "mode": "native-strings",
+          "loops": 277068,
+          "cpu_ns": 718750000,
+          "wall_ns": 740487700
+        },
+        {
+          "pair": 4,
+          "mode": "translate",
+          "loops": 277068,
+          "cpu_ns": 843750000,
+          "wall_ns": 853362500
+        },
+        {
+          "pair": 4,
+          "mode": "character-loop",
+          "loops": 277068,
+          "cpu_ns": 1015625000,
+          "wall_ns": 1013943300
+        },
+        {
+          "pair": 5,
+          "mode": "fused-loop",
+          "loops": 277068,
+          "cpu_ns": 1562500000,
+          "wall_ns": 1579659200
+        },
+        {
+          "pair": 5,
+          "mode": "character-loop",
+          "loops": 277068,
+          "cpu_ns": 953125000,
+          "wall_ns": 962129100
+        },
+        {
+          "pair": 5,
+          "mode": "translate",
+          "loops": 277068,
+          "cpu_ns": 625000000,
+          "wall_ns": 635467700
+        },
+        {
+          "pair": 5,
+          "mode": "native-strings",
+          "loops": 277068,
+          "cpu_ns": 609375000,
+          "wall_ns": 610803500
+        },
+        {
+          "pair": 5,
+          "mode": "optimized-regex",
+          "loops": 277068,
+          "cpu_ns": 625000000,
+          "wall_ns": 639834900
+        },
+        {
+          "pair": 6,
+          "mode": "native-strings",
+          "loops": 277068,
+          "cpu_ns": 609375000,
+          "wall_ns": 619825600
+        },
+        {
+          "pair": 6,
+          "mode": "translate",
+          "loops": 277068,
+          "cpu_ns": 625000000,
+          "wall_ns": 636371000
+        },
+        {
+          "pair": 6,
+          "mode": "character-loop",
+          "loops": 277068,
+          "cpu_ns": 937500000,
+          "wall_ns": 934349000
+        },
+        {
+          "pair": 6,
+          "mode": "fused-loop",
+          "loops": 277068,
+          "cpu_ns": 1609375000,
+          "wall_ns": 1608440300
+        },
+        {
+          "pair": 6,
+          "mode": "optimized-regex",
+          "loops": 277068,
+          "cpu_ns": 609375000,
+          "wall_ns": 612664700
+        }
+      ]
+    },
+    {
+      "case": "custom_lists/three-state",
+      "loops_per_batch": 144980,
+      "summary": {
+        "optimized-regex": {
+          "cpu_ns_op": 4387.9205013499395,
+          "wall_ns_op": 4324.292316181542
+        },
+        "native-strings": {
+          "cpu_ns_op": 4403.316713635379,
+          "wall_ns_op": 4265.65871154642
+        },
+        "translate": {
+          "cpu_ns_op": 4418.712925920817,
+          "wall_ns_op": 4457.792109256449
+        },
+        "character-loop": {
+          "cpu_ns_op": 5635.013696470449,
+          "wall_ns_op": 5627.652779693751
+        },
+        "fused-loop": {
+          "cpu_ns_op": 7898.256902429892,
+          "wall_ns_op": 7872.54448889502
+        }
+      },
+      "samples": [
+        {
+          "pair": 0,
+          "mode": "optimized-regex",
+          "loops": 144980,
+          "cpu_ns": 609375000,
+          "wall_ns": 625450100
+        },
+        {
+          "pair": 0,
+          "mode": "native-strings",
+          "loops": 144980,
+          "cpu_ns": 625000000,
+          "wall_ns": 621219900
+        },
+        {
+          "pair": 0,
+          "mode": "translate",
+          "loops": 144980,
+          "cpu_ns": 640625000,
+          "wall_ns": 649222100
+        },
+        {
+          "pair": 0,
+          "mode": "character-loop",
+          "loops": 144980,
+          "cpu_ns": 812500000,
+          "wall_ns": 834637200
+        },
+        {
+          "pair": 0,
+          "mode": "fused-loop",
+          "loops": 144980,
+          "cpu_ns": 1093750000,
+          "wall_ns": 1141361500
+        },
+        {
+          "pair": 1,
+          "mode": "optimized-regex",
+          "loops": 144980,
+          "cpu_ns": 625000000,
+          "wall_ns": 626935900
+        },
+        {
+          "pair": 1,
+          "mode": "fused-loop",
+          "loops": 144980,
+          "cpu_ns": 1109375000,
+          "wall_ns": 1147673800
+        },
+        {
+          "pair": 1,
+          "mode": "character-loop",
+          "loops": 144980,
+          "cpu_ns": 812500000,
+          "wall_ns": 811477700
+        },
+        {
+          "pair": 1,
+          "mode": "translate",
+          "loops": 144980,
+          "cpu_ns": 671875000,
+          "wall_ns": 661910500
+        },
+        {
+          "pair": 1,
+          "mode": "native-strings",
+          "loops": 144980,
+          "cpu_ns": 625000000,
+          "wall_ns": 618435200
+        },
+        {
+          "pair": 2,
+          "mode": "translate",
+          "loops": 144980,
+          "cpu_ns": 625000000,
+          "wall_ns": 646290700
+        },
+        {
+          "pair": 2,
+          "mode": "character-loop",
+          "loops": 144980,
+          "cpu_ns": 796875000,
+          "wall_ns": 804941200
+        },
+        {
+          "pair": 2,
+          "mode": "fused-loop",
+          "loops": 144980,
+          "cpu_ns": 1156250000,
+          "wall_ns": 1152471500
+        },
+        {
+          "pair": 2,
+          "mode": "optimized-regex",
+          "loops": 144980,
+          "cpu_ns": 609375000,
+          "wall_ns": 607600800
+        },
+        {
+          "pair": 2,
+          "mode": "native-strings",
+          "loops": 144980,
+          "cpu_ns": 625000000,
+          "wall_ns": 635939000
+        },
+        {
+          "pair": 3,
+          "mode": "translate",
+          "loops": 144980,
+          "cpu_ns": 625000000,
+          "wall_ns": 632344100
+        },
+        {
+          "pair": 3,
+          "mode": "native-strings",
+          "loops": 144980,
+          "cpu_ns": 609375000,
+          "wall_ns": 617757900
+        },
+        {
+          "pair": 3,
+          "mode": "optimized-regex",
+          "loops": 144980,
+          "cpu_ns": 625000000,
+          "wall_ns": 625179500
+        },
+        {
+          "pair": 3,
+          "mode": "fused-loop",
+          "loops": 144980,
+          "cpu_ns": 1109375000,
+          "wall_ns": 1112658900
+        },
+        {
+          "pair": 3,
+          "mode": "character-loop",
+          "loops": 144980,
+          "cpu_ns": 796875000,
+          "wall_ns": 804084400
+        },
+        {
+          "pair": 4,
+          "mode": "fused-loop",
+          "loops": 144980,
+          "cpu_ns": 1109375000,
+          "wall_ns": 1107255300
+        },
+        {
+          "pair": 4,
+          "mode": "optimized-regex",
+          "loops": 144980,
+          "cpu_ns": 625000000,
+          "wall_ns": 634595800
+        },
+        {
+          "pair": 4,
+          "mode": "native-strings",
+          "loops": 144980,
+          "cpu_ns": 609375000,
+          "wall_ns": 613522800
+        },
+        {
+          "pair": 4,
+          "mode": "translate",
+          "loops": 144980,
+          "cpu_ns": 625000000,
+          "wall_ns": 645974200
+        },
+        {
+          "pair": 4,
+          "mode": "character-loop",
+          "loops": 144980,
+          "cpu_ns": 843750000,
+          "wall_ns": 860703600
+        },
+        {
+          "pair": 5,
+          "mode": "fused-loop",
+          "loops": 144980,
+          "cpu_ns": 1328125000,
+          "wall_ns": 1341093300
+        },
+        {
+          "pair": 5,
+          "mode": "character-loop",
+          "loops": 144980,
+          "cpu_ns": 812500000,
+          "wall_ns": 815897100
+        },
+        {
+          "pair": 5,
+          "mode": "translate",
+          "loops": 144980,
+          "cpu_ns": 625000000,
+          "wall_ns": 642413300
+        },
+        {
+          "pair": 5,
+          "mode": "native-strings",
+          "loops": 144980,
+          "cpu_ns": 750000000,
+          "wall_ns": 775225900
+        },
+        {
+          "pair": 5,
+          "mode": "optimized-regex",
+          "loops": 144980,
+          "cpu_ns": 671875000,
+          "wall_ns": 678807700
+        },
+        {
+          "pair": 6,
+          "mode": "native-strings",
+          "loops": 144980,
+          "cpu_ns": 625000000,
+          "wall_ns": 617445200
+        },
+        {
+          "pair": 6,
+          "mode": "translate",
+          "loops": 144980,
+          "cpu_ns": 671875000,
+          "wall_ns": 660006800
+        },
+        {
+          "pair": 6,
+          "mode": "character-loop",
+          "loops": 144980,
+          "cpu_ns": 843750000,
+          "wall_ns": 829626000
+        },
+        {
+          "pair": 6,
+          "mode": "fused-loop",
+          "loops": 144980,
+          "cpu_ns": 1109375000,
+          "wall_ns": 1139703700
+        },
+        {
+          "pair": 6,
+          "mode": "optimized-regex",
+          "loops": 144980,
+          "cpu_ns": 687500000,
+          "wall_ns": 689855900
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,454 @@
+{
+  "schema_version": 1,
+  "updated": "2026-10-15",
+  "scope": "Tracing API and SDK in this repository. Instrumentation and exporter transport/serialization are deferred.",
+  "status_definitions": {
+    "unexplored": "Area has not received a focused source/profile investigation.",
+    "investigating": "A hypothesis is under examination, without sufficient measurement.",
+    "measured": "Prototype evidence exists; production implementation and regression validation are pending.",
+    "implemented": "Retained production working-tree changes exist. This does not mean committed or merged.",
+    "rejected": "Current approach was declined, with reopening criteria in notes.",
+    "deferred": "Considered but postponed; no performance gain is established."
+  },
+  "evidence_manifest": "evidence/session-2026-10-14-15/manifest.json",
+  "candidates": [
+    {
+      "id": "PERF-001",
+      "title": "Current span lookup",
+      "owner": "components/api/trace/span-context",
+      "notes": "components/api/trace/span-context/investigations/PERF-001-current-span-lookup/notes.md",
+      "status": "implemented",
+      "implementation": "working-tree",
+      "last_reviewed": "2026-10-15",
+      "summary": "Paired with PERF-002; exact NonRecordingSpan shortcut and direct context lookup.",
+      "studies": [
+        "S01"
+      ],
+      "validation": "Retained changes validated in the session; see validation record."
+    },
+    {
+      "id": "PERF-002",
+      "title": "Sampling decision identity check",
+      "owner": "components/sdk/trace/sampling",
+      "notes": "components/sdk/trace/sampling/investigations/PERF-002-decision-recording/notes.md",
+      "status": "implemented",
+      "implementation": "working-tree",
+      "last_reviewed": "2026-10-15",
+      "summary": "Paired with PERF-001; identity check replaces membership check.",
+      "studies": [
+        "S01"
+      ],
+      "validation": "Retained changes validated in the session; see validation record."
+    },
+    {
+      "id": "PERF-003",
+      "title": "Single context copy",
+      "owner": "components/api/context",
+      "notes": "components/api/context/investigations/PERF-003-context-copy/notes.md",
+      "status": "rejected",
+      "implementation": "none",
+      "last_reviewed": "2026-10-15",
+      "summary": "Direct dict insertion into one Context was slower than current native copying.",
+      "studies": [
+        "S02"
+      ],
+      "validation": "See notes; no retained implementation."
+    },
+    {
+      "id": "PERF-004",
+      "title": "Adopt cleaned attribute dictionary",
+      "owner": "components/api/attributes",
+      "notes": "components/api/attributes/investigations/PERF-004-cleaned-dict-adoption/notes.md",
+      "status": "implemented",
+      "implementation": "working-tree",
+      "last_reviewed": "2026-10-15",
+      "summary": "Avoid reinserting fresh validated dictionary when empty and within bounds.",
+      "studies": [
+        "S03"
+      ],
+      "validation": "Retained changes validated in the session; see validation record."
+    },
+    {
+      "id": "PERF-005",
+      "title": "Reuse scalar type tuple",
+      "owner": "components/api/attributes",
+      "notes": "components/api/attributes/investigations/PERF-005-scalar-type-tuple/notes.md",
+      "status": "implemented",
+      "implementation": "working-tree",
+      "last_reviewed": "2026-10-15",
+      "summary": "Avoid rebuilding the primitive type tuple on each recursive validation call.",
+      "studies": [
+        "S04",
+        "S03"
+      ],
+      "validation": "Retained changes validated in the session; see validation record."
+    },
+    {
+      "id": "PERF-006",
+      "title": "Lazy event and link containers",
+      "owner": "components/sdk/trace/span-creation",
+      "notes": "components/sdk/trace/span-creation/investigations/PERF-006-lazy-events-links/notes.md",
+      "status": "implemented",
+      "implementation": "working-tree",
+      "last_reviewed": "2026-10-15",
+      "summary": "Allocate bounded event/link containers on first use; preserve exported drop counts.",
+      "studies": [
+        "S03"
+      ],
+      "validation": "Retained changes validated in the session; see validation record."
+    },
+    {
+      "id": "PERF-007",
+      "title": "Native update into nonempty attributes",
+      "owner": "components/api/attributes",
+      "notes": "components/api/attributes/investigations/PERF-007-nonempty-bulk-update/notes.md",
+      "status": "rejected",
+      "implementation": "none",
+      "last_reviewed": "2026-10-15",
+      "summary": "Small common batch gains came with overlapping-key regressions.",
+      "studies": [
+        "S05"
+      ],
+      "validation": "See notes; no retained implementation."
+    },
+    {
+      "id": "PERF-008",
+      "title": "Specialized attribute constructor",
+      "owner": "components/api/attributes",
+      "notes": "components/api/attributes/investigations/PERF-008-constructor-specialization/notes.md",
+      "status": "rejected",
+      "implementation": "none",
+      "last_reviewed": "2026-10-15",
+      "summary": "Weak 0-3.45 percent median gains did not justify duplicated validation paths.",
+      "studies": [
+        "S06"
+      ],
+      "validation": "See notes; no retained implementation."
+    },
+    {
+      "id": "PERF-009",
+      "title": "Shared SDK attribute locking",
+      "owner": "components/sdk/shared/bounded-collections",
+      "notes": "components/sdk/shared/bounded-collections/investigations/PERF-009-shared-attribute-lock/notes.md",
+      "status": "deferred",
+      "implementation": "none",
+      "last_reviewed": "2026-10-15",
+      "summary": "Reader synchronization, self-aliasing and reentrant logging need a design; no measurements.",
+      "studies": [],
+      "validation": "See notes; no retained implementation."
+    },
+    {
+      "id": "PERF-010",
+      "title": "Lazy span attributes",
+      "owner": "components/sdk/trace/span-creation",
+      "notes": "components/sdk/trace/span-creation/investigations/PERF-010-lazy-span-attributes/notes.md",
+      "status": "deferred",
+      "implementation": "none",
+      "last_reviewed": "2026-10-15",
+      "summary": "Empty SDK span JSON is {}, while ReadableSpan(None) is null; dropped counters must survive.",
+      "studies": [],
+      "validation": "See notes; no retained implementation."
+    },
+    {
+      "id": "PERF-011",
+      "title": "Cached frozen attribute views",
+      "owner": "components/sdk/trace/span-ending",
+      "notes": "components/sdk/trace/span-ending/investigations/PERF-011-frozen-attribute-views/notes.md",
+      "status": "deferred",
+      "implementation": "none",
+      "last_reviewed": "2026-10-15",
+      "summary": "No profile evidence for repeated view reads; preserve existing empty snapshot semantics.",
+      "studies": [],
+      "validation": "See notes; no retained implementation."
+    },
+    {
+      "id": "PERF-012",
+      "title": "Compiled regex dispatch and grouped capture",
+      "owner": "components/api/propagation/traceparent",
+      "notes": "components/api/propagation/traceparent/investigations/PERF-012-regex-wrapper/notes.md",
+      "status": "measured",
+      "implementation": "prototype-only",
+      "last_reviewed": "2026-10-15",
+      "summary": "Measured only as extraction bundle with PERF-013 and PERF-014.",
+      "studies": [
+        "S07"
+      ],
+      "validation": "See notes and session validation record; measured prototypes are not production-regression validated."
+    },
+    {
+      "id": "PERF-013",
+      "title": "Adopt validated tracestate dictionary",
+      "owner": "components/api/propagation/tracestate",
+      "notes": "components/api/propagation/tracestate/investigations/PERF-013-tracestate-dict-adoption/notes.md",
+      "status": "measured",
+      "implementation": "prototype-only",
+      "last_reviewed": "2026-10-15",
+      "summary": "Avoid repeated validation and copying; measured only in propagation bundle.",
+      "studies": [
+        "S07"
+      ],
+      "validation": "See notes and session validation record; measured prototypes are not production-regression validated."
+    },
+    {
+      "id": "PERF-014",
+      "title": "String-first default getter",
+      "owner": "components/api/propagation/textmap",
+      "notes": "components/api/propagation/textmap/investigations/PERF-014-default-getter-string-first/notes.md",
+      "status": "measured",
+      "implementation": "prototype-only",
+      "last_reviewed": "2026-10-15",
+      "summary": "Check string values before Iterable; bundle measurements include custom getters.",
+      "studies": [
+        "S07"
+      ],
+      "validation": "See notes and session validation record; measured prototypes are not production-regression validated."
+    },
+    {
+      "id": "PERF-015",
+      "title": "Handrolled traceparent parsers",
+      "owner": "components/api/propagation/traceparent",
+      "notes": "components/api/propagation/traceparent/investigations/PERF-015-handrolled-parser-alternatives/notes.md",
+      "status": "rejected",
+      "implementation": "none",
+      "last_reviewed": "2026-10-15",
+      "summary": "Native string checks tied; character loops and other variants were slower.",
+      "studies": [
+        "S08"
+      ],
+      "validation": "See notes; no retained implementation."
+    },
+    {
+      "id": "PERF-016",
+      "title": "Shared scope generator",
+      "owner": "components/api/trace/scope-management",
+      "notes": "components/api/trace/scope-management/investigations/PERF-016-generator-wrapper/notes.md",
+      "status": "measured",
+      "implementation": "prototype-only",
+      "last_reviewed": "2026-10-15",
+      "summary": "Delegate to the existing generator body without the nested manager wrapper. Inline body is upper-bound research only.",
+      "studies": [
+        "S09",
+        "S11"
+      ],
+      "validation": "See notes and session validation record; measured prototypes are not production-regression validated."
+    },
+    {
+      "id": "PERF-017",
+      "title": "Reuse parent context during sampling",
+      "owner": "components/sdk/trace/sampling",
+      "notes": "components/sdk/trace/sampling/investigations/PERF-017-parent-context-reuse/notes.md",
+      "status": "measured",
+      "implementation": "prototype-only",
+      "last_reviewed": "2026-10-15",
+      "summary": "Avoid repeated lookups for exact built-ins; instance overrides and runtime plugins need a safe handoff.",
+      "studies": [
+        "S10",
+        "S11"
+      ],
+      "validation": "See notes and session validation record; measured prototypes are not production-regression validated."
+    },
+    {
+      "id": "PERF-018",
+      "title": "Bypass SpanContext ID validation",
+      "owner": "components/api/trace/span-context",
+      "notes": "components/api/trace/span-context/investigations/PERF-018-id-validation-bypass/notes.md",
+      "status": "rejected",
+      "implementation": "none",
+      "last_reviewed": "2026-10-15",
+      "summary": "Would change invalid-ID behavior for custom IdGenerators; read-only decision.",
+      "studies": [],
+      "validation": "See notes; no retained implementation."
+    },
+    {
+      "id": "PERF-019",
+      "title": "Native SpanContext field getters",
+      "owner": "components/api/trace/span-context",
+      "notes": "components/api/trace/span-context/investigations/PERF-019-native-field-getters/notes.md",
+      "status": "deferred",
+      "implementation": "none",
+      "last_reviewed": "2026-10-15",
+      "summary": "Not measured. Native tuple getters can bypass overridden __getitem__; typing and specialization need investigation.",
+      "studies": [],
+      "validation": "See notes; no retained implementation."
+    },
+    {
+      "id": "PERF-020",
+      "title": "Skip empty processor dispatch",
+      "owner": "components/sdk/trace/processors",
+      "notes": "components/sdk/trace/processors/investigations/PERF-020-empty-dispatch/notes.md",
+      "status": "deferred",
+      "implementation": "none",
+      "last_reviewed": "2026-10-15",
+      "summary": "Small unmeasured opportunity limited to empty processor lists; registration and custom hooks complicate it.",
+      "studies": [],
+      "validation": "See notes; no retained implementation."
+    }
+  ],
+  "studies": [
+    {
+      "id": "S01",
+      "baseline": "B0",
+      "participants": [
+        "PERF-001",
+        "PERF-002"
+      ],
+      "kind": "bundled incremental",
+      "artifacts": [
+        "agent/paired-cpu.json"
+      ],
+      "preferred": true
+    },
+    {
+      "id": "S02",
+      "baseline": "existing Context.set_value",
+      "participants": [
+        "PERF-003"
+      ],
+      "kind": "isolated incremental",
+      "artifacts": [
+        "agent/context-copy-probe.json"
+      ],
+      "preferred": true
+    },
+    {
+      "id": "S03",
+      "baseline": "B1",
+      "participants": [
+        "PERF-004",
+        "PERF-005",
+        "PERF-006"
+      ],
+      "kind": "bundled incremental with component modes and retained-memory cohorts",
+      "artifacts": [
+        "agent/attribute-audit/paired-final-confirmation.json",
+        "agent/attribute-audit/paired-attribute-confirmation.json",
+        "agent/attribute-audit/retained-memory-comparison.json"
+      ],
+      "preferred": true
+    },
+    {
+      "id": "S04",
+      "baseline": "B2 before scalar tuple change",
+      "participants": [
+        "PERF-005"
+      ],
+      "kind": "isolated incremental",
+      "artifacts": [
+        "agent/attribute-audit/paired-cleaner-comparison.json"
+      ],
+      "preferred": true
+    },
+    {
+      "id": "S05",
+      "baseline": "dictionary adoption and lazy lists retained",
+      "participants": [
+        "PERF-007"
+      ],
+      "kind": "isolated incremental",
+      "artifacts": [
+        "agent/attribute-audit/paired-bulk-comparison.json"
+      ],
+      "preferred": true
+    },
+    {
+      "id": "S06",
+      "baseline": "dictionary adoption and lazy lists retained",
+      "participants": [
+        "PERF-008"
+      ],
+      "kind": "weak isolated incremental",
+      "artifacts": [
+        "agent/attribute-audit/paired-ctor-comparison.json"
+      ],
+      "preferred": false,
+      "limitation": "Short quantized CPU batches; harness persisted after measurement."
+    },
+    {
+      "id": "S07",
+      "baseline": "B2",
+      "participants": [
+        "PERF-012",
+        "PERF-013",
+        "PERF-014"
+      ],
+      "kind": "bundled incremental; not individually attributed",
+      "artifacts": [
+        "agent/propagation-audit/paired-extract-comparison.json"
+      ],
+      "preferred": true
+    },
+    {
+      "id": "S08",
+      "baseline": "S07 optimized regex prototype",
+      "participants": [
+        "PERF-015"
+      ],
+      "kind": "isolated parser alternatives with common getter/tracestate prototype",
+      "artifacts": [
+        "agent/propagation-audit/paired-parser-comparison.json",
+        "agent/propagation-audit/paired-strip-comparison.json"
+      ],
+      "preferred": true
+    },
+    {
+      "id": "S09",
+      "baseline": "B2",
+      "participants": [
+        "PERF-016"
+      ],
+      "kind": "isolated incremental; inline variant is an upper bound",
+      "artifacts": [
+        "agent/lifecycle-audit/paired-contextmanager-comparison.json"
+      ],
+      "preferred": true
+    },
+    {
+      "id": "S10",
+      "baseline": "B2",
+      "participants": [
+        "PERF-017"
+      ],
+      "kind": "isolated incremental",
+      "artifacts": [
+        "agent/lifecycle-audit/paired-parent-reuse-comparison.json"
+      ],
+      "preferred": true
+    },
+    {
+      "id": "S11",
+      "baseline": "B2",
+      "participants": [
+        "PERF-016",
+        "PERF-017"
+      ],
+      "kind": "combined incremental; unsampled rows only from first file, counted sampled rerun from second",
+      "artifacts": [
+        "agent/lifecycle-audit/paired-combined-comparison.json",
+        "agent/lifecycle-audit/paired-combined-counted-comparison.json"
+      ],
+      "preferred": true,
+      "exclusions": [
+        "Uncounted sampled batch row in paired-combined-comparison.json is excluded."
+      ]
+    }
+  ],
+  "external_work": [
+    {
+      "area": "Shared empty SamplingResult attributes",
+      "owner": "../perf-audit",
+      "status": "External handoff recorded; current status must be checked before work."
+    },
+    {
+      "area": "TraceFlags allocations",
+      "owner": "../perf-audit",
+      "status": "External handoff recorded; current status must be checked before work."
+    }
+  ],
+  "open_work": [
+    "Land propagation and lifecycle proposals only after production-quality refactoring, compatibility review, and authorized regression validation.",
+    "Establish a cumulative original-baseline comparison for the complete candidate stack; existing headline results are incremental.",
+    "Profile the current retained tree after updates; archived profiles predate the attribute/storage changes.",
+    "Investigate outgoing propagation and baggage only after confirming ordinary workload frequency."
+  ],
+  "artifact_root": "evidence/session-2026-10-14-15/artifacts"
+}

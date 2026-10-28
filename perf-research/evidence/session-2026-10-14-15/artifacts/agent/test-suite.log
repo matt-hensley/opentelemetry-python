@@ -1,0 +1,98 @@
+============================= test session starts =============================
+platform win32 -- Python 3.13.14, pytest-9.0.3, pluggy-1.6.0
+benchmark: 4.0.0 (defaults: timer=time.perf_counter disable_gc=False min_rounds=5 min_time=0.000005 max_time=1.0 calibration_precision=10 warmup=False warmup_iterations=100000)
+rootdir: C:\Users\mhensley\wc\worktrees\orca\opentelemetry-python\expedition
+configfile: pyproject.toml
+plugins: flaky-3.8.1, platformdirs-4.13.0, benchmark-4.0.0
+collected 1162 items / 11 errors
+
+=================================== ERRORS ====================================
+______ ERROR collecting opentelemetry-api/tests/context/test_context.py _______
+ImportError while importing test module 'C:\Users\mhensley\wc\worktrees\orca\opentelemetry-python\expedition\opentelemetry-api\tests\context\test_context.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+..\..\..\..\..\AppData\Local\Programs\Python\Python313\Lib\importlib\__init__.py:88: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   ModuleNotFoundError: No module named 'tests.context.test_context'
+_ ERROR collecting opentelemetry-api/tests/context/test_contextvars_context.py _
+ImportError while importing test module 'C:\Users\mhensley\wc\worktrees\orca\opentelemetry-python\expedition\opentelemetry-api\tests\context\test_contextvars_context.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+..\..\..\..\..\AppData\Local\Programs\Python\Python313\Lib\importlib\__init__.py:88: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   ModuleNotFoundError: No module named 'tests.context.test_contextvars_context'
+_______ ERROR collecting opentelemetry-api/tests/test_implementation.py _______
+ImportError while importing test module 'C:\Users\mhensley\wc\worktrees\orca\opentelemetry-python\expedition\opentelemetry-api\tests\test_implementation.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+..\..\..\..\..\AppData\Local\Programs\Python\Python313\Lib\importlib\__init__.py:88: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   ModuleNotFoundError: No module named 'tests.test_implementation'
+_____ ERROR collecting opentelemetry-api/tests/trace/test_defaultspan.py ______
+ImportError while importing test module 'C:\Users\mhensley\wc\worktrees\orca\opentelemetry-python\expedition\opentelemetry-api\tests\trace\test_defaultspan.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+..\..\..\..\..\AppData\Local\Programs\Python\Python313\Lib\importlib\__init__.py:88: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   ModuleNotFoundError: No module named 'tests.trace.test_defaultspan'
+_______ ERROR collecting opentelemetry-api/tests/trace/test_globals.py ________
+import file mismatch:
+imported module 'tests.trace.test_globals' has this __file__ attribute:
+  C:\Users\mhensley\wc\worktrees\orca\opentelemetry-python\expedition\opentelemetry-sdk\tests\trace\test_globals.py
+which is not the same as the test file we want to collect:
+  C:\Users\mhensley\wc\worktrees\orca\opentelemetry-python\expedition\opentelemetry-api\tests\trace\test_globals.py
+HINT: remove __pycache__ / .pyc files and/or use a unique basename for your test file modules
+_ ERROR collecting opentelemetry-api/tests/trace/test_immutablespancontext.py _
+ImportError while importing test module 'C:\Users\mhensley\wc\worktrees\orca\opentelemetry-python\expedition\opentelemetry-api\tests\trace\test_immutablespancontext.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+..\..\..\..\..\AppData\Local\Programs\Python\Python313\Lib\importlib\__init__.py:88: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   ModuleNotFoundError: No module named 'tests.trace.test_immutablespancontext'
+________ ERROR collecting opentelemetry-api/tests/trace/test_proxy.py _________
+ImportError while importing test module 'C:\Users\mhensley\wc\worktrees\orca\opentelemetry-python\expedition\opentelemetry-api\tests\trace\test_proxy.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+..\..\..\..\..\AppData\Local\Programs\Python\Python313\Lib\importlib\__init__.py:88: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   ModuleNotFoundError: No module named 'tests.trace.test_proxy'
+_____ ERROR collecting opentelemetry-api/tests/trace/test_span_context.py _____
+ImportError while importing test module 'C:\Users\mhensley\wc\worktrees\orca\opentelemetry-python\expedition\opentelemetry-api\tests\trace\test_span_context.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+..\..\..\..\..\AppData\Local\Programs\Python\Python313\Lib\importlib\__init__.py:88: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   ModuleNotFoundError: No module named 'tests.trace.test_span_context'
+________ ERROR collecting opentelemetry-api/tests/trace/test_status.py ________
+ImportError while importing test module 'C:\Users\mhensley\wc\worktrees\orca\opentelemetry-python\expedition\opentelemetry-api\tests\trace\test_status.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+..\..\..\..\..\AppData\Local\Programs\Python\Python313\Lib\importlib\__init__.py:88: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   ModuleNotFoundError: No module named 'tests.trace.test_status'
+________ ERROR collecting opentelemetry-api/tests/trace/test_tracer.py ________
+ImportError while importing test module 'C:\Users\mhensley\wc\worktrees\orca\opentelemetry-python\expedition\opentelemetry-api\tests\trace\test_tracer.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+..\..\..\..\..\AppData\Local\Programs\Python\Python313\Lib\importlib\__init__.py:88: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   ModuleNotFoundError: No module named 'tests.trace.test_tracer'
+______ ERROR collecting opentelemetry-api/tests/trace/test_tracestate.py ______
+ImportError while importing test module 'C:\Users\mhensley\wc\worktrees\orca\opentelemetry-python\expedition\opentelemetry-api\tests\trace\test_tracestate.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+..\..\..\..\..\AppData\Local\Programs\Python\Python313\Lib\importlib\__init__.py:88: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   ModuleNotFoundError: No module named 'tests.trace.test_tracestate'
+!!!!!!!!!!!!!!!!!! Interrupted: 11 errors during collection !!!!!!!!!!!!!!!!!!!
+============================= 11 errors in 2.96s ==============================

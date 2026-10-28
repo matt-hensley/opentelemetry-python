@@ -1,0 +1,192 @@
+{
+  "metadata": {
+    "python": "3.13.14 (tags/v3.13.14:fd17997, Jun 10 2026, 13:03:48) [MSC v.1944 64 bit (AMD64)]",
+    "pairs": 11,
+    "target_seconds": 1.0,
+    "sources": {
+      "C:\\Users\\mhensley\\wc\\worktrees\\orca\\opentelemetry-python\\expedition\\.agent\\lifecycle-audit\\counted_compare.py": "362a08b8b49ced00cbd9848cb3568630db438dd9f2f0e9fa3e2976eff4b33331",
+      "C:\\Users\\mhensley\\wc\\worktrees\\orca\\opentelemetry-python\\expedition\\.agent\\lifecycle-audit\\parent_reuse_compare.py": "85a0933f678a87b132d217b6778e41ed0929667e78e7f90936fa62af670fcb58",
+      "C:\\Users\\mhensley\\wc\\worktrees\\orca\\opentelemetry-python\\expedition\\.agent\\lifecycle-audit\\contextmanager_compare.py": "f497c15d92da4fa8e4038cb9cf497d44b8ac05be00221bf6b2a65c0d0a34851f",
+      "opentelemetry-sdk\\src\\opentelemetry\\sdk\\trace\\__init__.py": "3de799f888fa8c1d0747e06a83232d644ab33dcb58f405a57c8516e3346a05ce",
+      "opentelemetry-sdk\\src\\opentelemetry\\sdk\\trace\\sampling.py": "8bfdd77f6e58f4e0efe012cb9dfe59c549e800ccbd98b500768e0149f637fbfb",
+      "opentelemetry-api\\src\\opentelemetry\\trace\\__init__.py": "395e280f8dc25cb5ffa8fdea946b00d3c76423c76ee239bdccaecad151317f78"
+    },
+    "batch_note": "BatchSpanProcessor with max_queue_size=131072 and no-I/O exporter. Queue flush included in measured batch. Exported count equals requested span count in every batch."
+  },
+  "results": [
+    {
+      "case": "sampled-remote-child-4/batch-processor",
+      "loops_per_batch": 66437,
+      "summary": {
+        "baseline": {
+          "cpu_ns_op": 15201.51695317642,
+          "wall_ns_op": 15410.673269413128
+        },
+        "combined": {
+          "cpu_ns_op": 13875.927570480304,
+          "wall_ns_op": 13895.707211343077
+        }
+      },
+      "change_percent": {
+        "cpu_ns_op": -8.72011251758088,
+        "wall_ns_op": -9.830628627218596
+      },
+      "samples": [
+        {
+          "pair": 0,
+          "mode": "baseline",
+          "loops": 66437,
+          "cpu_ns": 953125000,
+          "wall_ns": 987720400
+        },
+        {
+          "pair": 0,
+          "mode": "combined",
+          "loops": 66437,
+          "cpu_ns": 875000000,
+          "wall_ns": 877545000
+        },
+        {
+          "pair": 1,
+          "mode": "combined",
+          "loops": 66437,
+          "cpu_ns": 875000000,
+          "wall_ns": 891262400
+        },
+        {
+          "pair": 1,
+          "mode": "baseline",
+          "loops": 66437,
+          "cpu_ns": 1015625000,
+          "wall_ns": 1015028200
+        },
+        {
+          "pair": 2,
+          "mode": "baseline",
+          "loops": 66437,
+          "cpu_ns": 984375000,
+          "wall_ns": 1026433800
+        },
+        {
+          "pair": 2,
+          "mode": "combined",
+          "loops": 66437,
+          "cpu_ns": 1046875000,
+          "wall_ns": 1058292300
+        },
+        {
+          "pair": 3,
+          "mode": "combined",
+          "loops": 66437,
+          "cpu_ns": 921875000,
+          "wall_ns": 937910200
+        },
+        {
+          "pair": 3,
+          "mode": "baseline",
+          "loops": 66437,
+          "cpu_ns": 1000000000,
+          "wall_ns": 1003672600
+        },
+        {
+          "pair": 4,
+          "mode": "baseline",
+          "loops": 66437,
+          "cpu_ns": 1015625000,
+          "wall_ns": 1019163100
+        },
+        {
+          "pair": 4,
+          "mode": "combined",
+          "loops": 66437,
+          "cpu_ns": 953125000,
+          "wall_ns": 952159400
+        },
+        {
+          "pair": 5,
+          "mode": "combined",
+          "loops": 66437,
+          "cpu_ns": 906250000,
+          "wall_ns": 929712900
+        },
+        {
+          "pair": 5,
+          "mode": "baseline",
+          "loops": 66437,
+          "cpu_ns": 1015625000,
+          "wall_ns": 1023838900
+        },
+        {
+          "pair": 6,
+          "mode": "baseline",
+          "loops": 66437,
+          "cpu_ns": 1015625000,
+          "wall_ns": 1031622600
+        },
+        {
+          "pair": 6,
+          "mode": "combined",
+          "loops": 66437,
+          "cpu_ns": 906250000,
+          "wall_ns": 915560100
+        },
+        {
+          "pair": 7,
+          "mode": "combined",
+          "loops": 66437,
+          "cpu_ns": 906250000,
+          "wall_ns": 923189100
+        },
+        {
+          "pair": 7,
+          "mode": "baseline",
+          "loops": 66437,
+          "cpu_ns": 1031250000,
+          "wall_ns": 1028598200
+        },
+        {
+          "pair": 8,
+          "mode": "baseline",
+          "loops": 66437,
+          "cpu_ns": 1015625000,
+          "wall_ns": 1027861400
+        },
+        {
+          "pair": 8,
+          "mode": "combined",
+          "loops": 66437,
+          "cpu_ns": 953125000,
+          "wall_ns": 941762000
+        },
+        {
+          "pair": 9,
+          "mode": "combined",
+          "loops": 66437,
+          "cpu_ns": 906250000,
+          "wall_ns": 911633700
+        },
+        {
+          "pair": 9,
+          "mode": "baseline",
+          "loops": 66437,
+          "cpu_ns": 1015625000,
+          "wall_ns": 1019640500
+        },
+        {
+          "pair": 10,
+          "mode": "baseline",
+          "loops": 66437,
+          "cpu_ns": 1046875000,
+          "wall_ns": 1061629600
+        },
+        {
+          "pair": 10,
+          "mode": "combined",
+          "loops": 66437,
+          "cpu_ns": 890625000,
+          "wall_ns": 912739000
+        }
+      ]
+    }
+  ]
+}

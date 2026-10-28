@@ -15,6 +15,7 @@ from typing_extensions import assert_never, deprecated
 from opentelemetry.util import types
 
 _logger = logging.getLogger(__name__)
+_SCALAR_TYPES = (NoneType, bool, int, float, bytes)
 
 
 # Calling str(x) will use an object's `__str__` method if it exists, otherwise it will use it's `__repr__` method.
@@ -52,7 +53,7 @@ def _clean_attribute_value(
     Returns:
         The recursively cleaned AnyValue.
     """
-    if isinstance(value, (NoneType, bool, int, float, bytes)):
+    if isinstance(value, _SCALAR_TYPES):
         return value
     if isinstance(value, str):
         if max_string_value_length is not None and len(value) > max_string_value_length:
@@ -199,6 +200,16 @@ class BoundedAttributes(MutableMapping[str, types.AnyValue]):
         cleaned_attributes: Mapping[str, types.AnyValue] = _clean_attribute_value(attributes, self.max_value_len)
         with self._lock:
             self.dropped += len(attributes) - len(cleaned_attributes)
+            # Keep subclass hooks and delete/reinsert ordering on the fallback path.
+            if (
+                type(self) is BoundedAttributes  # pylint: disable=unidiomatic-typecheck
+                and not self._dict
+                and isinstance(cleaned_attributes, dict)
+                and (self.maxlen is None or len(cleaned_attributes) <= self.maxlen)
+            ):
+                self._dict = cleaned_attributes
+                return
+
             for key, value in cleaned_attributes.items():
                 self._setitem_locked(key, value)
 

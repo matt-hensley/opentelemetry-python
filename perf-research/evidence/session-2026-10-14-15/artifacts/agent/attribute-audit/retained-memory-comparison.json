@@ -1,0 +1,102 @@
+{
+  "metadata": {
+    "python_version": "3.13.14 (tags/v3.13.14:fd17997, Jun 10 2026, 13:03:48) [MSC v.1944 64 bit (AMD64)]",
+    "span_count_per_cohort": 2000,
+    "attribute_counts": [
+      4,
+      10
+    ],
+    "modes": [
+      "baseline",
+      "attributes-only",
+      "lazy-only",
+      "combined"
+    ],
+    "measurement": "tracemalloc bytes above pre-cohort baseline, after GC",
+    "harness_sha256": "dcb253376c71fae76b446dc8032c07d0bfd241deaf7990ee38690fbe65e20ea7",
+    "baseline_sha256": {
+      "attributes": "50cf6809af69fb56b1cdc8457e27e81d647fafd274cc431728e0a82d9d9810d5",
+      "trace": "f80f52b808e1d7fb74a4ba8ae5a60bb1e77aa158c47a6b89d549d241ef49d64e",
+      "util": "21aa495f7062e352debbf19cbd04df3fd491474805d1881d62f26f6e0714e3e8"
+    },
+    "candidate_sha256": {
+      "attributes": "429b347acac243dd63b595372a76c4b3f094adaf659730ce149548ea9e000d28",
+      "trace": "3de799f888fa8c1d0747e06a83232d644ab33dcb58f405a57c8516e3346a05ce",
+      "util": "21aa495f7062e352debbf19cbd04df3fd491474805d1881d62f26f6e0714e3e8"
+    }
+  },
+  "results": [
+    {
+      "mode": "baseline",
+      "attribute_count": 4,
+      "span_count": 2000,
+      "current_bytes": 5624104,
+      "current_bytes_per_span": 2812.052,
+      "peak_bytes": 5625844,
+      "peak_bytes_per_span": 2812.922
+    },
+    {
+      "mode": "attributes-only",
+      "attribute_count": 4,
+      "span_count": 2000,
+      "current_bytes": 5624116,
+      "current_bytes_per_span": 2812.058,
+      "peak_bytes": 5625736,
+      "peak_bytes_per_span": 2812.868
+    },
+    {
+      "mode": "lazy-only",
+      "attribute_count": 4,
+      "span_count": 2000,
+      "current_bytes": 1976116,
+      "current_bytes_per_span": 988.058,
+      "peak_bytes": 1978048,
+      "peak_bytes_per_span": 989.024
+    },
+    {
+      "mode": "combined",
+      "attribute_count": 4,
+      "span_count": 2000,
+      "current_bytes": 1976116,
+      "current_bytes_per_span": 988.058,
+      "peak_bytes": 1977936,
+      "peak_bytes_per_span": 988.968
+    },
+    {
+      "mode": "baseline",
+      "attribute_count": 10,
+      "span_count": 2000,
+      "current_bytes": 5800104,
+      "current_bytes_per_span": 2900.052,
+      "peak_bytes": 5801844,
+      "peak_bytes_per_span": 2900.922
+    },
+    {
+      "mode": "attributes-only",
+      "attribute_count": 10,
+      "span_count": 2000,
+      "current_bytes": 5800136,
+      "current_bytes_per_span": 2900.068,
+      "peak_bytes": 5801876,
+      "peak_bytes_per_span": 2900.938
+    },
+    {
+      "mode": "lazy-only",
+      "attribute_count": 10,
+      "span_count": 2000,
+      "current_bytes": 2152136,
+      "current_bytes_per_span": 1076.068,
+      "peak_bytes": 2154276,
+      "peak_bytes_per_span": 1077.138
+    },
+    {
+      "mode": "combined",
+      "attribute_count": 10,
+      "span_count": 2000,
+      "current_bytes": 2152104,
+      "current_bytes_per_span": 1076.052,
+      "peak_bytes": 2154044,
+      "peak_bytes_per_span": 1077.022
+    }
+  ]
+}

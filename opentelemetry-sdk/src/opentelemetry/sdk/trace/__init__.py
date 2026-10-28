@@ -502,11 +502,11 @@ class ReadableSpan:
 
     @property
     def events(self) -> Sequence[Event]:
-        return tuple(self._events)
+        return tuple(self._events or ())
 
     @property
     def links(self) -> Sequence[trace_api.Link]:
-        return tuple(self._links)
+        return tuple(self._links or ())
 
     @property
     def resource(self) -> Resource:
@@ -549,8 +549,8 @@ class ReadableSpan:
             "end_time": end_time,
             "status": status,
             "attributes": self._format_attributes(self._attributes),
-            "events": self._format_events(self._events),
-            "links": self._format_links(self._links),
+            "events": self._format_events(self._events or ()),
+            "links": self._format_links(self._links or ()),
             "resource": json.loads(self.resource.to_json()),
         }
 
@@ -830,8 +830,9 @@ class Span(trace_api.Span, ReadableSpan):
             immutable=False,
             max_value_len=self._limits.max_span_attribute_length,
         )
-        self._events = self._new_events()
+        self._events = None
         if events:
+            self._events = self._new_events()
             for event in events:
                 # Immutable set to true so attributes cannot be added or removed after creation.
                 event._attributes = BoundedAttributes(
@@ -842,17 +843,17 @@ class Span(trace_api.Span, ReadableSpan):
                 )
                 self._events.append(event)
 
-        self._links = self._new_links(links)
+        self._links = self._new_links(links) if links else None
 
         self._record_end_metrics = record_end_metrics
 
     def __repr__(self):
         return f'{type(self).__name__}(name="{self._name}", context={self._context})'
 
-    def _new_events(self):
+    def _new_events(self) -> BoundedList:
         return BoundedList(self._limits.max_events)
 
-    def _new_links(self, links: Sequence[trace_api.Link]):
+    def _new_links(self, links: Sequence[trace_api.Link]) -> BoundedList:
         if not links:
             return BoundedList(self._limits.max_links)
 
@@ -892,6 +893,8 @@ class Span(trace_api.Span, ReadableSpan):
 
     @_check_span_ended
     def _add_event(self, event: EventBase) -> None:
+        if self._events is None:
+            self._events = self._new_events()
         self._events.append(event)
 
     def add_event(
@@ -917,6 +920,8 @@ class Span(trace_api.Span, ReadableSpan):
 
     @_check_span_ended
     def _add_link(self, link: trace_api.Link) -> None:
+        if self._links is None:
+            self._links = self._new_links(())
         self._links.append(link)
 
     def add_link(
@@ -947,8 +952,8 @@ class Span(trace_api.Span, ReadableSpan):
             parent=self._parent,
             resource=self._resource,
             attributes=self._attributes,
-            events=self._events,
-            links=self._links,
+            events=self._events if self._events is not None else (),
+            links=self._links if self._links is not None else (),
             kind=self.kind,
             status=self._status,
             start_time=self._start_time,

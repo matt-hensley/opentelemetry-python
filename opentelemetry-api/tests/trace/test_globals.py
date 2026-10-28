@@ -2,11 +2,14 @@
 # SPDX-License-Identifier: Apache-2.0
 
 import unittest
+from typing import cast
 from unittest.mock import Mock, patch
 
 from opentelemetry import context, trace
+from opentelemetry.context.context import Context
 from opentelemetry.test.concurrency_test import ConcurrencyTestBase, MockFunc
 from opentelemetry.test.globals_test import TraceGlobalsTest
+from opentelemetry.trace.propagation import _SPAN_KEY
 from opentelemetry.trace.status import Status, StatusCode
 
 
@@ -96,6 +99,42 @@ class TestTracer(unittest.TestCase):
         finally:
             context.detach(token)
         self.assertEqual(trace.get_current_span(), trace.INVALID_SPAN)
+
+    def test_get_current_span_returns_span_implementations(self):
+        custom_span = cast(trace.Span, Mock(spec=trace.Span))
+        spans = (
+            trace.NonRecordingSpan(trace.INVALID_SPAN_CONTEXT),
+            SpanTest(trace.INVALID_SPAN_CONTEXT),
+            custom_span,
+        )
+
+        for span in spans:
+            with self.subTest(span=type(span).__name__):
+                span_context = trace.set_span_in_context(span, Context())
+                self.assertIs(trace.get_current_span(span_context), span)
+
+    def test_get_current_span_returns_invalid_for_non_span_context_value(self):
+        ctx = context.set_value(_SPAN_KEY, "not a span", Context())
+
+        self.assertIs(trace.get_current_span(ctx), trace.INVALID_SPAN)
+
+    def test_get_current_span_explicit_empty_context_overrides_current(self):
+        span = trace.NonRecordingSpan(trace.INVALID_SPAN_CONTEXT)
+        token = context.attach(trace.set_span_in_context(span))
+        try:
+            self.assertIs(trace.get_current_span(), span)
+            self.assertIs(trace.get_current_span(Context()), trace.INVALID_SPAN)
+        finally:
+            context.detach(token)
+
+    def test_get_current_span_uses_installed_runtime_context(self):
+        span = trace.NonRecordingSpan(trace.INVALID_SPAN_CONTEXT)
+        runtime_context = trace.set_span_in_context(span, Context())
+        runtime = Mock()
+        runtime.get_current.return_value = runtime_context
+
+        with patch("opentelemetry.context._RUNTIME_CONTEXT", runtime):
+            self.assertIs(trace.get_current_span(), span)
 
 
 class TestUseTracer(unittest.TestCase):

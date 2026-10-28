@@ -1,0 +1,701 @@
+{
+  "wall": {
+    "test_context_set_value[empty-insert]": {
+      "baseline_ns": 252.71750004321805,
+      "candidate_ns": 241.99949999456297,
+      "reduction_percent": 4.241099269667581,
+      "per_run_ns": {
+        "baseline": [
+          252.71750004321805,
+          269.1840000625234,
+          232.69400000572205
+        ],
+        "candidate": [
+          241.99949999456297,
+          228.28700006357394,
+          245.79799995990467
+        ]
+      }
+    },
+    "test_context_set_value[one-insert]": {
+      "baseline_ns": 257.4629999435274,
+      "candidate_ns": 263.72349995654076,
+      "reduction_percent": -2.4316115381187275,
+      "per_run_ns": {
+        "baseline": [
+          257.4629999435274,
+          263.0470000440255,
+          255.5374999792548
+        ],
+        "candidate": [
+          263.72349995654076,
+          254.77549999777696,
+          272.9030000045896
+        ]
+      }
+    },
+    "test_context_set_value[one-replace]": {
+      "baseline_ns": 256.5449999383418,
+      "candidate_ns": 255.5414999369532,
+      "reduction_percent": 0.3911594463465673,
+      "per_run_ns": {
+        "baseline": [
+          264.27550001244526,
+          254.55150003836022,
+          256.5449999383418
+        ],
+        "candidate": [
+          255.5414999369532,
+          250.2739999908954,
+          265.6290000595618
+        ]
+      }
+    },
+    "test_context_set_value[two-insert]": {
+      "baseline_ns": 278.26600009575486,
+      "candidate_ns": 270.1299999898765,
+      "reduction_percent": 2.9238211290918192,
+      "per_run_ns": {
+        "baseline": [
+          278.26600009575486,
+          279.46650006924756,
+          259.0955000050599
+        ],
+        "candidate": [
+          270.1299999898765,
+          258.0850000231294,
+          300.4490000603255
+        ]
+      }
+    },
+    "test_context_set_value[two-replace]": {
+      "baseline_ns": 259.17549995938316,
+      "candidate_ns": 263.3329999662238,
+      "reduction_percent": -1.6041253928292587,
+      "per_run_ns": {
+        "baseline": [
+          259.17549995938316,
+          260.05899999290705,
+          258.85000002745073
+        ],
+        "candidate": [
+          263.3329999662238,
+          260.42049998068245,
+          285.8760000526672
+        ]
+      }
+    },
+    "test_context_set_value[eight-insert]": {
+      "baseline_ns": 283.2690000650473,
+      "candidate_ns": 290.2200000244193,
+      "reduction_percent": -2.4538512713271787,
+      "per_run_ns": {
+        "baseline": [
+          283.69699997710995,
+          281.875999935437,
+          283.2690000650473
+        ],
+        "candidate": [
+          283.5560000676196,
+          290.2200000244193,
+          290.39500004728325
+        ]
+      }
+    },
+    "test_context_set_value[eight-replace]": {
+      "baseline_ns": 278.81250003702013,
+      "candidate_ns": 282.91800001170486,
+      "reduction_percent": -1.472494947012648,
+      "per_run_ns": {
+        "baseline": [
+          278.81250003702013,
+          277.06799999577925,
+          287.32799997669645
+        ],
+        "candidate": [
+          276.6370000608731,
+          282.91800001170486,
+          284.7479999763891
+        ]
+      }
+    },
+    "test_span_lifecycle[start-span-always-off-root]": {
+      "baseline_ns": 2611.880000040401,
+      "candidate_ns": 2586.6500000120145,
+      "reduction_percent": 0.965970872627997,
+      "per_run_ns": {
+        "baseline": [
+          2611.880000040401,
+          2669.0999999118503,
+          2525.105000677286
+        ],
+        "candidate": [
+          2586.6500000120145,
+          2438.470000925008,
+          2594.5000008505303
+        ]
+      }
+    },
+    "test_span_lifecycle[start-span-always-off-child]": {
+      "baseline_ns": 2835.3799993055873,
+      "candidate_ns": 2371.1700006970204,
+      "reduction_percent": 16.372055905108198,
+      "per_run_ns": {
+        "baseline": [
+          2663.895000296179,
+          2835.3799993055873,
+          2853.379999578465
+        ],
+        "candidate": [
+          2382.469999429304,
+          2343.6999996192753,
+          2371.1700006970204
+        ]
+      }
+    },
+    "test_span_lifecycle[start-span-always-off-remote-child]": {
+      "baseline_ns": 2763.659998890944,
+      "candidate_ns": 2360.909999697469,
+      "reduction_percent": 14.573066128072853,
+      "per_run_ns": {
+        "baseline": [
+          2763.659998890944,
+          2661.4800008246675,
+          2874.9000004609115
+        ],
+        "candidate": [
+          2360.909999697469,
+          2307.5100005371496,
+          2384.0299996663816
+        ]
+      }
+    },
+    "test_span_lifecycle[start-span-parentbased-ratio-zero-root]": {
+      "baseline_ns": 3100.234999146778,
+      "candidate_ns": 2993.810000771191,
+      "reduction_percent": 3.4328042359652366,
+      "per_run_ns": {
+        "baseline": [
+          2901.410000049509,
+          3100.234999146778,
+          3211.1900000018068
+        ],
+        "candidate": [
+          2993.810000771191,
+          2761.9250002317135,
+          3005.940000002738
+        ]
+      }
+    },
+    "test_span_lifecycle[start-span-parentbased-ratio-zero-child]": {
+      "baseline_ns": 3386.7700010887347,
+      "candidate_ns": 2795.5300000030547,
+      "reduction_percent": 17.457341387092008,
+      "per_run_ns": {
+        "baseline": [
+          3386.7700010887347,
+          3287.7299992833287,
+          3535.29999993043
+        ],
+        "candidate": [
+          2795.5300000030547,
+          2817.520000098739,
+          2636.5749996330123
+        ]
+      }
+    },
+    "test_span_lifecycle[start-span-parentbased-ratio-zero-remote-child]": {
+      "baseline_ns": 3311.8900006229524,
+      "candidate_ns": 2698.200000304496,
+      "reduction_percent": 18.529902871261537,
+      "per_run_ns": {
+        "baseline": [
+          3217.8850000491366,
+          3311.8900006229524,
+          3364.300000248477
+        ],
+        "candidate": [
+          2607.6100002683233,
+          2698.200000304496,
+          2797.5299992249347
+        ]
+      }
+    },
+    "test_span_lifecycle[start-span-custom-drop-root]": {
+      "baseline_ns": 2367.150000645779,
+      "candidate_ns": 2336.430001014378,
+      "reduction_percent": 1.2977631169558523,
+      "per_run_ns": {
+        "baseline": [
+          2308.1550003553275,
+          2372.710000781808,
+          2367.150000645779
+        ],
+        "candidate": [
+          2366.520000214223,
+          2293.6299996217713,
+          2336.430001014378
+        ]
+      }
+    },
+    "test_span_lifecycle[start-span-custom-drop-child]": {
+      "baseline_ns": 2325.570000539301,
+      "candidate_ns": 2150.2319141348526,
+      "reduction_percent": 7.53957465755869,
+      "per_run_ns": {
+        "baseline": [
+          2237.5199994712602,
+          2382.769998803269,
+          2325.570000539301
+        ],
+        "candidate": [
+          2092.650000122376,
+          2150.2319141348526,
+          2215.049999358598
+        ]
+      }
+    },
+    "test_span_lifecycle[start-span-custom-drop-remote-child]": {
+      "baseline_ns": 2341.069999965839,
+      "candidate_ns": 2244.4899994297884,
+      "reduction_percent": 4.125464020189906,
+      "per_run_ns": {
+        "baseline": [
+          2341.069999965839,
+          2360.054999735439,
+          2327.010000590235
+        ],
+        "candidate": [
+          2244.4899994297884,
+          2036.1111108602177,
+          2257.850000751205
+        ]
+      }
+    },
+    "test_span_lifecycle[start-span-always-on-root]": {
+      "baseline_ns": 10056.760000588838,
+      "candidate_ns": 10677.313121007459,
+      "reduction_percent": -6.170507403798897,
+      "per_run_ns": {
+        "baseline": [
+          10235.260000627022,
+          10056.760000588838,
+          10048.961860194302
+        ],
+        "candidate": [
+          10677.313121007459,
+          10336.629097988318,
+          10932.629955374088
+        ]
+      }
+    },
+    "test_span_lifecycle[start-span-always-on-child]": {
+      "baseline_ns": 10130.230001232121,
+      "candidate_ns": 9793.469999567606,
+      "reduction_percent": 3.324307558896067,
+      "per_run_ns": {
+        "baseline": [
+          10377.924721394329,
+          10130.230001232121,
+          9982.338429947366
+        ],
+        "candidate": [
+          9640.18000086071,
+          9793.469999567606,
+          10235.960000136402
+        ]
+      }
+    },
+    "test_span_lifecycle[start-span-always-on-remote-child]": {
+      "baseline_ns": 10399.137061328018,
+      "candidate_ns": 9823.160000087228,
+      "reduction_percent": 5.538700546439712,
+      "per_run_ns": {
+        "baseline": [
+          10696.769999049138,
+          10284.720810702269,
+          10399.137061328018
+        ],
+        "candidate": [
+          9823.160000087228,
+          9505.129999888595,
+          9913.190000224859
+        ]
+      }
+    },
+    "test_span_lifecycle[start-span-always-off-sdk-recording-parent]": {
+      "baseline_ns": 2916.679999907501,
+      "candidate_ns": 2986.5100004826672,
+      "reduction_percent": -2.3941605036336133,
+      "per_run_ns": {
+        "baseline": [
+          3034.1750010848045,
+          2914.6400003810413,
+          2916.679999907501
+        ],
+        "candidate": [
+          2986.5100004826672,
+          2943.2299998006783,
+          3095.0449996453244
+        ]
+      }
+    },
+    "test_span_lifecycle[start-span-always-on-sdk-recording-parent]": {
+      "baseline_ns": 10757.150425503161,
+      "candidate_ns": 10424.256647536682,
+      "reduction_percent": 3.094627896782509,
+      "per_run_ns": {
+        "baseline": [
+          10757.150425503161,
+          10910.740356365019,
+          10234.312744198025
+        ],
+        "candidate": [
+          10424.256647536682,
+          10370.56999921333,
+          11189.823980892448
+        ]
+      }
+    },
+    "test_span_lifecycle[current-span-always-off-root]": {
+      "baseline_ns": 5655.2099995315075,
+      "candidate_ns": 5716.219999885652,
+      "reduction_percent": -1.078828201944737,
+      "per_run_ns": {
+        "baseline": [
+          5553.490000602324,
+          5723.720000241883,
+          5655.2099995315075
+        ],
+        "candidate": [
+          5712.7699998090975,
+          5766.189999121707,
+          5716.219999885652
+        ]
+      }
+    },
+    "test_span_lifecycle[current-span-always-off-child]": {
+      "baseline_ns": 5865.179999091197,
+      "candidate_ns": 5542.81000077026,
+      "reduction_percent": 5.496335975552114,
+      "per_run_ns": {
+        "baseline": [
+          5895.279999822378,
+          5865.179999091197,
+          5782.000000181142
+        ],
+        "candidate": [
+          5542.81000077026,
+          5332.859999907669,
+          5648.929999733809
+        ]
+      }
+    },
+    "test_span_lifecycle[current-span-always-off-remote-child]": {
+      "baseline_ns": 5830.729998706374,
+      "candidate_ns": 5492.820001381915,
+      "reduction_percent": 5.795329185186581,
+      "per_run_ns": {
+        "baseline": [
+          5799.580000166316,
+          5964.819999644533,
+          5830.729998706374
+        ],
+        "candidate": [
+          5322.909999813419,
+          5612.480000127107,
+          5492.820001381915
+        ]
+      }
+    },
+    "test_span_lifecycle[current-span-parentbased-ratio-zero-root]": {
+      "baseline_ns": 6345.459999283776,
+      "candidate_ns": 6216.430000495166,
+      "reduction_percent": 2.0334223019792708,
+      "per_run_ns": {
+        "baseline": [
+          6345.459999283776,
+          6430.990000080783,
+          6119.7699993499555
+        ],
+        "candidate": [
+          5989.000000408851,
+          6216.430000495166,
+          6558.850000146776
+        ]
+      }
+    },
+    "test_span_lifecycle[current-span-parentbased-ratio-zero-child]": {
+      "baseline_ns": 6742.980000854004,
+      "candidate_ns": 5815.179999626707,
+      "reduction_percent": 13.759495076506079,
+      "per_run_ns": {
+        "baseline": [
+          6742.980000854004,
+          6884.5000001601875,
+          6410.7500002137385
+        ],
+        "candidate": [
+          5795.010000292677,
+          5815.179999626707,
+          6691.809999756515
+        ]
+      }
+    },
+    "test_span_lifecycle[current-span-parentbased-ratio-zero-remote-child]": {
+      "baseline_ns": 6434.840000292752,
+      "candidate_ns": 5959.54000018537,
+      "reduction_percent": 7.3863530419677526,
+      "per_run_ns": {
+        "baseline": [
+          6434.840000292752,
+          7444.729999406263,
+          6415.540000307374
+        ],
+        "candidate": [
+          5729.529999371152,
+          5959.54000018537,
+          6143.499999598134
+        ]
+      }
+    },
+    "test_span_lifecycle[current-span-custom-drop-root]": {
+      "baseline_ns": 5396.879999898374,
+      "candidate_ns": 5748.170000151731,
+      "reduction_percent": -6.5091312065484574,
+      "per_run_ns": {
+        "baseline": [
+          5410.759999358561,
+          5396.879999898374,
+          5332.900000212248
+        ],
+        "candidate": [
+          5345.939999097027,
+          5748.170000151731,
+          5838.8499994180165
+        ]
+      }
+    },
+    "test_span_lifecycle[current-span-custom-drop-child]": {
+      "baseline_ns": 5418.8199996133335,
+      "candidate_ns": 5352.149999816902,
+      "reduction_percent": 1.2303416574307335,
+      "per_run_ns": {
+        "baseline": [
+          5784.440001298208,
+          5418.8199996133335,
+          5392.530000244733
+        ],
+        "candidate": [
+          5258.319999848027,
+          5660.520000674296,
+          5352.149999816902
+        ]
+      }
+    },
+    "test_span_lifecycle[current-span-custom-drop-remote-child]": {
+      "baseline_ns": 5383.839999558404,
+      "candidate_ns": 5337.9999997559935,
+      "reduction_percent": 0.8514368890266244,
+      "per_run_ns": {
+        "baseline": [
+          5617.260000144597,
+          5383.839999558404,
+          5341.360000602435
+        ],
+        "candidate": [
+          5337.9999997559935,
+          5255.500000203028,
+          5345.599999418482
+        ]
+      }
+    },
+    "test_span_lifecycle[current-span-always-on-root]": {
+      "baseline_ns": 15005.200598278203,
+      "candidate_ns": 15059.582393208073,
+      "reduction_percent": -0.3624196462665763,
+      "per_run_ns": {
+        "baseline": [
+          15005.200598278203,
+          14986.7903927356,
+          15167.94582458873
+        ],
+        "candidate": [
+          15214.867762564878,
+          14999.85433906013,
+          15059.582393208073
+        ]
+      }
+    },
+    "test_span_lifecycle[current-span-always-on-child]": {
+      "baseline_ns": 15540.349536602269,
+      "candidate_ns": 14486.315038937382,
+      "reduction_percent": 6.782566216945851,
+      "per_run_ns": {
+        "baseline": [
+          15552.088073946272,
+          15162.205323134283,
+          15540.349536602269
+        ],
+        "candidate": [
+          14478.41069035942,
+          14486.315038937382,
+          15406.564557700696
+        ]
+      }
+    },
+    "test_span_lifecycle[current-span-always-on-remote-child]": {
+      "baseline_ns": 15723.668647184002,
+      "candidate_ns": 14783.643118147376,
+      "reduction_percent": 5.978410955670832,
+      "per_run_ns": {
+        "baseline": [
+          15723.668647184002,
+          15078.153145358292,
+          16319.649961762952
+        ],
+        "candidate": [
+          14783.643118147376,
+          14364.07354929059,
+          15507.385952891831
+        ]
+      }
+    },
+    "test_span_lifecycle[current-span-always-off-sdk-recording-parent]": {
+      "baseline_ns": 6274.770000891294,
+      "candidate_ns": 5982.640000001993,
+      "reduction_percent": 4.655628825404056,
+      "per_run_ns": {
+        "baseline": [
+          6274.770000891294,
+          6123.930000467226,
+          6331.040000077337
+        ],
+        "candidate": [
+          5923.169999732636,
+          5982.640000001993,
+          6473.4200001112185
+        ]
+      }
+    },
+    "test_span_lifecycle[current-span-always-on-sdk-recording-parent]": {
+      "baseline_ns": 15621.141969466318,
+      "candidate_ns": 15390.14514362777,
+      "reduction_percent": 1.4787448080944787,
+      "per_run_ns": {
+        "baseline": [
+          15621.141969466318,
+          15397.524380454177,
+          16102.234641828105
+        ],
+        "candidate": [
+          15077.761415390789,
+          15390.14514362777,
+          16071.451235190329
+        ]
+      }
+    },
+    "test_get_current_span[empty-explicit]": {
+      "baseline_ns": 142.2729988976747,
+      "candidate_ns": 104.36407029037858,
+      "reduction_percent": 26.645202463582642,
+      "per_run_ns": {
+        "baseline": [
+          145.71353274234704,
+          142.2729988976747,
+          137.54870069152852
+        ],
+        "candidate": [
+          102.62588356822526,
+          104.36407029037858,
+          105.7906521755613
+        ]
+      }
+    },
+    "test_get_current_span[empty-implicit]": {
+      "baseline_ns": 195.60192857316488,
+      "candidate_ns": 152.52518733013102,
+      "reduction_percent": 22.02265670755952,
+      "per_run_ns": {
+        "baseline": [
+          192.21099995775148,
+          198.134999955073,
+          195.60192857316488
+        ],
+        "candidate": [
+          151.93731230929674,
+          152.52518733013102,
+          164.48655620782404
+        ]
+      }
+    },
+    "test_get_current_span[nonrecording-explicit]": {
+      "baseline_ns": 315.08349995419854,
+      "candidate_ns": 121.6540034985076,
+      "reduction_percent": 61.38991615994123,
+      "per_run_ns": {
+        "baseline": [
+          323.03899999533314,
+          311.6079999745125,
+          315.08349995419854
+        ],
+        "candidate": [
+          121.6540034985076,
+          120.7373189735331,
+          127.84367324501386
+        ]
+      }
+    },
+    "test_get_current_span[nonrecording-implicit]": {
+      "baseline_ns": 378.050999934203,
+      "candidate_ns": 180.01745950845014,
+      "reduction_percent": 52.38275800360774,
+      "per_run_ns": {
+        "baseline": [
+          375.72900000668596,
+          379.0174999448937,
+          378.050999934203
+        ],
+        "candidate": [
+          181.3116884187524,
+          180.01745950845014,
+          176.67677903279392
+        ]
+      }
+    },
+    "test_get_current_span[sdk-recording-explicit]": {
+      "baseline_ns": 315.0589999859221,
+      "candidate_ns": 307.62499998672865,
+      "reduction_percent": 2.35955805088115,
+      "per_run_ns": {
+        "baseline": [
+          321.6069999325555,
+          315.0589999859221,
+          313.37050000729505
+        ],
+        "candidate": [
+          307.62499998672865,
+          294.1659999487456,
+          310.18449997645797
+        ]
+      }
+    },
+    "test_get_current_span[sdk-recording-implicit]": {
+      "baseline_ns": 388.8820000429405,
+      "candidate_ns": 363.8590000628028,
+      "reduction_percent": 6.434599692805176,
+      "per_run_ns": {
+        "baseline": [
+          375.82400007522665,
+          388.8820000429405,
+          404.7589999390766
+        ],
+        "candidate": [
+          353.9914999419125,
+          374.2580000835005,
+          363.8590000628028
+        ]
+      }
+    }
+  }
+}

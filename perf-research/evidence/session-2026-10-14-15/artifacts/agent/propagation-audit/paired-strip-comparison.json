@@ -1,0 +1,457 @@
+{
+  "metadata": {
+    "python": "3.13.14 (tags/v3.13.14:fd17997, Jun 10 2026, 13:03:48) [MSC v.1944 64 bit (AMD64)]",
+    "checked_headers": 11770,
+    "parsers_checked": [
+      "optimized-regex",
+      "native-strings",
+      "translate",
+      "character-loop",
+      "fused-loop",
+      "strip"
+    ],
+    "pairs": 9,
+    "target_seconds": 0.9,
+    "affinity": [
+      0
+    ],
+    "harness_sha256": "3e47af0499ce37668c93ce09209a230b09d19e0dc11d45eefb52a2b93365b597",
+    "regex_harness_sha256": "a912dfb9e1ec51b70bd2899e2a74ba278f48b1637b042616c0251e31c301809a",
+    "sources": {
+      "native-strings": "def extract(\n    self,\n    carrier: textmap.CarrierT,\n    context: Context | None = None,\n    getter: textmap.Getter[textmap.CarrierT] = textmap.default_getter,\n) -> Context:\n    \"\"\"Extracts SpanContext from the carrier.\n\n    See `opentelemetry.propagators.textmap.TextMapPropagator.extract`\n    \"\"\"\n    if context is None:\n        context = Context()\n\n    header = getter.get(carrier, self._TRACEPARENT_HEADER_NAME)\n\n    if not header:\n        return context\n\n    value = header[0]\n    if type(value) is str and len(value) == 55 and value.startswith(\"00-\") and value[35] == \"-\" and value[52] == \"-\":\n        if not value.isascii() or value.lower() != value:\n            return context\n        trace_id = value[3:35]\n        span_id = value[36:52]\n        trace_flags = value[53:55]\n        if not (trace_id.isalnum() and span_id.isalnum() and trace_flags.isalnum()):\n            return context\n        try:\n            trace_id = int(trace_id, 16)\n            span_id = int(span_id, 16)\n            trace_flags = int(trace_flags, 16)\n        except ValueError:\n            return context\n    else:\n        match = self._TRACEPARENT_HEADER_FORMAT_RE.search(value)\n        if not match:\n            return context\n        version, trace_id, span_id, trace_flags, suffix = match.groups()\n        if version == \"ff\" or (version == \"00\" and suffix):\n            return context\n        trace_id = int(trace_id, 16)\n        span_id = int(span_id, 16)\n        trace_flags = int(trace_flags, 16)\n    if not trace_id or not span_id:\n        return context\n\n    tracestate_headers = getter.get(carrier, self._TRACESTATE_HEADER_NAME)\n    if tracestate_headers is None:\n        tracestate = None\n    elif (\n        # multiple header fields are combined with \",\" (RFC 9110, section 5.3)\n        sum(len(header) for header in tracestate_headers) + len(tracestate_headers) - 1\n        > _TRACECONTEXT_MAXIMUM_TRACESTATE_LENGTH\n    ):\n        _logger.warning(\n            \"tracestate header exceeded the maximum length of %d characters\",\n            _TRACECONTEXT_MAXIMUM_TRACESTATE_LENGTH,\n        )\n        tracestate = None\n    else:\n        tracestate = TraceState.from_header(tracestate_headers)\n\n    span_context = trace.SpanContext(\n        trace_id=trace_id,\n        span_id=span_id,\n        is_remote=True,\n        trace_flags=trace.TraceFlags(trace_flags),\n        trace_state=tracestate,\n    )\n    return trace.set_span_in_context(trace.NonRecordingSpan(span_context), context)\n",
+      "translate": "def extract(\n    self,\n    carrier: textmap.CarrierT,\n    context: Context | None = None,\n    getter: textmap.Getter[textmap.CarrierT] = textmap.default_getter,\n) -> Context:\n    \"\"\"Extracts SpanContext from the carrier.\n\n    See `opentelemetry.propagators.textmap.TextMapPropagator.extract`\n    \"\"\"\n    if context is None:\n        context = Context()\n\n    header = getter.get(carrier, self._TRACEPARENT_HEADER_NAME)\n\n    if not header:\n        return context\n\n    value = header[0]\n    if type(value) is str and len(value) == 55 and value.startswith(\"00-\") and value[35] == \"-\" and value[52] == \"-\":\n        if value.count(\"-\") != 3 or value.translate(_DELETE_HEX):\n            return context\n        trace_id = value[3:35]\n        span_id = value[36:52]\n        trace_flags = value[53:55]\n        trace_id = int(trace_id, 16)\n        span_id = int(span_id, 16)\n        trace_flags = int(trace_flags, 16)\n    else:\n        match = self._TRACEPARENT_HEADER_FORMAT_RE.search(value)\n        if not match:\n            return context\n        version, trace_id, span_id, trace_flags, suffix = match.groups()\n        if version == \"ff\" or (version == \"00\" and suffix):\n            return context\n        trace_id = int(trace_id, 16)\n        span_id = int(span_id, 16)\n        trace_flags = int(trace_flags, 16)\n    if not trace_id or not span_id:\n        return context\n\n    tracestate_headers = getter.get(carrier, self._TRACESTATE_HEADER_NAME)\n    if tracestate_headers is None:\n        tracestate = None\n    elif (\n        # multiple header fields are combined with \",\" (RFC 9110, section 5.3)\n        sum(len(header) for header in tracestate_headers) + len(tracestate_headers) - 1\n        > _TRACECONTEXT_MAXIMUM_TRACESTATE_LENGTH\n    ):\n        _logger.warning(\n            \"tracestate header exceeded the maximum length of %d characters\",\n            _TRACECONTEXT_MAXIMUM_TRACESTATE_LENGTH,\n        )\n        tracestate = None\n    else:\n        tracestate = TraceState.from_header(tracestate_headers)\n\n    span_context = trace.SpanContext(\n        trace_id=trace_id,\n        span_id=span_id,\n        is_remote=True,\n        trace_flags=trace.TraceFlags(trace_flags),\n        trace_state=tracestate,\n    )\n    return trace.set_span_in_context(trace.NonRecordingSpan(span_context), context)\n",
+      "character-loop": "def extract(\n    self,\n    carrier: textmap.CarrierT,\n    context: Context | None = None,\n    getter: textmap.Getter[textmap.CarrierT] = textmap.default_getter,\n) -> Context:\n    \"\"\"Extracts SpanContext from the carrier.\n\n    See `opentelemetry.propagators.textmap.TextMapPropagator.extract`\n    \"\"\"\n    if context is None:\n        context = Context()\n\n    header = getter.get(carrier, self._TRACEPARENT_HEADER_NAME)\n\n    if not header:\n        return context\n\n    value = header[0]\n    if type(value) is str and len(value) == 55 and value.startswith(\"00-\") and value[35] == \"-\" and value[52] == \"-\":\n        trace_id = value[3:35]\n        span_id = value[36:52]\n        trace_flags = value[53:55]\n        for field in (trace_id, span_id, trace_flags):\n            for character in field:\n                if character not in _HEX:\n                    return context\n        trace_id = int(trace_id, 16)\n        span_id = int(span_id, 16)\n        trace_flags = int(trace_flags, 16)\n    else:\n        match = self._TRACEPARENT_HEADER_FORMAT_RE.search(value)\n        if not match:\n            return context\n        version, trace_id, span_id, trace_flags, suffix = match.groups()\n        if version == \"ff\" or (version == \"00\" and suffix):\n            return context\n        trace_id = int(trace_id, 16)\n        span_id = int(span_id, 16)\n        trace_flags = int(trace_flags, 16)\n    if not trace_id or not span_id:\n        return context\n\n    tracestate_headers = getter.get(carrier, self._TRACESTATE_HEADER_NAME)\n    if tracestate_headers is None:\n        tracestate = None\n    elif (\n        # multiple header fields are combined with \",\" (RFC 9110, section 5.3)\n        sum(len(header) for header in tracestate_headers) + len(tracestate_headers) - 1\n        > _TRACECONTEXT_MAXIMUM_TRACESTATE_LENGTH\n    ):\n        _logger.warning(\n            \"tracestate header exceeded the maximum length of %d characters\",\n            _TRACECONTEXT_MAXIMUM_TRACESTATE_LENGTH,\n        )\n        tracestate = None\n    else:\n        tracestate = TraceState.from_header(tracestate_headers)\n\n    span_context = trace.SpanContext(\n        trace_id=trace_id,\n        span_id=span_id,\n        is_remote=True,\n        trace_flags=trace.TraceFlags(trace_flags),\n        trace_state=tracestate,\n    )\n    return trace.set_span_in_context(trace.NonRecordingSpan(span_context), context)\n",
+      "fused-loop": "def extract(\n    self,\n    carrier: textmap.CarrierT,\n    context: Context | None = None,\n    getter: textmap.Getter[textmap.CarrierT] = textmap.default_getter,\n) -> Context:\n    \"\"\"Extracts SpanContext from the carrier.\n\n    See `opentelemetry.propagators.textmap.TextMapPropagator.extract`\n    \"\"\"\n    if context is None:\n        context = Context()\n\n    header = getter.get(carrier, self._TRACEPARENT_HEADER_NAME)\n\n    if not header:\n        return context\n\n    value = header[0]\n    if type(value) is str and len(value) == 55 and value.startswith(\"00-\") and value[35] == \"-\" and value[52] == \"-\":\n        digit_for = _HEX_VALUES.get\n        trace_id = 0\n        for character in value[3:35]:\n            digit = digit_for(character)\n            if digit is None:\n                return context\n            trace_id = (trace_id << 4) | digit\n        span_id = 0\n        for character in value[36:52]:\n            digit = digit_for(character)\n            if digit is None:\n                return context\n            span_id = (span_id << 4) | digit\n        trace_flags = 0\n        for character in value[53:55]:\n            digit = digit_for(character)\n            if digit is None:\n                return context\n            trace_flags = (trace_flags << 4) | digit\n    else:\n        match = self._TRACEPARENT_HEADER_FORMAT_RE.search(value)\n        if not match:\n            return context\n        version, trace_id, span_id, trace_flags, suffix = match.groups()\n        if version == \"ff\" or (version == \"00\" and suffix):\n            return context\n        trace_id = int(trace_id, 16)\n        span_id = int(span_id, 16)\n        trace_flags = int(trace_flags, 16)\n    if not trace_id or not span_id:\n        return context\n\n    tracestate_headers = getter.get(carrier, self._TRACESTATE_HEADER_NAME)\n    if tracestate_headers is None:\n        tracestate = None\n    elif (\n        # multiple header fields are combined with \",\" (RFC 9110, section 5.3)\n        sum(len(header) for header in tracestate_headers) + len(tracestate_headers) - 1\n        > _TRACECONTEXT_MAXIMUM_TRACESTATE_LENGTH\n    ):\n        _logger.warning(\n            \"tracestate header exceeded the maximum length of %d characters\",\n            _TRACECONTEXT_MAXIMUM_TRACESTATE_LENGTH,\n        )\n        tracestate = None\n    else:\n        tracestate = TraceState.from_header(tracestate_headers)\n\n    span_context = trace.SpanContext(\n        trace_id=trace_id,\n        span_id=span_id,\n        is_remote=True,\n        trace_flags=trace.TraceFlags(trace_flags),\n        trace_state=tracestate,\n    )\n    return trace.set_span_in_context(trace.NonRecordingSpan(span_context), context)\n",
+      "strip": "def extract(\n    self,\n    carrier: textmap.CarrierT,\n    context: Context | None = None,\n    getter: textmap.Getter[textmap.CarrierT] = textmap.default_getter,\n) -> Context:\n    \"\"\"Extracts SpanContext from the carrier.\n\n    See `opentelemetry.propagators.textmap.TextMapPropagator.extract`\n    \"\"\"\n    if context is None:\n        context = Context()\n\n    header = getter.get(carrier, self._TRACEPARENT_HEADER_NAME)\n\n    if not header:\n        return context\n\n    value = header[0]\n    if type(value) is str and len(value) == 55 and value.startswith(\"00-\") and value[35] == \"-\" and value[52] == \"-\":\n        if value.count(\"-\") != 3 or value.strip(_HEX_DASH):\n            return context\n        trace_id = value[3:35]\n        span_id = value[36:52]\n        trace_flags = value[53:55]\n        trace_id = int(trace_id, 16)\n        span_id = int(span_id, 16)\n        trace_flags = int(trace_flags, 16)\n    else:\n        match = self._TRACEPARENT_HEADER_FORMAT_RE.search(value)\n        if not match:\n            return context\n        version, trace_id, span_id, trace_flags, suffix = match.groups()\n        if version == \"ff\" or (version == \"00\" and suffix):\n            return context\n        trace_id = int(trace_id, 16)\n        span_id = int(span_id, 16)\n        trace_flags = int(trace_flags, 16)\n    if not trace_id or not span_id:\n        return context\n\n    tracestate_headers = getter.get(carrier, self._TRACESTATE_HEADER_NAME)\n    if tracestate_headers is None:\n        tracestate = None\n    elif (\n        # multiple header fields are combined with \",\" (RFC 9110, section 5.3)\n        sum(len(header) for header in tracestate_headers) + len(tracestate_headers) - 1\n        > _TRACECONTEXT_MAXIMUM_TRACESTATE_LENGTH\n    ):\n        _logger.warning(\n            \"tracestate header exceeded the maximum length of %d characters\",\n            _TRACECONTEXT_MAXIMUM_TRACESTATE_LENGTH,\n        )\n        tracestate = None\n    else:\n        tracestate = TraceState.from_header(tracestate_headers)\n\n    span_context = trace.SpanContext(\n        trace_id=trace_id,\n        span_id=span_id,\n        is_remote=True,\n        trace_flags=trace.TraceFlags(trace_flags),\n        trace_state=tracestate,\n    )\n    return trace.set_span_in_context(trace.NonRecordingSpan(span_context), context)\n"
+    },
+    "followup_sha256": "be422821eb8dbc8d7185b82ef0a39cc2c24189de4405827ad9a826547a4fc8d2"
+  },
+  "results": [
+    {
+      "case": "default_strings/no-state",
+      "loops_per_batch": 394709,
+      "summary": {
+        "optimized-regex": {
+          "cpu_ns_op": 2295.9952775335755,
+          "wall_ns_op": 2306.2055843672174
+        },
+        "strip": {
+          "cpu_ns_op": 2493.9259049071593,
+          "wall_ns_op": 2504.577802887697
+        }
+      },
+      "samples": [
+        {
+          "pair": 0,
+          "mode": "optimized-regex",
+          "loops": 394709,
+          "cpu_ns": 890625000,
+          "wall_ns": 888762800
+        },
+        {
+          "pair": 0,
+          "mode": "strip",
+          "loops": 394709,
+          "cpu_ns": 953125000,
+          "wall_ns": 969965300
+        },
+        {
+          "pair": 1,
+          "mode": "optimized-regex",
+          "loops": 394709,
+          "cpu_ns": 890625000,
+          "wall_ns": 892088800
+        },
+        {
+          "pair": 1,
+          "mode": "strip",
+          "loops": 394709,
+          "cpu_ns": 953125000,
+          "wall_ns": 978894700
+        },
+        {
+          "pair": 2,
+          "mode": "optimized-regex",
+          "loops": 394709,
+          "cpu_ns": 890625000,
+          "wall_ns": 898664100
+        },
+        {
+          "pair": 2,
+          "mode": "strip",
+          "loops": 394709,
+          "cpu_ns": 984375000,
+          "wall_ns": 992657200
+        },
+        {
+          "pair": 3,
+          "mode": "optimized-regex",
+          "loops": 394709,
+          "cpu_ns": 890625000,
+          "wall_ns": 898244400
+        },
+        {
+          "pair": 3,
+          "mode": "strip",
+          "loops": 394709,
+          "cpu_ns": 953125000,
+          "wall_ns": 982211300
+        },
+        {
+          "pair": 4,
+          "mode": "optimized-regex",
+          "loops": 394709,
+          "cpu_ns": 906250000,
+          "wall_ns": 910280100
+        },
+        {
+          "pair": 4,
+          "mode": "strip",
+          "loops": 394709,
+          "cpu_ns": 1015625000,
+          "wall_ns": 1037964800
+        },
+        {
+          "pair": 5,
+          "mode": "optimized-regex",
+          "loops": 394709,
+          "cpu_ns": 906250000,
+          "wall_ns": 912850100
+        },
+        {
+          "pair": 5,
+          "mode": "strip",
+          "loops": 394709,
+          "cpu_ns": 1015625000,
+          "wall_ns": 1032081000
+        },
+        {
+          "pair": 6,
+          "mode": "optimized-regex",
+          "loops": 394709,
+          "cpu_ns": 937500000,
+          "wall_ns": 936154900
+        },
+        {
+          "pair": 6,
+          "mode": "strip",
+          "loops": 394709,
+          "cpu_ns": 984375000,
+          "wall_ns": 988579400
+        },
+        {
+          "pair": 7,
+          "mode": "optimized-regex",
+          "loops": 394709,
+          "cpu_ns": 921875000,
+          "wall_ns": 921318100
+        },
+        {
+          "pair": 7,
+          "mode": "strip",
+          "loops": 394709,
+          "cpu_ns": 984375000,
+          "wall_ns": 978777700
+        },
+        {
+          "pair": 8,
+          "mode": "optimized-regex",
+          "loops": 394709,
+          "cpu_ns": 921875000,
+          "wall_ns": 939606000
+        },
+        {
+          "pair": 8,
+          "mode": "strip",
+          "loops": 394709,
+          "cpu_ns": 1015625000,
+          "wall_ns": 1042665600
+        }
+      ]
+    },
+    {
+      "case": "custom_lists/no-state",
+      "loops_per_batch": 411491,
+      "summary": {
+        "optimized-regex": {
+          "cpu_ns_op": 2295.1764302121906,
+          "wall_ns_op": 2246.2695417396735
+        },
+        "strip": {
+          "cpu_ns_op": 2560.978112387499,
+          "wall_ns_op": 2498.7924401748764
+        }
+      },
+      "samples": [
+        {
+          "pair": 0,
+          "mode": "optimized-regex",
+          "loops": 411491,
+          "cpu_ns": 906250000,
+          "wall_ns": 924319700
+        },
+        {
+          "pair": 0,
+          "mode": "strip",
+          "loops": 411491,
+          "cpu_ns": 1015625000,
+          "wall_ns": 1028230600
+        },
+        {
+          "pair": 1,
+          "mode": "optimized-regex",
+          "loops": 411491,
+          "cpu_ns": 906250000,
+          "wall_ns": 915164100
+        },
+        {
+          "pair": 1,
+          "mode": "strip",
+          "loops": 411491,
+          "cpu_ns": 1000000000,
+          "wall_ns": 1019782000
+        },
+        {
+          "pair": 2,
+          "mode": "optimized-regex",
+          "loops": 411491,
+          "cpu_ns": 890625000,
+          "wall_ns": 909984400
+        },
+        {
+          "pair": 2,
+          "mode": "strip",
+          "loops": 411491,
+          "cpu_ns": 984375000,
+          "wall_ns": 1004908500
+        },
+        {
+          "pair": 3,
+          "mode": "optimized-regex",
+          "loops": 411491,
+          "cpu_ns": 906250000,
+          "wall_ns": 931774300
+        },
+        {
+          "pair": 3,
+          "mode": "strip",
+          "loops": 411491,
+          "cpu_ns": 1000000000,
+          "wall_ns": 1004562500
+        },
+        {
+          "pair": 4,
+          "mode": "optimized-regex",
+          "loops": 411491,
+          "cpu_ns": 890625000,
+          "wall_ns": 905134200
+        },
+        {
+          "pair": 4,
+          "mode": "strip",
+          "loops": 411491,
+          "cpu_ns": 1015625000,
+          "wall_ns": 1024040000
+        },
+        {
+          "pair": 5,
+          "mode": "optimized-regex",
+          "loops": 411491,
+          "cpu_ns": 968750000,
+          "wall_ns": 984650300
+        },
+        {
+          "pair": 5,
+          "mode": "strip",
+          "loops": 411491,
+          "cpu_ns": 1156250000,
+          "wall_ns": 1178394000
+        },
+        {
+          "pair": 6,
+          "mode": "optimized-regex",
+          "loops": 411491,
+          "cpu_ns": 1046875000,
+          "wall_ns": 1054596700
+        },
+        {
+          "pair": 6,
+          "mode": "strip",
+          "loops": 411491,
+          "cpu_ns": 1015625000,
+          "wall_ns": 1034983000
+        },
+        {
+          "pair": 7,
+          "mode": "optimized-regex",
+          "loops": 411491,
+          "cpu_ns": 906250000,
+          "wall_ns": 911695800
+        },
+        {
+          "pair": 7,
+          "mode": "strip",
+          "loops": 411491,
+          "cpu_ns": 1109375000,
+          "wall_ns": 1120908400
+        },
+        {
+          "pair": 8,
+          "mode": "optimized-regex",
+          "loops": 411491,
+          "cpu_ns": 1078125000,
+          "wall_ns": 1091702100
+        },
+        {
+          "pair": 8,
+          "mode": "strip",
+          "loops": 411491,
+          "cpu_ns": 1187500000,
+          "wall_ns": 1226498900
+        }
+      ]
+    },
+    {
+      "case": "custom_lists/three-state",
+      "loops_per_batch": 211854,
+      "summary": {
+        "optimized-regex": {
+          "cpu_ns_op": 4285.904968096477,
+          "wall_ns_op": 4275.8423253750225
+        },
+        "strip": {
+          "cpu_ns_op": 4490.7761424796745,
+          "wall_ns_op": 4536.567164179104
+        }
+      },
+      "samples": [
+        {
+          "pair": 0,
+          "mode": "optimized-regex",
+          "loops": 211854,
+          "cpu_ns": 921875000,
+          "wall_ns": 927933900
+        },
+        {
+          "pair": 0,
+          "mode": "strip",
+          "loops": 211854,
+          "cpu_ns": 953125000,
+          "wall_ns": 948253900
+        },
+        {
+          "pair": 1,
+          "mode": "optimized-regex",
+          "loops": 211854,
+          "cpu_ns": 921875000,
+          "wall_ns": 912919600
+        },
+        {
+          "pair": 1,
+          "mode": "strip",
+          "loops": 211854,
+          "cpu_ns": 953125000,
+          "wall_ns": 961793200
+        },
+        {
+          "pair": 2,
+          "mode": "optimized-regex",
+          "loops": 211854,
+          "cpu_ns": 906250000,
+          "wall_ns": 900837100
+        },
+        {
+          "pair": 2,
+          "mode": "strip",
+          "loops": 211854,
+          "cpu_ns": 906250000,
+          "wall_ns": 948207700
+        },
+        {
+          "pair": 3,
+          "mode": "optimized-regex",
+          "loops": 211854,
+          "cpu_ns": 890625000,
+          "wall_ns": 904824700
+        },
+        {
+          "pair": 3,
+          "mode": "strip",
+          "loops": 211854,
+          "cpu_ns": 937500000,
+          "wall_ns": 939936600
+        },
+        {
+          "pair": 4,
+          "mode": "optimized-regex",
+          "loops": 211854,
+          "cpu_ns": 890625000,
+          "wall_ns": 894529000
+        },
+        {
+          "pair": 4,
+          "mode": "strip",
+          "loops": 211854,
+          "cpu_ns": 953125000,
+          "wall_ns": 962387800
+        },
+        {
+          "pair": 5,
+          "mode": "optimized-regex",
+          "loops": 211854,
+          "cpu_ns": 906250000,
+          "wall_ns": 905854300
+        },
+        {
+          "pair": 5,
+          "mode": "strip",
+          "loops": 211854,
+          "cpu_ns": 968750000,
+          "wall_ns": 984193000
+        },
+        {
+          "pair": 6,
+          "mode": "optimized-regex",
+          "loops": 211854,
+          "cpu_ns": 890625000,
+          "wall_ns": 899648900
+        },
+        {
+          "pair": 6,
+          "mode": "strip",
+          "loops": 211854,
+          "cpu_ns": 953125000,
+          "wall_ns": 961089900
+        },
+        {
+          "pair": 7,
+          "mode": "optimized-regex",
+          "loops": 211854,
+          "cpu_ns": 921875000,
+          "wall_ns": 912606100
+        },
+        {
+          "pair": 7,
+          "mode": "strip",
+          "loops": 211854,
+          "cpu_ns": 984375000,
+          "wall_ns": 977903500
+        },
+        {
+          "pair": 8,
+          "mode": "optimized-regex",
+          "loops": 211854,
+          "cpu_ns": 921875000,
+          "wall_ns": 920291100
+        },
+        {
+          "pair": 8,
+          "mode": "strip",
+          "loops": 211854,
+          "cpu_ns": 953125000,
+          "wall_ns": 959102700
+        }
+      ]
+    }
+  ]
+}

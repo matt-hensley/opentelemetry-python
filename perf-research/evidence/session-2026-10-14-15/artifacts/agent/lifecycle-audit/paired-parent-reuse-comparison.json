@@ -1,0 +1,861 @@
+{
+  "metadata": {
+    "python": "3.13.14 (tags/v3.13.14:fd17997, Jun 10 2026, 13:03:48) [MSC v.1944 64 bit (AMD64)]",
+    "pairs": 9,
+    "harness_sha256": "85a0933f678a87b132d217b6778e41ed0929667e78e7f90936fa62af670fcb58",
+    "source_sha256": {
+      "opentelemetry-sdk\\src\\opentelemetry\\sdk\\trace\\__init__.py": "3de799f888fa8c1d0747e06a83232d644ab33dcb58f405a57c8516e3346a05ce",
+      "opentelemetry-sdk\\src\\opentelemetry\\sdk\\trace\\sampling.py": "8bfdd77f6e58f4e0efe012cb9dfe59c549e800ccbd98b500768e0149f637fbfb"
+    },
+    "candidate": "def start_span(  # pylint: disable=too-many-locals\n    self,\n    name: str,\n    context: context_api.Context | None = None,\n    kind: trace_api.SpanKind = trace_api.SpanKind.INTERNAL,\n    attributes: types.Attributes = None,\n    links: Sequence[trace_api.Link] | None = (),\n    start_time: int | None = None,\n    record_exception: bool = True,\n    set_status_on_exception: bool = True,\n) -> trace_api.Span:\n    links = links or ()\n    parent_span_context = trace_api.get_current_span(context).get_span_context()\n\n    if parent_span_context is not None and not isinstance(parent_span_context, trace_api.SpanContext):\n        raise TypeError(\"parent_span_context must be a SpanContext or None.\")\n\n    if not self._is_enabled():\n        return trace_api.NonRecordingSpan(context=parent_span_context)\n\n    # is_valid determines root span\n    if parent_span_context is None or not parent_span_context.is_valid:\n        parent_span_context = None\n        trace_id = self.id_generator.generate_trace_id()\n    else:\n        trace_id = parent_span_context.trace_id\n\n    # The sampler decides whether to create a real or no-op span at the\n    # time of span creation. No-op spans do not record events, and are not\n    # exported.\n    # The sampler may also add attributes to the newly-created span, e.g.\n    # to include information about the sampling result.\n    # The sampler may also modify the parent span context's tracestate\n    if type(self.sampler) is sampling.ParentBased:\n        sampling_result = _SAMPLE_PARENT(self.sampler, parent_span_context, context, trace_id, name, kind, attributes, links)\n    else:\n        sampling_result = self.sampler.should_sample(context, trace_id, name, kind, attributes, links)\n\n    trace_flags = (\n        trace_api.TraceFlags(trace_api.TraceFlags.SAMPLED)\n        if sampling_result.decision.is_sampled()\n        else trace_api.TraceFlags(trace_api.TraceFlags.DEFAULT)\n    )\n\n    if parent_span_context is None:\n        random_trace_id = self.id_generator.is_trace_id_random()\n    else:\n        random_trace_id = parent_span_context.trace_flags.random_trace_id\n\n    if random_trace_id:\n        trace_flags = trace_api.TraceFlags(trace_flags | trace_api.TraceFlags.RANDOM_TRACE_ID)\n\n    span_context = trace_api.SpanContext(\n        trace_id,\n        self.id_generator.generate_span_id(),\n        is_remote=False,\n        trace_flags=trace_flags,\n        trace_state=sampling_result.trace_state,\n    )\n\n    record_end_metrics = self._tracer_metrics.start_span(parent_span_context, sampling_result.decision)\n\n    # Only record if is_recording() is true\n    if sampling_result.decision.is_recording():\n        # pylint:disable=protected-access\n        span = _Span(\n            name=name,\n            context=span_context,\n            parent=parent_span_context,\n            sampler=self.sampler,\n            resource=self.resource,\n            attributes=sampling_result.attributes,\n            span_processor=self.span_processor,\n            kind=kind,\n            links=links,\n            instrumentation_info=self.instrumentation_info,\n            record_exception=record_exception,\n            set_status_on_exception=set_status_on_exception,\n            limits=self._span_limits,\n            instrumentation_scope=self._instrumentation_scope,\n            record_end_metrics=record_end_metrics,\n        )\n        span.start(start_time=start_time, parent_context=context)\n    else:\n        span = trace_api.NonRecordingSpan(context=span_context)\n    return span\n",
+    "sampling_helper": "def sample_parent(sampler, parent, parent_context, trace_id, name, kind, attributes, links):\n    delegate = sampler._root\n    if parent is not None and parent.is_valid:\n        if parent.is_remote:\n            delegate = sampler._remote_parent_sampled if parent.trace_flags.sampled else sampler._remote_parent_not_sampled\n        else:\n            delegate = sampler._local_parent_sampled if parent.trace_flags.sampled else sampler._local_parent_not_sampled\n    if type(delegate) is sampling.StaticSampler:\n        decision = delegate._decision\n    elif type(delegate) is sampling.TraceIdRatioBased:\n        decision = sampling.Decision.RECORD_AND_SAMPLE if trace_id & delegate.TRACE_ID_LIMIT < delegate.bound else sampling.Decision.DROP\n    else:\n        return delegate.should_sample(parent_context=parent_context, trace_id=trace_id, name=name, kind=kind, attributes=attributes, links=links)\n    state = parent.trace_state if parent is not None and parent.is_valid else None\n    return sampling.SamplingResult(decision, None if decision is sampling.Decision.DROP else attributes, state)\n"
+  },
+  "results": [
+    {
+      "case": "dropped-root/start-end",
+      "summary": {
+        "baseline": {
+          "cpu_ns_op": 2699.8914030832643,
+          "wall_ns_op": 2715.404851895636
+        },
+        "reuse-parent": {
+          "cpu_ns_op": 2312.5408163454085,
+          "wall_ns_op": 2295.4298273364525
+        }
+      },
+      "samples": [
+        {
+          "pair": 0,
+          "mode": "baseline",
+          "loops": 300295,
+          "cpu_ns": 796875000,
+          "wall_ns": 809729400
+        },
+        {
+          "pair": 0,
+          "mode": "reuse-parent",
+          "loops": 300295,
+          "cpu_ns": 656250000,
+          "wall_ns": 675571200
+        },
+        {
+          "pair": 1,
+          "mode": "reuse-parent",
+          "loops": 300295,
+          "cpu_ns": 656250000,
+          "wall_ns": 665155100
+        },
+        {
+          "pair": 1,
+          "mode": "baseline",
+          "loops": 300295,
+          "cpu_ns": 796875000,
+          "wall_ns": 815422500
+        },
+        {
+          "pair": 2,
+          "mode": "baseline",
+          "loops": 300295,
+          "cpu_ns": 828125000,
+          "wall_ns": 829122900
+        },
+        {
+          "pair": 2,
+          "mode": "reuse-parent",
+          "loops": 300295,
+          "cpu_ns": 687500000,
+          "wall_ns": 703332000
+        },
+        {
+          "pair": 3,
+          "mode": "reuse-parent",
+          "loops": 300295,
+          "cpu_ns": 828125000,
+          "wall_ns": 860129300
+        },
+        {
+          "pair": 3,
+          "mode": "baseline",
+          "loops": 300295,
+          "cpu_ns": 828125000,
+          "wall_ns": 816642000
+        },
+        {
+          "pair": 4,
+          "mode": "baseline",
+          "loops": 300295,
+          "cpu_ns": 796875000,
+          "wall_ns": 814789400
+        },
+        {
+          "pair": 4,
+          "mode": "reuse-parent",
+          "loops": 300295,
+          "cpu_ns": 671875000,
+          "wall_ns": 685938400
+        },
+        {
+          "pair": 5,
+          "mode": "reuse-parent",
+          "loops": 300295,
+          "cpu_ns": 687500000,
+          "wall_ns": 694264800
+        },
+        {
+          "pair": 5,
+          "mode": "baseline",
+          "loops": 300295,
+          "cpu_ns": 828125000,
+          "wall_ns": 844083300
+        },
+        {
+          "pair": 6,
+          "mode": "baseline",
+          "loops": 300295,
+          "cpu_ns": 812500000,
+          "wall_ns": 816151500
+        },
+        {
+          "pair": 6,
+          "mode": "reuse-parent",
+          "loops": 300295,
+          "cpu_ns": 687500000,
+          "wall_ns": 683922200
+        },
+        {
+          "pair": 7,
+          "mode": "reuse-parent",
+          "loops": 300295,
+          "cpu_ns": 703125000,
+          "wall_ns": 714223000
+        },
+        {
+          "pair": 7,
+          "mode": "baseline",
+          "loops": 300295,
+          "cpu_ns": 812500000,
+          "wall_ns": 804107300
+        },
+        {
+          "pair": 8,
+          "mode": "baseline",
+          "loops": 300295,
+          "cpu_ns": 796875000,
+          "wall_ns": 795160400
+        },
+        {
+          "pair": 8,
+          "mode": "reuse-parent",
+          "loops": 300295,
+          "cpu_ns": 671875000,
+          "wall_ns": 689306100
+        }
+      ]
+    },
+    {
+      "case": "dropped-child/start-end",
+      "summary": {
+        "baseline": {
+          "cpu_ns_op": 2720.6159613166533,
+          "wall_ns_op": 2695.2971120574925
+        },
+        "reuse-parent": {
+          "cpu_ns_op": 2460.684500044362,
+          "wall_ns_op": 2331.697498003726
+        }
+      },
+      "samples": [
+        {
+          "pair": 0,
+          "mode": "baseline",
+          "loops": 300560,
+          "cpu_ns": 812500000,
+          "wall_ns": 810098500
+        },
+        {
+          "pair": 0,
+          "mode": "reuse-parent",
+          "loops": 300560,
+          "cpu_ns": 671875000,
+          "wall_ns": 672314800
+        },
+        {
+          "pair": 1,
+          "mode": "reuse-parent",
+          "loops": 300560,
+          "cpu_ns": 687500000,
+          "wall_ns": 683359000
+        },
+        {
+          "pair": 1,
+          "mode": "baseline",
+          "loops": 300560,
+          "cpu_ns": 796875000,
+          "wall_ns": 802170400
+        },
+        {
+          "pair": 2,
+          "mode": "baseline",
+          "loops": 300560,
+          "cpu_ns": 796875000,
+          "wall_ns": 801829400
+        },
+        {
+          "pair": 2,
+          "mode": "reuse-parent",
+          "loops": 300560,
+          "cpu_ns": 843750000,
+          "wall_ns": 899252900
+        },
+        {
+          "pair": 3,
+          "mode": "reuse-parent",
+          "loops": 300560,
+          "cpu_ns": 671875000,
+          "wall_ns": 682609800
+        },
+        {
+          "pair": 3,
+          "mode": "baseline",
+          "loops": 300560,
+          "cpu_ns": 828125000,
+          "wall_ns": 831682100
+        },
+        {
+          "pair": 4,
+          "mode": "baseline",
+          "loops": 300560,
+          "cpu_ns": 812500000,
+          "wall_ns": 817093200
+        },
+        {
+          "pair": 4,
+          "mode": "reuse-parent",
+          "loops": 300560,
+          "cpu_ns": 765625000,
+          "wall_ns": 768884800
+        },
+        {
+          "pair": 5,
+          "mode": "reuse-parent",
+          "loops": 300560,
+          "cpu_ns": 765625000,
+          "wall_ns": 763660200
+        },
+        {
+          "pair": 5,
+          "mode": "baseline",
+          "loops": 300560,
+          "cpu_ns": 890625000,
+          "wall_ns": 890140400
+        },
+        {
+          "pair": 6,
+          "mode": "baseline",
+          "loops": 300560,
+          "cpu_ns": 828125000,
+          "wall_ns": 828632800
+        },
+        {
+          "pair": 6,
+          "mode": "reuse-parent",
+          "loops": 300560,
+          "cpu_ns": 703125000,
+          "wall_ns": 700815000
+        },
+        {
+          "pair": 7,
+          "mode": "reuse-parent",
+          "loops": 300560,
+          "cpu_ns": 890625000,
+          "wall_ns": 905325600
+        },
+        {
+          "pair": 7,
+          "mode": "baseline",
+          "loops": 300560,
+          "cpu_ns": 796875000,
+          "wall_ns": 805169700
+        },
+        {
+          "pair": 8,
+          "mode": "baseline",
+          "loops": 300560,
+          "cpu_ns": 796875000,
+          "wall_ns": 803857200
+        },
+        {
+          "pair": 8,
+          "mode": "reuse-parent",
+          "loops": 300560,
+          "cpu_ns": 656250000,
+          "wall_ns": 672381800
+        }
+      ]
+    },
+    {
+      "case": "dropped-child/current-span",
+      "summary": {
+        "baseline": {
+          "cpu_ns_op": 5979.150640077322,
+          "wall_ns_op": 5673.5331084679565
+        },
+        "reuse-parent": {
+          "cpu_ns_op": 5239.461901098684,
+          "wall_ns_op": 5313.527427658441
+        }
+      },
+      "samples": [
+        {
+          "pair": 0,
+          "mode": "baseline",
+          "loops": 140825,
+          "cpu_ns": 781250000,
+          "wall_ns": 794022500
+        },
+        {
+          "pair": 0,
+          "mode": "reuse-parent",
+          "loops": 140825,
+          "cpu_ns": 718750000,
+          "wall_ns": 731998400
+        },
+        {
+          "pair": 1,
+          "mode": "reuse-parent",
+          "loops": 140825,
+          "cpu_ns": 750000000,
+          "wall_ns": 748277500
+        },
+        {
+          "pair": 1,
+          "mode": "baseline",
+          "loops": 140825,
+          "cpu_ns": 796875000,
+          "wall_ns": 797423100
+        },
+        {
+          "pair": 2,
+          "mode": "baseline",
+          "loops": 140825,
+          "cpu_ns": 812500000,
+          "wall_ns": 809957200
+        },
+        {
+          "pair": 2,
+          "mode": "reuse-parent",
+          "loops": 140825,
+          "cpu_ns": 734375000,
+          "wall_ns": 737188900
+        },
+        {
+          "pair": 3,
+          "mode": "reuse-parent",
+          "loops": 140825,
+          "cpu_ns": 734375000,
+          "wall_ns": 750202900
+        },
+        {
+          "pair": 3,
+          "mode": "baseline",
+          "loops": 140825,
+          "cpu_ns": 1015625000,
+          "wall_ns": 1015606900
+        },
+        {
+          "pair": 4,
+          "mode": "baseline",
+          "loops": 140825,
+          "cpu_ns": 968750000,
+          "wall_ns": 980219000
+        },
+        {
+          "pair": 4,
+          "mode": "reuse-parent",
+          "loops": 140825,
+          "cpu_ns": 765625000,
+          "wall_ns": 758160400
+        },
+        {
+          "pair": 5,
+          "mode": "reuse-parent",
+          "loops": 140825,
+          "cpu_ns": 734375000,
+          "wall_ns": 733925700
+        },
+        {
+          "pair": 5,
+          "mode": "baseline",
+          "loops": 140825,
+          "cpu_ns": 796875000,
+          "wall_ns": 798975300
+        },
+        {
+          "pair": 6,
+          "mode": "baseline",
+          "loops": 140825,
+          "cpu_ns": 812500000,
+          "wall_ns": 824551900
+        },
+        {
+          "pair": 6,
+          "mode": "reuse-parent",
+          "loops": 140825,
+          "cpu_ns": 765625000,
+          "wall_ns": 772305200
+        },
+        {
+          "pair": 7,
+          "mode": "reuse-parent",
+          "loops": 140825,
+          "cpu_ns": 734375000,
+          "wall_ns": 749530700
+        },
+        {
+          "pair": 7,
+          "mode": "baseline",
+          "loops": 140825,
+          "cpu_ns": 796875000,
+          "wall_ns": 795262200
+        },
+        {
+          "pair": 8,
+          "mode": "baseline",
+          "loops": 140825,
+          "cpu_ns": 796875000,
+          "wall_ns": 797735200
+        },
+        {
+          "pair": 8,
+          "mode": "reuse-parent",
+          "loops": 140825,
+          "cpu_ns": 703125000,
+          "wall_ns": 729080200
+        }
+      ]
+    },
+    {
+      "case": "sampled-child-4/current-span",
+      "summary": {
+        "baseline": {
+          "cpu_ns_op": 13905.774472176532,
+          "wall_ns_op": 13978.727740828148
+        },
+        "reuse-parent": {
+          "cpu_ns_op": 13657.457070887665,
+          "wall_ns_op": 13585.990130873202
+        }
+      },
+      "samples": [
+        {
+          "pair": 0,
+          "mode": "baseline",
+          "loops": 55932,
+          "cpu_ns": 781250000,
+          "wall_ns": 782171000
+        },
+        {
+          "pair": 0,
+          "mode": "reuse-parent",
+          "loops": 55932,
+          "cpu_ns": 812500000,
+          "wall_ns": 801821300
+        },
+        {
+          "pair": 1,
+          "mode": "reuse-parent",
+          "loops": 55932,
+          "cpu_ns": 781250000,
+          "wall_ns": 785276000
+        },
+        {
+          "pair": 1,
+          "mode": "baseline",
+          "loops": 55932,
+          "cpu_ns": 781250000,
+          "wall_ns": 800073500
+        },
+        {
+          "pair": 2,
+          "mode": "baseline",
+          "loops": 55932,
+          "cpu_ns": 796875000,
+          "wall_ns": 793489100
+        },
+        {
+          "pair": 2,
+          "mode": "reuse-parent",
+          "loops": 55932,
+          "cpu_ns": 750000000,
+          "wall_ns": 753432500
+        },
+        {
+          "pair": 3,
+          "mode": "reuse-parent",
+          "loops": 55932,
+          "cpu_ns": 765625000,
+          "wall_ns": 774997500
+        },
+        {
+          "pair": 3,
+          "mode": "baseline",
+          "loops": 55932,
+          "cpu_ns": 765625000,
+          "wall_ns": 767952400
+        },
+        {
+          "pair": 4,
+          "mode": "baseline",
+          "loops": 55932,
+          "cpu_ns": 781250000,
+          "wall_ns": 780370900
+        },
+        {
+          "pair": 4,
+          "mode": "reuse-parent",
+          "loops": 55932,
+          "cpu_ns": 765625000,
+          "wall_ns": 759891600
+        },
+        {
+          "pair": 5,
+          "mode": "reuse-parent",
+          "loops": 55932,
+          "cpu_ns": 765625000,
+          "wall_ns": 754118400
+        },
+        {
+          "pair": 5,
+          "mode": "baseline",
+          "loops": 55932,
+          "cpu_ns": 781250000,
+          "wall_ns": 793030600
+        },
+        {
+          "pair": 6,
+          "mode": "baseline",
+          "loops": 55932,
+          "cpu_ns": 750000000,
+          "wall_ns": 769177200
+        },
+        {
+          "pair": 6,
+          "mode": "reuse-parent",
+          "loops": 55932,
+          "cpu_ns": 750000000,
+          "wall_ns": 748598700
+        },
+        {
+          "pair": 7,
+          "mode": "reuse-parent",
+          "loops": 55932,
+          "cpu_ns": 750000000,
+          "wall_ns": 774690700
+        },
+        {
+          "pair": 7,
+          "mode": "baseline",
+          "loops": 55932,
+          "cpu_ns": 781250000,
+          "wall_ns": 781858200
+        },
+        {
+          "pair": 8,
+          "mode": "baseline",
+          "loops": 55932,
+          "cpu_ns": 781250000,
+          "wall_ns": 780036600
+        },
+        {
+          "pair": 8,
+          "mode": "reuse-parent",
+          "loops": 55932,
+          "cpu_ns": 734375000,
+          "wall_ns": 745549600
+        }
+      ]
+    },
+    {
+      "case": "static-off-control/start-end",
+      "summary": {
+        "baseline": {
+          "cpu_ns_op": 2301.7319818833057,
+          "wall_ns_op": 2304.651435233072
+        },
+        "reuse-parent": {
+          "cpu_ns_op": 2341.4170160537074,
+          "wall_ns_op": 2325.187297487271
+        }
+      },
+      "samples": [
+        {
+          "pair": 0,
+          "mode": "baseline",
+          "loops": 349978,
+          "cpu_ns": 796875000,
+          "wall_ns": 786684300
+        },
+        {
+          "pair": 0,
+          "mode": "reuse-parent",
+          "loops": 349978,
+          "cpu_ns": 812500000,
+          "wall_ns": 803299400
+        },
+        {
+          "pair": 1,
+          "mode": "reuse-parent",
+          "loops": 349978,
+          "cpu_ns": 796875000,
+          "wall_ns": 792487900
+        },
+        {
+          "pair": 1,
+          "mode": "baseline",
+          "loops": 349978,
+          "cpu_ns": 796875000,
+          "wall_ns": 815579800
+        },
+        {
+          "pair": 2,
+          "mode": "baseline",
+          "loops": 349978,
+          "cpu_ns": 781250000,
+          "wall_ns": 777808100
+        },
+        {
+          "pair": 2,
+          "mode": "reuse-parent",
+          "loops": 349978,
+          "cpu_ns": 812500000,
+          "wall_ns": 823303000
+        },
+        {
+          "pair": 3,
+          "mode": "reuse-parent",
+          "loops": 349978,
+          "cpu_ns": 781250000,
+          "wall_ns": 794898600
+        },
+        {
+          "pair": 3,
+          "mode": "baseline",
+          "loops": 349978,
+          "cpu_ns": 890625000,
+          "wall_ns": 886803100
+        },
+        {
+          "pair": 4,
+          "mode": "baseline",
+          "loops": 349978,
+          "cpu_ns": 859375000,
+          "wall_ns": 862605100
+        },
+        {
+          "pair": 4,
+          "mode": "reuse-parent",
+          "loops": 349978,
+          "cpu_ns": 921875000,
+          "wall_ns": 949728700
+        },
+        {
+          "pair": 5,
+          "mode": "reuse-parent",
+          "loops": 349978,
+          "cpu_ns": 843750000,
+          "wall_ns": 834908600
+        },
+        {
+          "pair": 5,
+          "mode": "baseline",
+          "loops": 349978,
+          "cpu_ns": 765625000,
+          "wall_ns": 784085000
+        },
+        {
+          "pair": 6,
+          "mode": "baseline",
+          "loops": 349978,
+          "cpu_ns": 765625000,
+          "wall_ns": 776037200
+        },
+        {
+          "pair": 6,
+          "mode": "reuse-parent",
+          "loops": 349978,
+          "cpu_ns": 812500000,
+          "wall_ns": 816224700
+        },
+        {
+          "pair": 7,
+          "mode": "reuse-parent",
+          "loops": 349978,
+          "cpu_ns": 796875000,
+          "wall_ns": 813764400
+        },
+        {
+          "pair": 7,
+          "mode": "baseline",
+          "loops": 349978,
+          "cpu_ns": 812500000,
+          "wall_ns": 806577300
+        },
+        {
+          "pair": 8,
+          "mode": "baseline",
+          "loops": 349978,
+          "cpu_ns": 781250000,
+          "wall_ns": 813606200
+        },
+        {
+          "pair": 8,
+          "mode": "reuse-parent",
+          "loops": 349978,
+          "cpu_ns": 796875000,
+          "wall_ns": 802714400
+        }
+      ]
+    },
+    {
+      "case": "custom-control/start-end",
+      "summary": {
+        "baseline": {
+          "cpu_ns_op": 8088.854066916224,
+          "wall_ns_op": 8235.313658918778
+        },
+        "reuse-parent": {
+          "cpu_ns_op": 8088.854066916224,
+          "wall_ns_op": 8177.8177069731
+        }
+      },
+      "samples": [
+        {
+          "pair": 0,
+          "mode": "baseline",
+          "loops": 95725,
+          "cpu_ns": 765625000,
+          "wall_ns": 780478200
+        },
+        {
+          "pair": 0,
+          "mode": "reuse-parent",
+          "loops": 95725,
+          "cpu_ns": 750000000,
+          "wall_ns": 769440300
+        },
+        {
+          "pair": 1,
+          "mode": "reuse-parent",
+          "loops": 95725,
+          "cpu_ns": 781250000,
+          "wall_ns": 778855900
+        },
+        {
+          "pair": 1,
+          "mode": "baseline",
+          "loops": 95725,
+          "cpu_ns": 796875000,
+          "wall_ns": 792968300
+        },
+        {
+          "pair": 2,
+          "mode": "baseline",
+          "loops": 95725,
+          "cpu_ns": 750000000,
+          "wall_ns": 769911800
+        },
+        {
+          "pair": 2,
+          "mode": "reuse-parent",
+          "loops": 95725,
+          "cpu_ns": 781250000,
+          "wall_ns": 776700500
+        },
+        {
+          "pair": 3,
+          "mode": "reuse-parent",
+          "loops": 95725,
+          "cpu_ns": 781250000,
+          "wall_ns": 791934000
+        },
+        {
+          "pair": 3,
+          "mode": "baseline",
+          "loops": 95725,
+          "cpu_ns": 781250000,
+          "wall_ns": 804605700
+        },
+        {
+          "pair": 4,
+          "mode": "baseline",
+          "loops": 95725,
+          "cpu_ns": 765625000,
+          "wall_ns": 798465800
+        },
+        {
+          "pair": 4,
+          "mode": "reuse-parent",
+          "loops": 95725,
+          "cpu_ns": 765625000,
+          "wall_ns": 788665000
+        },
+        {
+          "pair": 5,
+          "mode": "reuse-parent",
+          "loops": 95725,
+          "cpu_ns": 781250000,
+          "wall_ns": 782342400
+        },
+        {
+          "pair": 5,
+          "mode": "baseline",
+          "loops": 95725,
+          "cpu_ns": 765625000,
+          "wall_ns": 768091700
+        },
+        {
+          "pair": 6,
+          "mode": "baseline",
+          "loops": 95725,
+          "cpu_ns": 796875000,
+          "wall_ns": 795981300
+        },
+        {
+          "pair": 6,
+          "mode": "reuse-parent",
+          "loops": 95725,
+          "cpu_ns": 750000000,
+          "wall_ns": 782821600
+        },
+        {
+          "pair": 7,
+          "mode": "reuse-parent",
+          "loops": 95725,
+          "cpu_ns": 781250000,
+          "wall_ns": 785722900
+        },
+        {
+          "pair": 7,
+          "mode": "baseline",
+          "loops": 95725,
+          "cpu_ns": 781250000,
+          "wall_ns": 788325400
+        },
+        {
+          "pair": 8,
+          "mode": "baseline",
+          "loops": 95725,
+          "cpu_ns": 765625000,
+          "wall_ns": 787038200
+        },
+        {
+          "pair": 8,
+          "mode": "reuse-parent",
+          "loops": 95725,
+          "cpu_ns": 796875000,
+          "wall_ns": 795376100
+        }
+      ]
+    }
+  ]
+}

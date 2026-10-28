@@ -1,0 +1,1765 @@
+{
+    "machine_info": {
+        "node": "matt-grafana",
+        "processor": "AMD64 Family 25 Model 68 Stepping 1, AuthenticAMD",
+        "machine": "AMD64",
+        "python_compiler": "MSC v.1944 64 bit (AMD64)",
+        "python_implementation": "CPython",
+        "python_implementation_version": "3.13.14",
+        "python_version": "3.13.14",
+        "python_build": [
+            "tags/v3.13.14:fd17997",
+            "Jun 10 2026 13:03:48"
+        ],
+        "release": "11",
+        "system": "Windows",
+        "cpu": {
+            "python_version": "3.13.14.final.0 (64 bit)",
+            "cpuinfo_version": [
+                9,
+                0,
+                0
+            ],
+            "cpuinfo_version_string": "9.0.0",
+            "arch": "X86_64",
+            "bits": 64,
+            "count": 12,
+            "arch_string_raw": "AMD64",
+            "vendor_id_raw": "AuthenticAMD",
+            "brand_raw": "AMD Ryzen 5 PRO 6650U with Radeon Graphics",
+            "hz_advertised_friendly": "2.8940 GHz",
+            "hz_actual_friendly": "2.8940 GHz",
+            "hz_advertised": [
+                2894000000,
+                0
+            ],
+            "hz_actual": [
+                2894000000,
+                0
+            ],
+            "flags": [
+                "3dnow",
+                "3dnowext",
+                "3dnowprefetch",
+                "abm",
+                "adx",
+                "aes",
+                "apic",
+                "avx",
+                "avx2",
+                "bmi1",
+                "bmi2",
+                "clflush",
+                "clflushopt",
+                "clwb",
+                "cmov",
+                "cmp_legacy",
+                "cr8_legacy",
+                "cx16",
+                "cx8",
+                "de",
+                "dts",
+                "erms",
+                "f16c",
+                "fma",
+                "fpu",
+                "fxsr",
+                "ht",
+                "hypervisor",
+                "ia64",
+                "invpcid",
+                "lahf_lm",
+                "mca",
+                "mce",
+                "misalignsse",
+                "mmx",
+                "monitor",
+                "movbe",
+                "msr",
+                "mtrr",
+                "osvw",
+                "osxsave",
+                "pae",
+                "pat",
+                "pclmulqdq",
+                "perfctr_core",
+                "pge",
+                "pni",
+                "popcnt",
+                "pqe",
+                "pqm",
+                "pse",
+                "pse36",
+                "rdpid",
+                "rdrnd",
+                "rdseed",
+                "sep",
+                "sepamd",
+                "serial",
+                "sha",
+                "smap",
+                "smep",
+                "ss",
+                "sse",
+                "sse2",
+                "sse4_1",
+                "sse4_2",
+                "sse4a",
+                "ssse3",
+                "tm",
+                "topoext",
+                "tsc",
+                "umip",
+                "vaes",
+                "vme",
+                "vpclmulqdq",
+                "wdt",
+                "xsave"
+            ],
+            "l2_cache_size": 65536,
+            "l2_cache_line_size": 512,
+            "l2_cache_associativity": 6,
+            "stepping": 1,
+            "model": 68,
+            "family": 25
+        }
+    },
+    "commit_info": {
+        "id": "155ead5140311a98b59c876819b96007001c3fed",
+        "time": "2026-10-14T03:28:30+00:00",
+        "author_time": "2026-10-14T03:28:30+00:00",
+        "dirty": true,
+        "project": "opentelemetry-python",
+        "branch": "matt-hensley/expedition"
+    },
+    "benchmarks": [
+        {
+            "group": null,
+            "name": "test_span_lifecycle[start-span-always-off-root]",
+            "fullname": "opentelemetry-sdk/benchmarks/trace/test_benchmark_dropped_spans.py::test_span_lifecycle[start-span-always-off-root]",
+            "params": {
+                "lifecycle": "start-span",
+                "sampler": "UNSERIALIZABLE[<opentelemetry.sdk.trace.sampling.StaticSampler object at 0x000002B63768DFD0>]",
+                "parent_kind": "root"
+            },
+            "param": "start-span-always-off-root",
+            "extra_info": {},
+            "options": {
+                "disable_gc": false,
+                "timer": "process_time",
+                "min_rounds": 7,
+                "max_time": 0.3,
+                "min_time": 0.02,
+                "warmup": 2000
+            },
+            "stats": {
+                "min": 2.5e-06,
+                "max": 2.65625e-06,
+                "mean": 2.6339285714285714e-06,
+                "stddev": 5.905694890769175e-08,
+                "rounds": 7,
+                "median": 2.65625e-06,
+                "iqr": 0.0,
+                "q1": 2.65625e-06,
+                "q3": 2.65625e-06,
+                "iqr_outliers": 1,
+                "stddev_outliers": 1,
+                "outliers": "1;1",
+                "ld15iqr": 2.65625e-06,
+                "hd15iqr": 2.65625e-06,
+                "ops": 379661.0169491525,
+                "total": 1.84375e-05,
+                "data": [
+                    2.5e-06,
+                    2.65625e-06,
+                    2.65625e-06,
+                    2.65625e-06,
+                    2.65625e-06,
+                    2.65625e-06,
+                    2.65625e-06
+                ],
+                "iterations": 100000
+            }
+        },
+        {
+            "group": null,
+            "name": "test_span_lifecycle[start-span-always-off-child]",
+            "fullname": "opentelemetry-sdk/benchmarks/trace/test_benchmark_dropped_spans.py::test_span_lifecycle[start-span-always-off-child]",
+            "params": {
+                "lifecycle": "start-span",
+                "sampler": "UNSERIALIZABLE[<opentelemetry.sdk.trace.sampling.StaticSampler object at 0x000002B63768DFD0>]",
+                "parent_kind": "unsampled-parent"
+            },
+            "param": "start-span-always-off-child",
+            "extra_info": {},
+            "options": {
+                "disable_gc": false,
+                "timer": "process_time",
+                "min_rounds": 7,
+                "max_time": 0.3,
+                "min_time": 0.02,
+                "warmup": 2000
+            },
+            "stats": {
+                "min": 2.8125e-06,
+                "max": 3.125e-06,
+                "mean": 2.9017857142857143e-06,
+                "stddev": 1.2293684257335048e-07,
+                "rounds": 7,
+                "median": 2.8125e-06,
+                "iqr": 1.5624999999999999e-07,
+                "q1": 2.8125e-06,
+                "q3": 2.96875e-06,
+                "iqr_outliers": 0,
+                "stddev_outliers": 1,
+                "outliers": "1;0",
+                "ld15iqr": 2.8125e-06,
+                "hd15iqr": 3.125e-06,
+                "ops": 344615.38461538457,
+                "total": 2.0312500000000002e-05,
+                "data": [
+                    2.8125e-06,
+                    2.8125e-06,
+                    2.96875e-06,
+                    2.8125e-06,
+                    2.8125e-06,
+                    3.125e-06,
+                    2.96875e-06
+                ],
+                "iterations": 100000
+            }
+        },
+        {
+            "group": null,
+            "name": "test_span_lifecycle[start-span-always-off-remote-child]",
+            "fullname": "opentelemetry-sdk/benchmarks/trace/test_benchmark_dropped_spans.py::test_span_lifecycle[start-span-always-off-remote-child]",
+            "params": {
+                "lifecycle": "start-span",
+                "sampler": "UNSERIALIZABLE[<opentelemetry.sdk.trace.sampling.StaticSampler object at 0x000002B63768DFD0>]",
+                "parent_kind": "remote-unsampled-parent"
+            },
+            "param": "start-span-always-off-remote-child",
+            "extra_info": {},
+            "options": {
+                "disable_gc": false,
+                "timer": "process_time",
+                "min_rounds": 7,
+                "max_time": 0.3,
+                "min_time": 0.02,
+                "warmup": 2000
+            },
+            "stats": {
+                "min": 2.8125e-06,
+                "max": 3.28125e-06,
+                "mean": 2.9464285714285714e-06,
+                "stddev": 1.898415300918612e-07,
+                "rounds": 7,
+                "median": 2.8125e-06,
+                "iqr": 2.734375000000003e-07,
+                "q1": 2.8125e-06,
+                "q3": 3.0859375000000005e-06,
+                "iqr_outliers": 0,
+                "stddev_outliers": 1,
+                "outliers": "1;0",
+                "ld15iqr": 2.8125e-06,
+                "hd15iqr": 3.28125e-06,
+                "ops": 339393.9393939394,
+                "total": 2.0625e-05,
+                "data": [
+                    2.8125e-06,
+                    2.8125e-06,
+                    2.8125e-06,
+                    3.125e-06,
+                    3.28125e-06,
+                    2.96875e-06,
+                    2.8125e-06
+                ],
+                "iterations": 100000
+            }
+        },
+        {
+            "group": null,
+            "name": "test_span_lifecycle[start-span-parentbased-ratio-zero-root]",
+            "fullname": "opentelemetry-sdk/benchmarks/trace/test_benchmark_dropped_spans.py::test_span_lifecycle[start-span-parentbased-ratio-zero-root]",
+            "params": {
+                "lifecycle": "start-span",
+                "sampler": "UNSERIALIZABLE[<opentelemetry.sdk.trace.sampling.ParentBased object at 0x000002B639A782D0>]",
+                "parent_kind": "root"
+            },
+            "param": "start-span-parentbased-ratio-zero-root",
+            "extra_info": {},
+            "options": {
+                "disable_gc": false,
+                "timer": "process_time",
+                "min_rounds": 7,
+                "max_time": 0.3,
+                "min_time": 0.02,
+                "warmup": 2000
+            },
+            "stats": {
+                "min": 2.96875e-06,
+                "max": 3.28125e-06,
+                "mean": 3.080357142857143e-06,
+                "stddev": 1.181138978153835e-07,
+                "rounds": 7,
+                "median": 3.125e-06,
+                "iqr": 1.5624999999999999e-07,
+                "q1": 2.96875e-06,
+                "q3": 3.125e-06,
+                "iqr_outliers": 0,
+                "stddev_outliers": 1,
+                "outliers": "1;0",
+                "ld15iqr": 2.96875e-06,
+                "hd15iqr": 3.28125e-06,
+                "ops": 324637.68115942023,
+                "total": 2.1562500000000002e-05,
+                "data": [
+                    3.28125e-06,
+                    3.125e-06,
+                    2.96875e-06,
+                    3.125e-06,
+                    2.96875e-06,
+                    2.96875e-06,
+                    3.125e-06
+                ],
+                "iterations": 100000
+            }
+        },
+        {
+            "group": null,
+            "name": "test_span_lifecycle[start-span-parentbased-ratio-zero-child]",
+            "fullname": "opentelemetry-sdk/benchmarks/trace/test_benchmark_dropped_spans.py::test_span_lifecycle[start-span-parentbased-ratio-zero-child]",
+            "params": {
+                "lifecycle": "start-span",
+                "sampler": "UNSERIALIZABLE[<opentelemetry.sdk.trace.sampling.ParentBased object at 0x000002B6399BAB10>]",
+                "parent_kind": "unsampled-parent"
+            },
+            "param": "start-span-parentbased-ratio-zero-child",
+            "extra_info": {},
+            "options": {
+                "disable_gc": false,
+                "timer": "process_time",
+                "min_rounds": 7,
+                "max_time": 0.3,
+                "min_time": 0.02,
+                "warmup": 2000
+            },
+            "stats": {
+                "min": 3.4375e-06,
+                "max": 3.75e-06,
+                "mean": 3.482142857142857e-06,
+                "stddev": 1.181138978153835e-07,
+                "rounds": 7,
+                "median": 3.4375e-06,
+                "iqr": 0.0,
+                "q1": 3.4375e-06,
+                "q3": 3.4375e-06,
+                "iqr_outliers": 1,
+                "stddev_outliers": 1,
+                "outliers": "1;1",
+                "ld15iqr": 3.4375e-06,
+                "hd15iqr": 3.75e-06,
+                "ops": 287179.4871794872,
+                "total": 2.4375e-05,
+                "data": [
+                    3.4375e-06,
+                    3.4375e-06,
+                    3.4375e-06,
+                    3.75e-06,
+                    3.4375e-06,
+                    3.4375e-06,
+                    3.4375e-06
+                ],
+                "iterations": 100000
+            }
+        },
+        {
+            "group": null,
+            "name": "test_span_lifecycle[start-span-parentbased-ratio-zero-remote-child]",
+            "fullname": "opentelemetry-sdk/benchmarks/trace/test_benchmark_dropped_spans.py::test_span_lifecycle[start-span-parentbased-ratio-zero-remote-child]",
+            "params": {
+                "lifecycle": "start-span",
+                "sampler": "UNSERIALIZABLE[<opentelemetry.sdk.trace.sampling.ParentBased object at 0x000002B6399BAC40>]",
+                "parent_kind": "remote-unsampled-parent"
+            },
+            "param": "start-span-parentbased-ratio-zero-remote-child",
+            "extra_info": {},
+            "options": {
+                "disable_gc": false,
+                "timer": "process_time",
+                "min_rounds": 7,
+                "max_time": 0.3,
+                "min_time": 0.02,
+                "warmup": 2000
+            },
+            "stats": {
+                "min": 3.28125e-06,
+                "max": 3.4375e-06,
+                "mean": 3.3705357142857143e-06,
+                "stddev": 8.351913809763261e-08,
+                "rounds": 7,
+                "median": 3.4375e-06,
+                "iqr": 1.5624999999999999e-07,
+                "q1": 3.28125e-06,
+                "q3": 3.4375e-06,
+                "iqr_outliers": 0,
+                "stddev_outliers": 3,
+                "outliers": "3;0",
+                "ld15iqr": 3.28125e-06,
+                "hd15iqr": 3.4375e-06,
+                "ops": 296688.7417218543,
+                "total": 2.359375e-05,
+                "data": [
+                    3.4375e-06,
+                    3.28125e-06,
+                    3.4375e-06,
+                    3.4375e-06,
+                    3.28125e-06,
+                    3.28125e-06,
+                    3.4375e-06
+                ],
+                "iterations": 100000
+            }
+        },
+        {
+            "group": null,
+            "name": "test_span_lifecycle[start-span-custom-drop-root]",
+            "fullname": "opentelemetry-sdk/benchmarks/trace/test_benchmark_dropped_spans.py::test_span_lifecycle[start-span-custom-drop-root]",
+            "params": {
+                "lifecycle": "start-span",
+                "sampler": "UNSERIALIZABLE[<test_benchmark_dropped_spans._DropSampler object at 0x000002B639A012B0>]",
+                "parent_kind": "root"
+            },
+            "param": "start-span-custom-drop-root",
+            "extra_info": {},
+            "options": {
+                "disable_gc": false,
+                "timer": "process_time",
+                "min_rounds": 7,
+                "max_time": 0.3,
+                "min_time": 0.02,
+                "warmup": 2000
+            },
+            "stats": {
+                "min": 2.5e-06,
+                "max": 2.65625e-06,
+                "mean": 2.5446428571428573e-06,
+                "stddev": 7.624219319910415e-08,
+                "rounds": 7,
+                "median": 2.5e-06,
+                "iqr": 1.1718749999999988e-07,
+                "q1": 2.5e-06,
+                "q3": 2.6171875e-06,
+                "iqr_outliers": 0,
+                "stddev_outliers": 2,
+                "outliers": "2;0",
+                "ld15iqr": 2.5e-06,
+                "hd15iqr": 2.65625e-06,
+                "ops": 392982.45614035084,
+                "total": 1.7812500000000003e-05,
+                "data": [
+                    2.65625e-06,
+                    2.5e-06,
+                    2.65625e-06,
+                    2.5e-06,
+                    2.5e-06,
+                    2.5e-06,
+                    2.5e-06
+                ],
+                "iterations": 100000
+            }
+        },
+        {
+            "group": null,
+            "name": "test_span_lifecycle[start-span-custom-drop-child]",
+            "fullname": "opentelemetry-sdk/benchmarks/trace/test_benchmark_dropped_spans.py::test_span_lifecycle[start-span-custom-drop-child]",
+            "params": {
+                "lifecycle": "start-span",
+                "sampler": "UNSERIALIZABLE[<test_benchmark_dropped_spans._DropSampler object at 0x000002B639A78690>]",
+                "parent_kind": "unsampled-parent"
+            },
+            "param": "start-span-custom-drop-child",
+            "extra_info": {},
+            "options": {
+                "disable_gc": false,
+                "timer": "process_time",
+                "min_rounds": 7,
+                "max_time": 0.3,
+                "min_time": 0.02,
+                "warmup": 2000
+            },
+            "stats": {
+                "min": 2.34375e-06,
+                "max": 2.5e-06,
+                "mean": 2.3660714285714285e-06,
+                "stddev": 5.905694890769191e-08,
+                "rounds": 7,
+                "median": 2.34375e-06,
+                "iqr": 0.0,
+                "q1": 2.34375e-06,
+                "q3": 2.34375e-06,
+                "iqr_outliers": 1,
+                "stddev_outliers": 1,
+                "outliers": "1;1",
+                "ld15iqr": 2.34375e-06,
+                "hd15iqr": 2.5e-06,
+                "ops": 422641.5094339623,
+                "total": 1.65625e-05,
+                "data": [
+                    2.34375e-06,
+                    2.34375e-06,
+                    2.34375e-06,
+                    2.34375e-06,
+                    2.34375e-06,
+                    2.34375e-06,
+                    2.5e-06
+                ],
+                "iterations": 100000
+            }
+        },
+        {
+            "group": null,
+            "name": "test_span_lifecycle[start-span-custom-drop-remote-child]",
+            "fullname": "opentelemetry-sdk/benchmarks/trace/test_benchmark_dropped_spans.py::test_span_lifecycle[start-span-custom-drop-remote-child]",
+            "params": {
+                "lifecycle": "start-span",
+                "sampler": "UNSERIALIZABLE[<test_benchmark_dropped_spans._DropSampler object at 0x000002B639A787D0>]",
+                "parent_kind": "remote-unsampled-parent"
+            },
+            "param": "start-span-custom-drop-remote-child",
+            "extra_info": {},
+            "options": {
+                "disable_gc": false,
+                "timer": "process_time",
+                "min_rounds": 7,
+                "max_time": 0.3,
+                "min_time": 0.02,
+                "warmup": 2000
+            },
+            "stats": {
+                "min": 2.34375e-06,
+                "max": 2.5e-06,
+                "mean": 2.4330357142857144e-06,
+                "stddev": 8.351913809763284e-08,
+                "rounds": 7,
+                "median": 2.5e-06,
+                "iqr": 1.562500000000004e-07,
+                "q1": 2.34375e-06,
+                "q3": 2.5e-06,
+                "iqr_outliers": 0,
+                "stddev_outliers": 3,
+                "outliers": "3;0",
+                "ld15iqr": 2.34375e-06,
+                "hd15iqr": 2.5e-06,
+                "ops": 411009.1743119266,
+                "total": 1.703125e-05,
+                "data": [
+                    2.5e-06,
+                    2.34375e-06,
+                    2.34375e-06,
+                    2.5e-06,
+                    2.34375e-06,
+                    2.5e-06,
+                    2.5e-06
+                ],
+                "iterations": 100000
+            }
+        },
+        {
+            "group": null,
+            "name": "test_span_lifecycle[start-span-always-on-root]",
+            "fullname": "opentelemetry-sdk/benchmarks/trace/test_benchmark_dropped_spans.py::test_span_lifecycle[start-span-always-on-root]",
+            "params": {
+                "lifecycle": "start-span",
+                "sampler": "UNSERIALIZABLE[<opentelemetry.sdk.trace.sampling.StaticSampler object at 0x000002B6376A11D0>]",
+                "parent_kind": "root"
+            },
+            "param": "start-span-always-on-root",
+            "extra_info": {},
+            "options": {
+                "disable_gc": false,
+                "timer": "process_time",
+                "min_rounds": 7,
+                "max_time": 0.3,
+                "min_time": 0.02,
+                "warmup": 2000
+            },
+            "stats": {
+                "min": 9.84313972533703e-06,
+                "max": 1.0827453697870732e-05,
+                "mean": 1.0405604852499146e-05,
+                "stddev": 5.261379494622189e-07,
+                "rounds": 7,
+                "median": 1.0827453697870732e-05,
+                "iqr": 9.84313972533703e-07,
+                "q1": 9.84313972533703e-06,
+                "q3": 1.0827453697870732e-05,
+                "iqr_outliers": 0,
+                "stddev_outliers": 3,
+                "outliers": "3;0",
+                "ld15iqr": 9.84313972533703e-06,
+                "hd15iqr": 1.0827453697870732e-05,
+                "ops": 96102.05405405405,
+                "total": 7.283923396749402e-05,
+                "data": [
+                    9.84313972533703e-06,
+                    1.0827453697870732e-05,
+                    1.0827453697870732e-05,
+                    9.84313972533703e-06,
+                    1.0827453697870732e-05,
+                    9.84313972533703e-06,
+                    1.0827453697870732e-05
+                ],
+                "iterations": 15874
+            }
+        },
+        {
+            "group": null,
+            "name": "test_span_lifecycle[start-span-always-on-child]",
+            "fullname": "opentelemetry-sdk/benchmarks/trace/test_benchmark_dropped_spans.py::test_span_lifecycle[start-span-always-on-child]",
+            "params": {
+                "lifecycle": "start-span",
+                "sampler": "UNSERIALIZABLE[<opentelemetry.sdk.trace.sampling.StaticSampler object at 0x000002B6376A11D0>]",
+                "parent_kind": "unsampled-parent"
+            },
+            "param": "start-span-always-on-child",
+            "extra_info": {},
+            "options": {
+                "disable_gc": false,
+                "timer": "process_time",
+                "min_rounds": 7,
+                "max_time": 0.3,
+                "min_time": 0.02,
+                "warmup": 2000
+            },
+            "stats": {
+                "min": 9.84313972533703e-06,
+                "max": 1.0827453697870732e-05,
+                "mean": 1.0405604852499146e-05,
+                "stddev": 5.261379494622189e-07,
+                "rounds": 7,
+                "median": 1.0827453697870732e-05,
+                "iqr": 9.84313972533703e-07,
+                "q1": 9.84313972533703e-06,
+                "q3": 1.0827453697870732e-05,
+                "iqr_outliers": 0,
+                "stddev_outliers": 3,
+                "outliers": "3;0",
+                "ld15iqr": 9.84313972533703e-06,
+                "hd15iqr": 1.0827453697870732e-05,
+                "ops": 96102.05405405405,
+                "total": 7.283923396749402e-05,
+                "data": [
+                    1.0827453697870732e-05,
+                    9.84313972533703e-06,
+                    1.0827453697870732e-05,
+                    9.84313972533703e-06,
+                    1.0827453697870732e-05,
+                    9.84313972533703e-06,
+                    1.0827453697870732e-05
+                ],
+                "iterations": 15874
+            }
+        },
+        {
+            "group": null,
+            "name": "test_span_lifecycle[start-span-always-on-remote-child]",
+            "fullname": "opentelemetry-sdk/benchmarks/trace/test_benchmark_dropped_spans.py::test_span_lifecycle[start-span-always-on-remote-child]",
+            "params": {
+                "lifecycle": "start-span",
+                "sampler": "UNSERIALIZABLE[<opentelemetry.sdk.trace.sampling.StaticSampler object at 0x000002B6376A11D0>]",
+                "parent_kind": "remote-unsampled-parent"
+            },
+            "param": "start-span-always-on-remote-child",
+            "extra_info": {},
+            "options": {
+                "disable_gc": false,
+                "timer": "process_time",
+                "min_rounds": 7,
+                "max_time": 0.3,
+                "min_time": 0.02,
+                "warmup": 2000
+            },
+            "stats": {
+                "min": 9.84313972533703e-06,
+                "max": 1.0827453697870732e-05,
+                "mean": 1.0405604852499146e-05,
+                "stddev": 5.261379494622189e-07,
+                "rounds": 7,
+                "median": 1.0827453697870732e-05,
+                "iqr": 9.84313972533703e-07,
+                "q1": 9.84313972533703e-06,
+                "q3": 1.0827453697870732e-05,
+                "iqr_outliers": 0,
+                "stddev_outliers": 3,
+                "outliers": "3;0",
+                "ld15iqr": 9.84313972533703e-06,
+                "hd15iqr": 1.0827453697870732e-05,
+                "ops": 96102.05405405405,
+                "total": 7.283923396749402e-05,
+                "data": [
+                    1.0827453697870732e-05,
+                    9.84313972533703e-06,
+                    1.0827453697870732e-05,
+                    1.0827453697870732e-05,
+                    9.84313972533703e-06,
+                    1.0827453697870732e-05,
+                    9.84313972533703e-06
+                ],
+                "iterations": 15874
+            }
+        },
+        {
+            "group": null,
+            "name": "test_span_lifecycle[start-span-always-off-sdk-recording-parent]",
+            "fullname": "opentelemetry-sdk/benchmarks/trace/test_benchmark_dropped_spans.py::test_span_lifecycle[start-span-always-off-sdk-recording-parent]",
+            "params": {
+                "lifecycle": "start-span",
+                "sampler": "UNSERIALIZABLE[<opentelemetry.sdk.trace.sampling.StaticSampler object at 0x000002B63768DFD0>]",
+                "parent_kind": "sdk-recording-parent"
+            },
+            "param": "start-span-always-off-sdk-recording-parent",
+            "extra_info": {},
+            "options": {
+                "disable_gc": false,
+                "timer": "process_time",
+                "min_rounds": 7,
+                "max_time": 0.3,
+                "min_time": 0.02,
+                "warmup": 2000
+            },
+            "stats": {
+                "min": 2.96875e-06,
+                "max": 3.28125e-06,
+                "mean": 3.080357142857143e-06,
+                "stddev": 1.181138978153835e-07,
+                "rounds": 7,
+                "median": 3.125e-06,
+                "iqr": 1.5624999999999999e-07,
+                "q1": 2.96875e-06,
+                "q3": 3.125e-06,
+                "iqr_outliers": 0,
+                "stddev_outliers": 1,
+                "outliers": "1;0",
+                "ld15iqr": 2.96875e-06,
+                "hd15iqr": 3.28125e-06,
+                "ops": 324637.68115942023,
+                "total": 2.1562500000000002e-05,
+                "data": [
+                    2.96875e-06,
+                    3.125e-06,
+                    2.96875e-06,
+                    2.96875e-06,
+                    3.125e-06,
+                    3.28125e-06,
+                    3.125e-06
+                ],
+                "iterations": 100000
+            }
+        },
+        {
+            "group": null,
+            "name": "test_span_lifecycle[start-span-always-on-sdk-recording-parent]",
+            "fullname": "opentelemetry-sdk/benchmarks/trace/test_benchmark_dropped_spans.py::test_span_lifecycle[start-span-always-on-sdk-recording-parent]",
+            "params": {
+                "lifecycle": "start-span",
+                "sampler": "UNSERIALIZABLE[<opentelemetry.sdk.trace.sampling.StaticSampler object at 0x000002B6376A11D0>]",
+                "parent_kind": "sdk-recording-parent"
+            },
+            "param": "start-span-always-on-sdk-recording-parent",
+            "extra_info": {},
+            "options": {
+                "disable_gc": false,
+                "timer": "process_time",
+                "min_rounds": 7,
+                "max_time": 0.3,
+                "min_time": 0.02,
+                "warmup": 2000
+            },
+            "stats": {
+                "min": 9.84313972533703e-06,
+                "max": 1.0827453697870732e-05,
+                "mean": 1.0686837416080204e-05,
+                "stddev": 3.7203571190432006e-07,
+                "rounds": 7,
+                "median": 1.0827453697870732e-05,
+                "iqr": 0.0,
+                "q1": 1.0827453697870732e-05,
+                "q3": 1.0827453697870732e-05,
+                "iqr_outliers": 1,
+                "stddev_outliers": 1,
+                "outliers": "1;1",
+                "ld15iqr": 1.0827453697870732e-05,
+                "hd15iqr": 1.0827453697870732e-05,
+                "ops": 93573.05263157893,
+                "total": 7.480786191256143e-05,
+                "data": [
+                    1.0827453697870732e-05,
+                    1.0827453697870732e-05,
+                    1.0827453697870732e-05,
+                    9.84313972533703e-06,
+                    1.0827453697870732e-05,
+                    1.0827453697870732e-05,
+                    1.0827453697870732e-05
+                ],
+                "iterations": 15874
+            }
+        },
+        {
+            "group": null,
+            "name": "test_span_lifecycle[current-span-always-off-root]",
+            "fullname": "opentelemetry-sdk/benchmarks/trace/test_benchmark_dropped_spans.py::test_span_lifecycle[current-span-always-off-root]",
+            "params": {
+                "lifecycle": "current-span",
+                "sampler": "UNSERIALIZABLE[<opentelemetry.sdk.trace.sampling.StaticSampler object at 0x000002B63768DFD0>]",
+                "parent_kind": "root"
+            },
+            "param": "current-span-always-off-root",
+            "extra_info": {},
+            "options": {
+                "disable_gc": false,
+                "timer": "process_time",
+                "min_rounds": 7,
+                "max_time": 0.3,
+                "min_time": 0.02,
+                "warmup": 2000
+            },
+            "stats": {
+                "min": 5.625e-06,
+                "max": 6.09375e-06,
+                "mean": 5.78125e-06,
+                "stddev": 1.8042195912175792e-07,
+                "rounds": 7,
+                "median": 5.78125e-06,
+                "iqr": 2.7343749999999987e-07,
+                "q1": 5.625e-06,
+                "q3": 5.8984375e-06,
+                "iqr_outliers": 0,
+                "stddev_outliers": 1,
+                "outliers": "1;0",
+                "ld15iqr": 5.625e-06,
+                "hd15iqr": 6.09375e-06,
+                "ops": 172972.97297297296,
+                "total": 4.0468750000000005e-05,
+                "data": [
+                    5.625e-06,
+                    5.9375e-06,
+                    5.78125e-06,
+                    5.78125e-06,
+                    5.625e-06,
+                    5.625e-06,
+                    6.09375e-06
+                ],
+                "iterations": 100000
+            }
+        },
+        {
+            "group": null,
+            "name": "test_span_lifecycle[current-span-always-off-child]",
+            "fullname": "opentelemetry-sdk/benchmarks/trace/test_benchmark_dropped_spans.py::test_span_lifecycle[current-span-always-off-child]",
+            "params": {
+                "lifecycle": "current-span",
+                "sampler": "UNSERIALIZABLE[<opentelemetry.sdk.trace.sampling.StaticSampler object at 0x000002B63768DFD0>]",
+                "parent_kind": "unsampled-parent"
+            },
+            "param": "current-span-always-off-child",
+            "extra_info": {},
+            "options": {
+                "disable_gc": false,
+                "timer": "process_time",
+                "min_rounds": 7,
+                "max_time": 0.3,
+                "min_time": 0.02,
+                "warmup": 2000
+            },
+            "stats": {
+                "min": 5.9375e-06,
+                "max": 6.09375e-06,
+                "mean": 6.004464285714286e-06,
+                "stddev": 8.351913809763239e-08,
+                "rounds": 7,
+                "median": 5.9375e-06,
+                "iqr": 1.5624999999999956e-07,
+                "q1": 5.9375e-06,
+                "q3": 6.09375e-06,
+                "iqr_outliers": 0,
+                "stddev_outliers": 3,
+                "outliers": "3;0",
+                "ld15iqr": 5.9375e-06,
+                "hd15iqr": 6.09375e-06,
+                "ops": 166542.75092936802,
+                "total": 4.203125e-05,
+                "data": [
+                    6.09375e-06,
+                    5.9375e-06,
+                    5.9375e-06,
+                    5.9375e-06,
+                    6.09375e-06,
+                    6.09375e-06,
+                    5.9375e-06
+                ],
+                "iterations": 100000
+            }
+        },
+        {
+            "group": null,
+            "name": "test_span_lifecycle[current-span-always-off-remote-child]",
+            "fullname": "opentelemetry-sdk/benchmarks/trace/test_benchmark_dropped_spans.py::test_span_lifecycle[current-span-always-off-remote-child]",
+            "params": {
+                "lifecycle": "current-span",
+                "sampler": "UNSERIALIZABLE[<opentelemetry.sdk.trace.sampling.StaticSampler object at 0x000002B63768DFD0>]",
+                "parent_kind": "remote-unsampled-parent"
+            },
+            "param": "current-span-always-off-remote-child",
+            "extra_info": {},
+            "options": {
+                "disable_gc": false,
+                "timer": "process_time",
+                "min_rounds": 7,
+                "max_time": 0.3,
+                "min_time": 0.02,
+                "warmup": 2000
+            },
+            "stats": {
+                "min": 5.78125e-06,
+                "max": 6.09375e-06,
+                "mean": 5.982142857142857e-06,
+                "stddev": 1.4862339550177212e-07,
+                "rounds": 7,
+                "median": 6.09375e-06,
+                "iqr": 2.7343749999999987e-07,
+                "q1": 5.8203125e-06,
+                "q3": 6.09375e-06,
+                "iqr_outliers": 0,
+                "stddev_outliers": 2,
+                "outliers": "2;0",
+                "ld15iqr": 5.78125e-06,
+                "hd15iqr": 6.09375e-06,
+                "ops": 167164.1791044776,
+                "total": 4.1875e-05,
+                "data": [
+                    5.78125e-06,
+                    6.09375e-06,
+                    5.9375e-06,
+                    5.78125e-06,
+                    6.09375e-06,
+                    6.09375e-06,
+                    6.09375e-06
+                ],
+                "iterations": 100000
+            }
+        },
+        {
+            "group": null,
+            "name": "test_span_lifecycle[current-span-parentbased-ratio-zero-root]",
+            "fullname": "opentelemetry-sdk/benchmarks/trace/test_benchmark_dropped_spans.py::test_span_lifecycle[current-span-parentbased-ratio-zero-root]",
+            "params": {
+                "lifecycle": "current-span",
+                "sampler": "UNSERIALIZABLE[<opentelemetry.sdk.trace.sampling.ParentBased object at 0x000002B639A782D0>]",
+                "parent_kind": "root"
+            },
+            "param": "current-span-parentbased-ratio-zero-root",
+            "extra_info": {},
+            "options": {
+                "disable_gc": false,
+                "timer": "process_time",
+                "min_rounds": 7,
+                "max_time": 0.3,
+                "min_time": 0.02,
+                "warmup": 2000
+            },
+            "stats": {
+                "min": 6.09375e-06,
+                "max": 6.5625e-06,
+                "mean": 6.294642857142857e-06,
+                "stddev": 1.7385895008255842e-07,
+                "rounds": 7,
+                "median": 6.25e-06,
+                "iqr": 2.7343749999999987e-07,
+                "q1": 6.1328125e-06,
+                "q3": 6.40625e-06,
+                "iqr_outliers": 0,
+                "stddev_outliers": 3,
+                "outliers": "3;0",
+                "ld15iqr": 6.09375e-06,
+                "hd15iqr": 6.5625e-06,
+                "ops": 158865.24822695035,
+                "total": 4.40625e-05,
+                "data": [
+                    6.09375e-06,
+                    6.5625e-06,
+                    6.40625e-06,
+                    6.40625e-06,
+                    6.25e-06,
+                    6.09375e-06,
+                    6.25e-06
+                ],
+                "iterations": 100000
+            }
+        },
+        {
+            "group": null,
+            "name": "test_span_lifecycle[current-span-parentbased-ratio-zero-child]",
+            "fullname": "opentelemetry-sdk/benchmarks/trace/test_benchmark_dropped_spans.py::test_span_lifecycle[current-span-parentbased-ratio-zero-child]",
+            "params": {
+                "lifecycle": "current-span",
+                "sampler": "UNSERIALIZABLE[<opentelemetry.sdk.trace.sampling.ParentBased object at 0x000002B6399BAB10>]",
+                "parent_kind": "unsampled-parent"
+            },
+            "param": "current-span-parentbased-ratio-zero-child",
+            "extra_info": {},
+            "options": {
+                "disable_gc": false,
+                "timer": "process_time",
+                "min_rounds": 7,
+                "max_time": 0.3,
+                "min_time": 0.02,
+                "warmup": 2000
+            },
+            "stats": {
+                "min": 6.40625e-06,
+                "max": 6.5625e-06,
+                "mean": 6.517857142857143e-06,
+                "stddev": 7.624219319910436e-08,
+                "rounds": 7,
+                "median": 6.5625e-06,
+                "iqr": 1.1718750000000031e-07,
+                "q1": 6.4453125e-06,
+                "q3": 6.5625e-06,
+                "iqr_outliers": 0,
+                "stddev_outliers": 2,
+                "outliers": "2;0",
+                "ld15iqr": 6.40625e-06,
+                "hd15iqr": 6.5625e-06,
+                "ops": 153424.6575342466,
+                "total": 4.5625e-05,
+                "data": [
+                    6.40625e-06,
+                    6.5625e-06,
+                    6.5625e-06,
+                    6.5625e-06,
+                    6.5625e-06,
+                    6.5625e-06,
+                    6.40625e-06
+                ],
+                "iterations": 100000
+            }
+        },
+        {
+            "group": null,
+            "name": "test_span_lifecycle[current-span-parentbased-ratio-zero-remote-child]",
+            "fullname": "opentelemetry-sdk/benchmarks/trace/test_benchmark_dropped_spans.py::test_span_lifecycle[current-span-parentbased-ratio-zero-remote-child]",
+            "params": {
+                "lifecycle": "current-span",
+                "sampler": "UNSERIALIZABLE[<opentelemetry.sdk.trace.sampling.ParentBased object at 0x000002B6399BAC40>]",
+                "parent_kind": "remote-unsampled-parent"
+            },
+            "param": "current-span-parentbased-ratio-zero-remote-child",
+            "extra_info": {},
+            "options": {
+                "disable_gc": false,
+                "timer": "process_time",
+                "min_rounds": 7,
+                "max_time": 0.3,
+                "min_time": 0.02,
+                "warmup": 2000
+            },
+            "stats": {
+                "min": 6.40625e-06,
+                "max": 6.5625e-06,
+                "mean": 6.5401785714285715e-06,
+                "stddev": 5.905694890769191e-08,
+                "rounds": 7,
+                "median": 6.5625e-06,
+                "iqr": 0.0,
+                "q1": 6.5625e-06,
+                "q3": 6.5625e-06,
+                "iqr_outliers": 1,
+                "stddev_outliers": 1,
+                "outliers": "1;1",
+                "ld15iqr": 6.5625e-06,
+                "hd15iqr": 6.5625e-06,
+                "ops": 152901.02389078497,
+                "total": 4.5781250000000005e-05,
+                "data": [
+                    6.5625e-06,
+                    6.5625e-06,
+                    6.5625e-06,
+                    6.5625e-06,
+                    6.5625e-06,
+                    6.40625e-06,
+                    6.5625e-06
+                ],
+                "iterations": 100000
+            }
+        },
+        {
+            "group": null,
+            "name": "test_span_lifecycle[current-span-custom-drop-root]",
+            "fullname": "opentelemetry-sdk/benchmarks/trace/test_benchmark_dropped_spans.py::test_span_lifecycle[current-span-custom-drop-root]",
+            "params": {
+                "lifecycle": "current-span",
+                "sampler": "UNSERIALIZABLE[<test_benchmark_dropped_spans._DropSampler object at 0x000002B639A012B0>]",
+                "parent_kind": "root"
+            },
+            "param": "current-span-custom-drop-root",
+            "extra_info": {},
+            "options": {
+                "disable_gc": false,
+                "timer": "process_time",
+                "min_rounds": 7,
+                "max_time": 0.3,
+                "min_time": 0.02,
+                "warmup": 2000
+            },
+            "stats": {
+                "min": 5.3125e-06,
+                "max": 5.46875e-06,
+                "mean": 5.4017857142857145e-06,
+                "stddev": 8.351913809763239e-08,
+                "rounds": 7,
+                "median": 5.46875e-06,
+                "iqr": 1.5624999999999956e-07,
+                "q1": 5.3125e-06,
+                "q3": 5.46875e-06,
+                "iqr_outliers": 0,
+                "stddev_outliers": 3,
+                "outliers": "3;0",
+                "ld15iqr": 5.3125e-06,
+                "hd15iqr": 5.46875e-06,
+                "ops": 185123.96694214875,
+                "total": 3.7812500000000004e-05,
+                "data": [
+                    5.46875e-06,
+                    5.3125e-06,
+                    5.46875e-06,
+                    5.3125e-06,
+                    5.46875e-06,
+                    5.46875e-06,
+                    5.3125e-06
+                ],
+                "iterations": 100000
+            }
+        },
+        {
+            "group": null,
+            "name": "test_span_lifecycle[current-span-custom-drop-child]",
+            "fullname": "opentelemetry-sdk/benchmarks/trace/test_benchmark_dropped_spans.py::test_span_lifecycle[current-span-custom-drop-child]",
+            "params": {
+                "lifecycle": "current-span",
+                "sampler": "UNSERIALIZABLE[<test_benchmark_dropped_spans._DropSampler object at 0x000002B639A78690>]",
+                "parent_kind": "unsampled-parent"
+            },
+            "param": "current-span-custom-drop-child",
+            "extra_info": {},
+            "options": {
+                "disable_gc": false,
+                "timer": "process_time",
+                "min_rounds": 7,
+                "max_time": 0.3,
+                "min_time": 0.02,
+                "warmup": 2000
+            },
+            "stats": {
+                "min": 5.3125e-06,
+                "max": 5.625e-06,
+                "mean": 5.491071428571429e-06,
+                "stddev": 1.078227436472429e-07,
+                "rounds": 7,
+                "median": 5.46875e-06,
+                "iqr": 1.1718750000000031e-07,
+                "q1": 5.46875e-06,
+                "q3": 5.5859375e-06,
+                "iqr_outliers": 0,
+                "stddev_outliers": 3,
+                "outliers": "3;0",
+                "ld15iqr": 5.3125e-06,
+                "hd15iqr": 5.625e-06,
+                "ops": 182113.82113821138,
+                "total": 3.84375e-05,
+                "data": [
+                    5.46875e-06,
+                    5.46875e-06,
+                    5.46875e-06,
+                    5.46875e-06,
+                    5.625e-06,
+                    5.3125e-06,
+                    5.625e-06
+                ],
+                "iterations": 100000
+            }
+        },
+        {
+            "group": null,
+            "name": "test_span_lifecycle[current-span-custom-drop-remote-child]",
+            "fullname": "opentelemetry-sdk/benchmarks/trace/test_benchmark_dropped_spans.py::test_span_lifecycle[current-span-custom-drop-remote-child]",
+            "params": {
+                "lifecycle": "current-span",
+                "sampler": "UNSERIALIZABLE[<test_benchmark_dropped_spans._DropSampler object at 0x000002B639A787D0>]",
+                "parent_kind": "remote-unsampled-parent"
+            },
+            "param": "current-span-custom-drop-remote-child",
+            "extra_info": {},
+            "options": {
+                "disable_gc": false,
+                "timer": "process_time",
+                "min_rounds": 7,
+                "max_time": 0.3,
+                "min_time": 0.02,
+                "warmup": 2000
+            },
+            "stats": {
+                "min": 5.3125e-06,
+                "max": 5.625e-06,
+                "mean": 5.4017857142857145e-06,
+                "stddev": 1.229368425733504e-07,
+                "rounds": 7,
+                "median": 5.3125e-06,
+                "iqr": 1.5624999999999956e-07,
+                "q1": 5.3125e-06,
+                "q3": 5.46875e-06,
+                "iqr_outliers": 0,
+                "stddev_outliers": 1,
+                "outliers": "1;0",
+                "ld15iqr": 5.3125e-06,
+                "hd15iqr": 5.625e-06,
+                "ops": 185123.96694214875,
+                "total": 3.7812500000000004e-05,
+                "data": [
+                    5.3125e-06,
+                    5.3125e-06,
+                    5.3125e-06,
+                    5.625e-06,
+                    5.46875e-06,
+                    5.46875e-06,
+                    5.3125e-06
+                ],
+                "iterations": 100000
+            }
+        },
+        {
+            "group": null,
+            "name": "test_span_lifecycle[current-span-always-on-root]",
+            "fullname": "opentelemetry-sdk/benchmarks/trace/test_benchmark_dropped_spans.py::test_span_lifecycle[current-span-always-on-root]",
+            "params": {
+                "lifecycle": "current-span",
+                "sampler": "UNSERIALIZABLE[<opentelemetry.sdk.trace.sampling.StaticSampler object at 0x000002B6376A11D0>]",
+                "parent_kind": "root"
+            },
+            "param": "current-span-always-on-root",
+            "extra_info": {},
+            "options": {
+                "disable_gc": false,
+                "timer": "process_time",
+                "min_rounds": 7,
+                "max_time": 0.3,
+                "min_time": 0.02,
+                "warmup": 2000
+            },
+            "stats": {
+                "min": 1.5625e-05,
+                "max": 2.03125e-05,
+                "mean": 1.6517857142857144e-05,
+                "stddev": 1.7717084672307521e-06,
+                "rounds": 7,
+                "median": 1.5625e-05,
+                "iqr": 1.1718749999999997e-06,
+                "q1": 1.5625e-05,
+                "q3": 1.6796875e-05,
+                "iqr_outliers": 1,
+                "stddev_outliers": 1,
+                "outliers": "1;1",
+                "ld15iqr": 1.5625e-05,
+                "hd15iqr": 2.03125e-05,
+                "ops": 60540.54054054054,
+                "total": 0.000115625,
+                "data": [
+                    2.03125e-05,
+                    1.5625e-05,
+                    1.71875e-05,
+                    1.5625e-05,
+                    1.5625e-05,
+                    1.5625e-05,
+                    1.5625e-05
+                ],
+                "iterations": 10000
+            }
+        },
+        {
+            "group": null,
+            "name": "test_span_lifecycle[current-span-always-on-child]",
+            "fullname": "opentelemetry-sdk/benchmarks/trace/test_benchmark_dropped_spans.py::test_span_lifecycle[current-span-always-on-child]",
+            "params": {
+                "lifecycle": "current-span",
+                "sampler": "UNSERIALIZABLE[<opentelemetry.sdk.trace.sampling.StaticSampler object at 0x000002B6376A11D0>]",
+                "parent_kind": "unsampled-parent"
+            },
+            "param": "current-span-always-on-child",
+            "extra_info": {},
+            "options": {
+                "disable_gc": false,
+                "timer": "process_time",
+                "min_rounds": 7,
+                "max_time": 0.3,
+                "min_time": 0.02,
+                "warmup": 2000
+            },
+            "stats": {
+                "min": 1.5625e-05,
+                "max": 1.5625e-05,
+                "mean": 1.5625e-05,
+                "stddev": 0.0,
+                "rounds": 7,
+                "median": 1.5625e-05,
+                "iqr": 0.0,
+                "q1": 1.5625e-05,
+                "q3": 1.5625e-05,
+                "iqr_outliers": 0,
+                "stddev_outliers": 0,
+                "outliers": "0;0",
+                "ld15iqr": 1.5625e-05,
+                "hd15iqr": 1.5625e-05,
+                "ops": 64000.0,
+                "total": 0.000109375,
+                "data": [
+                    1.5625e-05,
+                    1.5625e-05,
+                    1.5625e-05,
+                    1.5625e-05,
+                    1.5625e-05,
+                    1.5625e-05,
+                    1.5625e-05
+                ],
+                "iterations": 10000
+            }
+        },
+        {
+            "group": null,
+            "name": "test_span_lifecycle[current-span-always-on-remote-child]",
+            "fullname": "opentelemetry-sdk/benchmarks/trace/test_benchmark_dropped_spans.py::test_span_lifecycle[current-span-always-on-remote-child]",
+            "params": {
+                "lifecycle": "current-span",
+                "sampler": "UNSERIALIZABLE[<opentelemetry.sdk.trace.sampling.StaticSampler object at 0x000002B6376A11D0>]",
+                "parent_kind": "remote-unsampled-parent"
+            },
+            "param": "current-span-always-on-remote-child",
+            "extra_info": {},
+            "options": {
+                "disable_gc": false,
+                "timer": "process_time",
+                "min_rounds": 7,
+                "max_time": 0.3,
+                "min_time": 0.02,
+                "warmup": 2000
+            },
+            "stats": {
+                "min": 1.5625e-05,
+                "max": 1.5625e-05,
+                "mean": 1.5625e-05,
+                "stddev": 0.0,
+                "rounds": 7,
+                "median": 1.5625e-05,
+                "iqr": 0.0,
+                "q1": 1.5625e-05,
+                "q3": 1.5625e-05,
+                "iqr_outliers": 0,
+                "stddev_outliers": 0,
+                "outliers": "0;0",
+                "ld15iqr": 1.5625e-05,
+                "hd15iqr": 1.5625e-05,
+                "ops": 64000.0,
+                "total": 0.000109375,
+                "data": [
+                    1.5625e-05,
+                    1.5625e-05,
+                    1.5625e-05,
+                    1.5625e-05,
+                    1.5625e-05,
+                    1.5625e-05,
+                    1.5625e-05
+                ],
+                "iterations": 10000
+            }
+        },
+        {
+            "group": null,
+            "name": "test_span_lifecycle[current-span-always-off-sdk-recording-parent]",
+            "fullname": "opentelemetry-sdk/benchmarks/trace/test_benchmark_dropped_spans.py::test_span_lifecycle[current-span-always-off-sdk-recording-parent]",
+            "params": {
+                "lifecycle": "current-span",
+                "sampler": "UNSERIALIZABLE[<opentelemetry.sdk.trace.sampling.StaticSampler object at 0x000002B63768DFD0>]",
+                "parent_kind": "sdk-recording-parent"
+            },
+            "param": "current-span-always-off-sdk-recording-parent",
+            "extra_info": {},
+            "options": {
+                "disable_gc": false,
+                "timer": "process_time",
+                "min_rounds": 7,
+                "max_time": 0.3,
+                "min_time": 0.02,
+                "warmup": 2000
+            },
+            "stats": {
+                "min": 5.78125e-06,
+                "max": 6.5625e-06,
+                "mean": 6.25e-06,
+                "stddev": 2.551551815399144e-07,
+                "rounds": 7,
+                "median": 6.25e-06,
+                "iqr": 2.7343749999999987e-07,
+                "q1": 6.1328125e-06,
+                "q3": 6.40625e-06,
+                "iqr_outliers": 0,
+                "stddev_outliers": 2,
+                "outliers": "2;0",
+                "ld15iqr": 5.78125e-06,
+                "hd15iqr": 6.5625e-06,
+                "ops": 160000.0,
+                "total": 4.375e-05,
+                "data": [
+                    6.40625e-06,
+                    6.25e-06,
+                    6.25e-06,
+                    6.09375e-06,
+                    6.5625e-06,
+                    5.78125e-06,
+                    6.40625e-06
+                ],
+                "iterations": 100000
+            }
+        },
+        {
+            "group": null,
+            "name": "test_span_lifecycle[current-span-always-on-sdk-recording-parent]",
+            "fullname": "opentelemetry-sdk/benchmarks/trace/test_benchmark_dropped_spans.py::test_span_lifecycle[current-span-always-on-sdk-recording-parent]",
+            "params": {
+                "lifecycle": "current-span",
+                "sampler": "UNSERIALIZABLE[<opentelemetry.sdk.trace.sampling.StaticSampler object at 0x000002B6376A11D0>]",
+                "parent_kind": "sdk-recording-parent"
+            },
+            "param": "current-span-always-on-sdk-recording-parent",
+            "extra_info": {},
+            "options": {
+                "disable_gc": false,
+                "timer": "process_time",
+                "min_rounds": 7,
+                "max_time": 0.3,
+                "min_time": 0.02,
+                "warmup": 2000
+            },
+            "stats": {
+                "min": 1.5625e-05,
+                "max": 1.875e-05,
+                "mean": 1.6517857142857144e-05,
+                "stddev": 1.2293684257335044e-06,
+                "rounds": 7,
+                "median": 1.5625e-05,
+                "iqr": 1.5625000000000007e-06,
+                "q1": 1.5625e-05,
+                "q3": 1.71875e-05,
+                "iqr_outliers": 0,
+                "stddev_outliers": 1,
+                "outliers": "1;0",
+                "ld15iqr": 1.5625e-05,
+                "hd15iqr": 1.875e-05,
+                "ops": 60540.54054054054,
+                "total": 0.000115625,
+                "data": [
+                    1.71875e-05,
+                    1.875e-05,
+                    1.71875e-05,
+                    1.5625e-05,
+                    1.5625e-05,
+                    1.5625e-05,
+                    1.5625e-05
+                ],
+                "iterations": 10000
+            }
+        },
+        {
+            "group": null,
+            "name": "test_get_current_span[empty-explicit]",
+            "fullname": "opentelemetry-sdk/benchmarks/trace/test_benchmark_dropped_spans.py::test_get_current_span[empty-explicit]",
+            "params": {
+                "parent_kind": "empty",
+                "access": "explicit"
+            },
+            "param": "empty-explicit",
+            "extra_info": {},
+            "options": {
+                "disable_gc": false,
+                "timer": "process_time",
+                "min_rounds": 7,
+                "max_time": 0.3,
+                "min_time": 0.02,
+                "warmup": 2000
+            },
+            "stats": {
+                "min": 1.4062488750009e-07,
+                "max": 1.54687376250099e-07,
+                "mean": 1.46651668392951e-07,
+                "stddev": 7.516716415413809e-09,
+                "rounds": 7,
+                "median": 1.4062488750009e-07,
+                "iqr": 1.406248875000901e-08,
+                "q1": 1.4062488750009e-07,
+                "q3": 1.54687376250099e-07,
+                "iqr_outliers": 0,
+                "stddev_outliers": 3,
+                "outliers": "3;0",
+                "ld15iqr": 1.4062488750009e-07,
+                "hd15iqr": 1.54687376250099e-07,
+                "ops": 6818879.123287672,
+                "total": 1.0265616787506569e-06,
+                "data": [
+                    1.4062488750009e-07,
+                    1.4062488750009e-07,
+                    1.4062488750009e-07,
+                    1.54687376250099e-07,
+                    1.4062488750009e-07,
+                    1.54687376250099e-07,
+                    1.54687376250099e-07
+                ],
+                "iterations": 1111112
+            }
+        },
+        {
+            "group": null,
+            "name": "test_get_current_span[empty-implicit]",
+            "fullname": "opentelemetry-sdk/benchmarks/trace/test_benchmark_dropped_spans.py::test_get_current_span[empty-implicit]",
+            "params": {
+                "parent_kind": "empty",
+                "access": "implicit"
+            },
+            "param": "empty-implicit",
+            "extra_info": {},
+            "options": {
+                "disable_gc": false,
+                "timer": "process_time",
+                "min_rounds": 7,
+                "max_time": 0.3,
+                "min_time": 0.02,
+                "warmup": 2000
+            },
+            "stats": {
+                "min": 1.71875e-07,
+                "max": 2.5e-07,
+                "mean": 2.1205357142857141e-07,
+                "stddev": 2.36227795630767e-08,
+                "rounds": 7,
+                "median": 2.1875e-07,
+                "iqr": 1.562500000000001e-08,
+                "q1": 2.03125e-07,
+                "q3": 2.1875e-07,
+                "iqr_outliers": 2,
+                "stddev_outliers": 2,
+                "outliers": "2;2",
+                "ld15iqr": 2.03125e-07,
+                "hd15iqr": 2.5e-07,
+                "ops": 4715789.473684211,
+                "total": 1.4843749999999999e-06,
+                "data": [
+                    2.1875e-07,
+                    2.5e-07,
+                    2.1875e-07,
+                    2.1875e-07,
+                    1.71875e-07,
+                    2.03125e-07,
+                    2.03125e-07
+                ],
+                "iterations": 1000000
+            }
+        },
+        {
+            "group": null,
+            "name": "test_get_current_span[nonrecording-explicit]",
+            "fullname": "opentelemetry-sdk/benchmarks/trace/test_benchmark_dropped_spans.py::test_get_current_span[nonrecording-explicit]",
+            "params": {
+                "parent_kind": "nonrecording",
+                "access": "explicit"
+            },
+            "param": "nonrecording-explicit",
+            "extra_info": {},
+            "options": {
+                "disable_gc": false,
+                "timer": "process_time",
+                "min_rounds": 7,
+                "max_time": 0.3,
+                "min_time": 0.02,
+                "warmup": 2000
+            },
+            "stats": {
+                "min": 2.96875e-07,
+                "max": 3.28125e-07,
+                "mean": 3.1473214285714287e-07,
+                "stddev": 1.0782274364724269e-08,
+                "rounds": 7,
+                "median": 3.125e-07,
+                "iqr": 1.1718749999999967e-08,
+                "q1": 3.125e-07,
+                "q3": 3.2421875e-07,
+                "iqr_outliers": 0,
+                "stddev_outliers": 3,
+                "outliers": "3;0",
+                "ld15iqr": 2.96875e-07,
+                "hd15iqr": 3.28125e-07,
+                "ops": 3177304.964539007,
+                "total": 2.203125e-06,
+                "data": [
+                    3.125e-07,
+                    3.28125e-07,
+                    2.96875e-07,
+                    3.125e-07,
+                    3.28125e-07,
+                    3.125e-07,
+                    3.125e-07
+                ],
+                "iterations": 1000000
+            }
+        },
+        {
+            "group": null,
+            "name": "test_get_current_span[nonrecording-implicit]",
+            "fullname": "opentelemetry-sdk/benchmarks/trace/test_benchmark_dropped_spans.py::test_get_current_span[nonrecording-implicit]",
+            "params": {
+                "parent_kind": "nonrecording",
+                "access": "implicit"
+            },
+            "param": "nonrecording-implicit",
+            "extra_info": {},
+            "options": {
+                "disable_gc": false,
+                "timer": "process_time",
+                "min_rounds": 7,
+                "max_time": 0.3,
+                "min_time": 0.02,
+                "warmup": 2000
+            },
+            "stats": {
+                "min": 3.90625e-07,
+                "max": 4.375e-07,
+                "mean": 4.107142857142857e-07,
+                "stddev": 1.7385895008255826e-08,
+                "rounds": 7,
+                "median": 4.0625e-07,
+                "iqr": 2.7343749999999976e-08,
+                "q1": 3.9453125e-07,
+                "q3": 4.21875e-07,
+                "iqr_outliers": 0,
+                "stddev_outliers": 3,
+                "outliers": "3;0",
+                "ld15iqr": 3.90625e-07,
+                "hd15iqr": 4.375e-07,
+                "ops": 2434782.6086956523,
+                "total": 2.875e-06,
+                "data": [
+                    4.375e-07,
+                    4.21875e-07,
+                    4.21875e-07,
+                    3.90625e-07,
+                    4.0625e-07,
+                    4.0625e-07,
+                    3.90625e-07
+                ],
+                "iterations": 1000000
+            }
+        },
+        {
+            "group": null,
+            "name": "test_get_current_span[sdk-recording-explicit]",
+            "fullname": "opentelemetry-sdk/benchmarks/trace/test_benchmark_dropped_spans.py::test_get_current_span[sdk-recording-explicit]",
+            "params": {
+                "parent_kind": "sdk-recording",
+                "access": "explicit"
+            },
+            "param": "sdk-recording-explicit",
+            "extra_info": {},
+            "options": {
+                "disable_gc": false,
+                "timer": "process_time",
+                "min_rounds": 7,
+                "max_time": 0.3,
+                "min_time": 0.02,
+                "warmup": 2000
+            },
+            "stats": {
+                "min": 3.28125e-07,
+                "max": 3.4375e-07,
+                "mean": 3.303571428571428e-07,
+                "stddev": 5.905694890769179e-09,
+                "rounds": 7,
+                "median": 3.28125e-07,
+                "iqr": 0.0,
+                "q1": 3.28125e-07,
+                "q3": 3.28125e-07,
+                "iqr_outliers": 1,
+                "stddev_outliers": 1,
+                "outliers": "1;1",
+                "ld15iqr": 3.28125e-07,
+                "hd15iqr": 3.4375e-07,
+                "ops": 3027027.027027027,
+                "total": 2.3125e-06,
+                "data": [
+                    3.28125e-07,
+                    3.4375e-07,
+                    3.28125e-07,
+                    3.28125e-07,
+                    3.28125e-07,
+                    3.28125e-07,
+                    3.28125e-07
+                ],
+                "iterations": 1000000
+            }
+        },
+        {
+            "group": null,
+            "name": "test_get_current_span[sdk-recording-implicit]",
+            "fullname": "opentelemetry-sdk/benchmarks/trace/test_benchmark_dropped_spans.py::test_get_current_span[sdk-recording-implicit]",
+            "params": {
+                "parent_kind": "sdk-recording",
+                "access": "implicit"
+            },
+            "param": "sdk-recording-implicit",
+            "extra_info": {},
+            "options": {
+                "disable_gc": false,
+                "timer": "process_time",
+                "min_rounds": 7,
+                "max_time": 0.3,
+                "min_time": 0.02,
+                "warmup": 2000
+            },
+            "stats": {
+                "min": 4.0625e-07,
+                "max": 4.375e-07,
+                "mean": 4.21875e-07,
+                "stddev": 1.2757759076995727e-08,
+                "rounds": 7,
+                "median": 4.21875e-07,
+                "iqr": 2.3437499999999934e-08,
+                "q1": 4.1015625e-07,
+                "q3": 4.3359374999999995e-07,
+                "iqr_outliers": 0,
+                "stddev_outliers": 4,
+                "outliers": "4;0",
+                "ld15iqr": 4.0625e-07,
+                "hd15iqr": 4.375e-07,
+                "ops": 2370370.3703703703,
+                "total": 2.9531249999999998e-06,
+                "data": [
+                    4.375e-07,
+                    4.375e-07,
+                    4.21875e-07,
+                    4.21875e-07,
+                    4.21875e-07,
+                    4.0625e-07,
+                    4.0625e-07
+                ],
+                "iterations": 1000000
+            }
+        }
+    ],
+    "datetime": "2026-10-15T01:34:11.517670",
+    "version": "4.0.0"
+}

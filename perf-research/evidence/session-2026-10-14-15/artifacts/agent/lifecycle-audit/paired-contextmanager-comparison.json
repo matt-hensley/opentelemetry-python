@@ -1,0 +1,643 @@
+{
+  "metadata": {
+    "python": "3.13.14 (tags/v3.13.14:fd17997, Jun 10 2026, 13:03:48) [MSC v.1944 64 bit (AMD64)]",
+    "pairs": 9,
+    "target_seconds": 0.7,
+    "harness_sha256": "f497c15d92da4fa8e4038cb9cf497d44b8ac05be00221bf6b2a65c0d0a34851f",
+    "source_sha256": {
+      "opentelemetry-sdk\\src\\opentelemetry\\sdk\\trace\\__init__.py": "3de799f888fa8c1d0747e06a83232d644ab33dcb58f405a57c8516e3346a05ce",
+      "opentelemetry-api\\src\\opentelemetry\\trace\\__init__.py": "395e280f8dc25cb5ffa8fdea946b00d3c76423c76ee239bdccaecad151317f78",
+      "opentelemetry-api\\src\\opentelemetry\\util\\_decorator.py": "b6816ab8de35b9e58199d965b728e1d119e8da06e11967f36d0e5b351cccf7c4"
+    },
+    "sources": {
+      "delegate-generator": "def start_as_current_span(\n    self,\n    name: str,\n    context: context_api.Context | None = None,\n    kind: trace_api.SpanKind = trace_api.SpanKind.INTERNAL,\n    attributes: types.Attributes = None,\n    links: Sequence[trace_api.Link] | None = (),\n    start_time: int | None = None,\n    record_exception: bool = True,\n    set_status_on_exception: bool = True,\n    end_on_exit: bool = True,\n) -> Iterator[trace_api.Span]:\n    span = self.start_span(\n        name=name,\n        context=context,\n        kind=kind,\n        attributes=attributes,\n        links=links,\n        start_time=start_time,\n        record_exception=record_exception,\n        set_status_on_exception=set_status_on_exception,\n    )\n    yield from _USE_SPAN_GENERATOR(\n        span,\n        end_on_exit=end_on_exit,\n        record_exception=record_exception,\n        set_status_on_exception=set_status_on_exception,\n    )\n",
+      "inline-upper-bound": "def start_as_current_span(\n    self,\n    name: str,\n    context: context_api.Context | None = None,\n    kind: trace_api.SpanKind = trace_api.SpanKind.INTERNAL,\n    attributes: types.Attributes = None,\n    links: Sequence[trace_api.Link] | None = (),\n    start_time: int | None = None,\n    record_exception: bool = True,\n    set_status_on_exception: bool = True,\n    end_on_exit: bool = True,\n) -> Iterator[trace_api.Span]:\n    span = self.start_span(\n        name=name,\n        context=context,\n        kind=kind,\n        attributes=attributes,\n        links=links,\n        start_time=start_time,\n        record_exception=record_exception,\n        set_status_on_exception=set_status_on_exception,\n    )\n    try:\n        token = context_api.attach(context_api.set_value(_SPAN_KEY, span))\n        try:\n            yield span\n        finally:\n            context_api.detach(token)\n\n    # Record only exceptions that inherit Exception class but not BaseException, because\n    # classes that directly inherit BaseException are not technically errors, e.g. GeneratorExit.\n    # See https://github.com/open-telemetry/opentelemetry-python/issues/4484\n    except Exception as exc:  # pylint: disable=broad-exception-caught\n        if isinstance(span, trace_api.Span) and span.is_recording():\n            # Record the exception as an event\n            if record_exception:\n                span.record_exception(exc)\n\n            # Set status in case exception was raised\n            if set_status_on_exception:\n                span.set_status(\n                    Status(\n                        status_code=StatusCode.ERROR,\n                        description=f\"{type(exc).__name__}: {exc}\",\n                    )\n                )\n\n        # This causes parent spans to set their status to ERROR and to record\n        # an exception as an event if a child span raises an exception even if\n        # such child span was started with both record_exception and\n        # set_status_on_exception attributes set to False.\n        raise\n\n    finally:\n        if end_on_exit:\n            span.end()\n"
+    }
+  },
+  "results": [
+    {
+      "case": "dropped-child/current-span",
+      "summary": {
+        "baseline": {
+          "cpu_ns_op": 5630.151905294013,
+          "wall_ns_op": 5707.317628625565
+        },
+        "delegate-generator": {
+          "cpu_ns_op": 4981.7355341786915,
+          "wall_ns_op": 4859.280717096633
+        },
+        "inline-upper-bound": {
+          "cpu_ns_op": 4681.249898783786,
+          "wall_ns_op": 4678.607345867949
+        }
+      },
+      "samples": [
+        {
+          "pair": 0,
+          "mode": "baseline",
+          "loops": 109776,
+          "cpu_ns": 609375000,
+          "wall_ns": 639327800
+        },
+        {
+          "pair": 0,
+          "mode": "delegate-generator",
+          "loops": 109776,
+          "cpu_ns": 531250000,
+          "wall_ns": 522734900
+        },
+        {
+          "pair": 0,
+          "mode": "inline-upper-bound",
+          "loops": 109776,
+          "cpu_ns": 515625000,
+          "wall_ns": 503587000
+        },
+        {
+          "pair": 1,
+          "mode": "baseline",
+          "loops": 109776,
+          "cpu_ns": 593750000,
+          "wall_ns": 610806100
+        },
+        {
+          "pair": 1,
+          "mode": "inline-upper-bound",
+          "loops": 109776,
+          "cpu_ns": 500000000,
+          "wall_ns": 505407200
+        },
+        {
+          "pair": 1,
+          "mode": "delegate-generator",
+          "loops": 109776,
+          "cpu_ns": 500000000,
+          "wall_ns": 515513700
+        },
+        {
+          "pair": 2,
+          "mode": "inline-upper-bound",
+          "loops": 109776,
+          "cpu_ns": 500000000,
+          "wall_ns": 506656000
+        },
+        {
+          "pair": 2,
+          "mode": "baseline",
+          "loops": 109776,
+          "cpu_ns": 609375000,
+          "wall_ns": 616353800
+        },
+        {
+          "pair": 2,
+          "mode": "delegate-generator",
+          "loops": 109776,
+          "cpu_ns": 531250000,
+          "wall_ns": 533432400
+        },
+        {
+          "pair": 3,
+          "mode": "inline-upper-bound",
+          "loops": 109776,
+          "cpu_ns": 515625000,
+          "wall_ns": 513598800
+        },
+        {
+          "pair": 3,
+          "mode": "delegate-generator",
+          "loops": 109776,
+          "cpu_ns": 515625000,
+          "wall_ns": 520084600
+        },
+        {
+          "pair": 3,
+          "mode": "baseline",
+          "loops": 109776,
+          "cpu_ns": 593750000,
+          "wall_ns": 616830300
+        },
+        {
+          "pair": 4,
+          "mode": "delegate-generator",
+          "loops": 109776,
+          "cpu_ns": 531250000,
+          "wall_ns": 534034200
+        },
+        {
+          "pair": 4,
+          "mode": "inline-upper-bound",
+          "loops": 109776,
+          "cpu_ns": 500000000,
+          "wall_ns": 500172300
+        },
+        {
+          "pair": 4,
+          "mode": "baseline",
+          "loops": 109776,
+          "cpu_ns": 640625000,
+          "wall_ns": 646123900
+        },
+        {
+          "pair": 5,
+          "mode": "delegate-generator",
+          "loops": 109776,
+          "cpu_ns": 531250000,
+          "wall_ns": 542860200
+        },
+        {
+          "pair": 5,
+          "mode": "baseline",
+          "loops": 109776,
+          "cpu_ns": 640625000,
+          "wall_ns": 642278400
+        },
+        {
+          "pair": 5,
+          "mode": "inline-upper-bound",
+          "loops": 109776,
+          "cpu_ns": 515625000,
+          "wall_ns": 521486400
+        },
+        {
+          "pair": 6,
+          "mode": "baseline",
+          "loops": 109776,
+          "cpu_ns": 609375000,
+          "wall_ns": 624562700
+        },
+        {
+          "pair": 6,
+          "mode": "delegate-generator",
+          "loops": 109776,
+          "cpu_ns": 546875000,
+          "wall_ns": 553229900
+        },
+        {
+          "pair": 6,
+          "mode": "inline-upper-bound",
+          "loops": 109776,
+          "cpu_ns": 515625000,
+          "wall_ns": 517781100
+        },
+        {
+          "pair": 7,
+          "mode": "baseline",
+          "loops": 109776,
+          "cpu_ns": 625000000,
+          "wall_ns": 626526500
+        },
+        {
+          "pair": 7,
+          "mode": "inline-upper-bound",
+          "loops": 109776,
+          "cpu_ns": 562500000,
+          "wall_ns": 623829200
+        },
+        {
+          "pair": 7,
+          "mode": "delegate-generator",
+          "loops": 109776,
+          "cpu_ns": 531250000,
+          "wall_ns": 522074000
+        },
+        {
+          "pair": 8,
+          "mode": "inline-upper-bound",
+          "loops": 109776,
+          "cpu_ns": 500000000,
+          "wall_ns": 514789400
+        },
+        {
+          "pair": 8,
+          "mode": "baseline",
+          "loops": 109776,
+          "cpu_ns": 640625000,
+          "wall_ns": 635151000
+        },
+        {
+          "pair": 8,
+          "mode": "delegate-generator",
+          "loops": 109776,
+          "cpu_ns": 703125000,
+          "wall_ns": 713418200
+        }
+      ]
+    },
+    {
+      "case": "sampled-root-4/current-span",
+      "summary": {
+        "baseline": {
+          "cpu_ns_op": 14071.030562278382,
+          "wall_ns_op": 13556.168739798502
+        },
+        "delegate-generator": {
+          "cpu_ns_op": 13289.306642151805,
+          "wall_ns_op": 13084.077221815725
+        },
+        "inline-upper-bound": {
+          "cpu_ns_op": 12214.436251977762,
+          "wall_ns_op": 12416.935892384758
+        }
+      },
+      "samples": [
+        {
+          "pair": 0,
+          "mode": "baseline",
+          "loops": 35534,
+          "cpu_ns": 531250000,
+          "wall_ns": 536841400
+        },
+        {
+          "pair": 0,
+          "mode": "delegate-generator",
+          "loops": 35534,
+          "cpu_ns": 437500000,
+          "wall_ns": 457758100
+        },
+        {
+          "pair": 0,
+          "mode": "inline-upper-bound",
+          "loops": 35534,
+          "cpu_ns": 421875000,
+          "wall_ns": 420795000
+        },
+        {
+          "pair": 1,
+          "mode": "baseline",
+          "loops": 35534,
+          "cpu_ns": 484375000,
+          "wall_ns": 507880300
+        },
+        {
+          "pair": 1,
+          "mode": "inline-upper-bound",
+          "loops": 35534,
+          "cpu_ns": 453125000,
+          "wall_ns": 446669700
+        },
+        {
+          "pair": 1,
+          "mode": "delegate-generator",
+          "loops": 35534,
+          "cpu_ns": 453125000,
+          "wall_ns": 465245100
+        },
+        {
+          "pair": 2,
+          "mode": "inline-upper-bound",
+          "loops": 35534,
+          "cpu_ns": 421875000,
+          "wall_ns": 444834800
+        },
+        {
+          "pair": 2,
+          "mode": "baseline",
+          "loops": 35534,
+          "cpu_ns": 484375000,
+          "wall_ns": 490673900
+        },
+        {
+          "pair": 2,
+          "mode": "delegate-generator",
+          "loops": 35534,
+          "cpu_ns": 468750000,
+          "wall_ns": 464929600
+        },
+        {
+          "pair": 3,
+          "mode": "inline-upper-bound",
+          "loops": 35534,
+          "cpu_ns": 484375000,
+          "wall_ns": 518196300
+        },
+        {
+          "pair": 3,
+          "mode": "delegate-generator",
+          "loops": 35534,
+          "cpu_ns": 484375000,
+          "wall_ns": 507156200
+        },
+        {
+          "pair": 3,
+          "mode": "baseline",
+          "loops": 35534,
+          "cpu_ns": 593750000,
+          "wall_ns": 631223500
+        },
+        {
+          "pair": 4,
+          "mode": "delegate-generator",
+          "loops": 35534,
+          "cpu_ns": 609375000,
+          "wall_ns": 635915200
+        },
+        {
+          "pair": 4,
+          "mode": "inline-upper-bound",
+          "loops": 35534,
+          "cpu_ns": 421875000,
+          "wall_ns": 441223400
+        },
+        {
+          "pair": 4,
+          "mode": "baseline",
+          "loops": 35534,
+          "cpu_ns": 484375000,
+          "wall_ns": 471867400
+        },
+        {
+          "pair": 5,
+          "mode": "delegate-generator",
+          "loops": 35534,
+          "cpu_ns": 437500000,
+          "wall_ns": 437829400
+        },
+        {
+          "pair": 5,
+          "mode": "baseline",
+          "loops": 35534,
+          "cpu_ns": 468750000,
+          "wall_ns": 467830600
+        },
+        {
+          "pair": 5,
+          "mode": "inline-upper-bound",
+          "loops": 35534,
+          "cpu_ns": 437500000,
+          "wall_ns": 432264000
+        },
+        {
+          "pair": 6,
+          "mode": "baseline",
+          "loops": 35534,
+          "cpu_ns": 484375000,
+          "wall_ns": 480386600
+        },
+        {
+          "pair": 6,
+          "mode": "delegate-generator",
+          "loops": 35534,
+          "cpu_ns": 437500000,
+          "wall_ns": 440166300
+        },
+        {
+          "pair": 6,
+          "mode": "inline-upper-bound",
+          "loops": 35534,
+          "cpu_ns": 406250000,
+          "wall_ns": 420314600
+        },
+        {
+          "pair": 7,
+          "mode": "baseline",
+          "loops": 35534,
+          "cpu_ns": 484375000,
+          "wall_ns": 479765600
+        },
+        {
+          "pair": 7,
+          "mode": "inline-upper-bound",
+          "loops": 35534,
+          "cpu_ns": 437500000,
+          "wall_ns": 487646900
+        },
+        {
+          "pair": 7,
+          "mode": "delegate-generator",
+          "loops": 35534,
+          "cpu_ns": 484375000,
+          "wall_ns": 601873700
+        },
+        {
+          "pair": 8,
+          "mode": "inline-upper-bound",
+          "loops": 35534,
+          "cpu_ns": 421875000,
+          "wall_ns": 430849200
+        },
+        {
+          "pair": 8,
+          "mode": "baseline",
+          "loops": 35534,
+          "cpu_ns": 484375000,
+          "wall_ns": 481704900
+        },
+        {
+          "pair": 8,
+          "mode": "delegate-generator",
+          "loops": 35534,
+          "cpu_ns": 437500000,
+          "wall_ns": 430390700
+        }
+      ]
+    },
+    {
+      "case": "sampled-root-10/current-span",
+      "summary": {
+        "baseline": {
+          "cpu_ns_op": 15255.30235360103,
+          "wall_ns_op": 14945.659444525229
+        },
+        "delegate-generator": {
+          "cpu_ns_op": 13740.591481612275,
+          "wall_ns_op": 13682.729180082677
+        },
+        "inline-upper-bound": {
+          "cpu_ns_op": 14065.172382752722,
+          "wall_ns_op": 13514.071750555682
+        }
+      },
+      "samples": [
+        {
+          "pair": 0,
+          "mode": "baseline",
+          "loops": 48139,
+          "cpu_ns": 703125000,
+          "wall_ns": 705492100
+        },
+        {
+          "pair": 0,
+          "mode": "delegate-generator",
+          "loops": 48139,
+          "cpu_ns": 656250000,
+          "wall_ns": 674012000
+        },
+        {
+          "pair": 0,
+          "mode": "inline-upper-bound",
+          "loops": 48139,
+          "cpu_ns": 625000000,
+          "wall_ns": 637594500
+        },
+        {
+          "pair": 1,
+          "mode": "baseline",
+          "loops": 48139,
+          "cpu_ns": 734375000,
+          "wall_ns": 726656600
+        },
+        {
+          "pair": 1,
+          "mode": "inline-upper-bound",
+          "loops": 48139,
+          "cpu_ns": 656250000,
+          "wall_ns": 664727500
+        },
+        {
+          "pair": 1,
+          "mode": "delegate-generator",
+          "loops": 48139,
+          "cpu_ns": 640625000,
+          "wall_ns": 645424200
+        },
+        {
+          "pair": 2,
+          "mode": "inline-upper-bound",
+          "loops": 48139,
+          "cpu_ns": 656250000,
+          "wall_ns": 647866100
+        },
+        {
+          "pair": 2,
+          "mode": "baseline",
+          "loops": 48139,
+          "cpu_ns": 718750000,
+          "wall_ns": 717027000
+        },
+        {
+          "pair": 2,
+          "mode": "delegate-generator",
+          "loops": 48139,
+          "cpu_ns": 703125000,
+          "wall_ns": 731183800
+        },
+        {
+          "pair": 3,
+          "mode": "inline-upper-bound",
+          "loops": 48139,
+          "cpu_ns": 718750000,
+          "wall_ns": 706976500
+        },
+        {
+          "pair": 3,
+          "mode": "delegate-generator",
+          "loops": 48139,
+          "cpu_ns": 656250000,
+          "wall_ns": 653041500
+        },
+        {
+          "pair": 3,
+          "mode": "baseline",
+          "loops": 48139,
+          "cpu_ns": 781250000,
+          "wall_ns": 774813300
+        },
+        {
+          "pair": 4,
+          "mode": "delegate-generator",
+          "loops": 48139,
+          "cpu_ns": 640625000,
+          "wall_ns": 648289000
+        },
+        {
+          "pair": 4,
+          "mode": "inline-upper-bound",
+          "loops": 48139,
+          "cpu_ns": 640625000,
+          "wall_ns": 636791100
+        },
+        {
+          "pair": 4,
+          "mode": "baseline",
+          "loops": 48139,
+          "cpu_ns": 718750000,
+          "wall_ns": 719469100
+        },
+        {
+          "pair": 5,
+          "mode": "delegate-generator",
+          "loops": 48139,
+          "cpu_ns": 656250000,
+          "wall_ns": 658672900
+        },
+        {
+          "pair": 5,
+          "mode": "baseline",
+          "loops": 48139,
+          "cpu_ns": 703125000,
+          "wall_ns": 696792000
+        },
+        {
+          "pair": 5,
+          "mode": "inline-upper-bound",
+          "loops": 48139,
+          "cpu_ns": 656250000,
+          "wall_ns": 650553900
+        },
+        {
+          "pair": 6,
+          "mode": "baseline",
+          "loops": 48139,
+          "cpu_ns": 718750000,
+          "wall_ns": 722156600
+        },
+        {
+          "pair": 6,
+          "mode": "delegate-generator",
+          "loops": 48139,
+          "cpu_ns": 656250000,
+          "wall_ns": 658632000
+        },
+        {
+          "pair": 6,
+          "mode": "inline-upper-bound",
+          "loops": 48139,
+          "cpu_ns": 750000000,
+          "wall_ns": 749294600
+        },
+        {
+          "pair": 7,
+          "mode": "baseline",
+          "loops": 48139,
+          "cpu_ns": 843750000,
+          "wall_ns": 846553200
+        },
+        {
+          "pair": 7,
+          "mode": "inline-upper-bound",
+          "loops": 48139,
+          "cpu_ns": 750000000,
+          "wall_ns": 759989100
+        },
+        {
+          "pair": 7,
+          "mode": "delegate-generator",
+          "loops": 48139,
+          "cpu_ns": 671875000,
+          "wall_ns": 662704400
+        },
+        {
+          "pair": 8,
+          "mode": "inline-upper-bound",
+          "loops": 48139,
+          "cpu_ns": 640625000,
+          "wall_ns": 637370500
+        },
+        {
+          "pair": 8,
+          "mode": "baseline",
+          "loops": 48139,
+          "cpu_ns": 687500000,
+          "wall_ns": 712804500
+        },
+        {
+          "pair": 8,
+          "mode": "delegate-generator",
+          "loops": 48139,
+          "cpu_ns": 671875000,
+          "wall_ns": 679675500
+        }
+      ]
+    }
+  ]
+}

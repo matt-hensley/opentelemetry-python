@@ -20,6 +20,22 @@ class _NoStrNoReprObject:
         pass
 
 
+class TestCleanAttributeValue(unittest.TestCase):
+    def test_clean_scalar_values_preserves_instances(self):
+        class CustomInt(int):
+            pass
+
+        class CustomFloat(float):
+            pass
+
+        class CustomBytes(bytes):
+            pass
+
+        for value in (None, True, 42, 3.14, b"hello", CustomInt(42), CustomFloat(3.14), CustomBytes(b"hello")):
+            with self.subTest(value=value):
+                self.assertIs(_clean_attribute_value(value, 0), value)
+
+
 class TestBoundedAttributes(unittest.TestCase):
     # pylint: disable=consider-using-dict-items
     base = {
@@ -159,6 +175,89 @@ class TestBoundedAttributes(unittest.TestCase):
 
         # test that iter yields the correct number of elements
         self.assertEqual(len(tuple(bdict)), dic_len)
+
+    def test_constructor_cleans_nested_attributes_without_aliasing(self):
+        source = {"outer": {"items": [1, 2]}}
+        attributes = BoundedAttributes(maxlen=1, attributes=source, immutable=False)
+
+        source["outer"]["items"].append(3)
+        source["new"] = "value"
+
+        self.assertEqual(attributes["outer"], {"items": (1, 2)})
+        self.assertEqual(tuple(attributes), ("outer",))
+        self.assertEqual(attributes.dropped, 0)
+
+    def test_set_items_into_empty_attributes_preserves_unlimited_and_zero_limits(self):
+        unlimited = BoundedAttributes(maxlen=None, immutable=False)
+        unlimited._set_items({"first": 1, "second": 2})  # pylint: disable=protected-access
+        self.assertEqual(tuple(unlimited), ("first", "second"))
+        self.assertEqual(unlimited.dropped, 0)
+
+        zero_limit = BoundedAttributes(maxlen=0, attributes={"first": 1, "second": 2}, immutable=False)
+        self.assertEqual(len(zero_limit), 0)
+        self.assertEqual(zero_limit.dropped, 2)
+
+    def test_constructor_preserves_invalid_and_coerced_key_drop_counts(self):
+        attributes = {
+            "": "empty key",
+            _NoStrNoReprObject(): "unusable key",
+            1: "integer key",
+            "1": "string key",
+        }
+
+        with self.assertLogs("opentelemetry.attributes", level="WARNING"):
+            bounded = BoundedAttributes(maxlen=2, attributes=attributes, immutable=False)
+
+        self.assertEqual(tuple(bounded), ("1",))
+        self.assertEqual(bounded["1"], "string key")
+        self.assertEqual(bounded.dropped, 3)
+
+    def test_set_items_preserves_overlap_order_and_overflow(self):
+        with self.assertLogs("opentelemetry.attributes", level="WARNING"):
+            constructor_overflow = BoundedAttributes(
+                maxlen=2,
+                attributes={"first": 1, "second": 2, "third": 3},
+                immutable=False,
+            )
+        self.assertEqual(tuple(constructor_overflow), ("second", "third"))
+        self.assertEqual(constructor_overflow.dropped, 1)
+
+        bounded = BoundedAttributes(
+            maxlen=3,
+            attributes={"first": 1, "second": 2},
+            immutable=False,
+        )
+
+        bounded._set_items({"first": 20, "third": 3})  # pylint: disable=protected-access
+        self.assertEqual(tuple(bounded), ("second", "first", "third"))
+        self.assertEqual(bounded["first"], 20)
+        self.assertEqual(bounded.dropped, 0)
+
+        with self.assertLogs("opentelemetry.attributes", level="WARNING") as logs:
+            bounded._set_items({"fourth": 4})  # pylint: disable=protected-access
+
+        self.assertTrue(any("Attributes dict is full" in message for message in logs.output))
+        self.assertEqual(tuple(bounded), ("first", "third", "fourth"))
+        self.assertEqual(bounded.dropped, 1)
+
+    def test_subclass_setitem_locked_is_used_for_initial_attributes(self):
+        class TrackingBoundedAttributes(BoundedAttributes):
+            def __init__(self, *args, **kwargs):
+                self.setitem_calls = 0
+                super().__init__(*args, **kwargs)
+
+            def _setitem_locked(self, key, value):
+                self.setitem_calls += 1
+                super()._setitem_locked(key, value)
+
+        bounded = TrackingBoundedAttributes(
+            maxlen=2,
+            attributes={"first": 1, "second": 2},
+            immutable=False,
+        )
+
+        self.assertEqual(bounded.setitem_calls, 2)
+        self.assertEqual(tuple(bounded), ("first", "second"))
 
     def test_basic_insertion_update_iteration_and_deletion(self):
         # create empty dict
